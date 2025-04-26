@@ -2,7 +2,6 @@ import { ButtonHTMLAttributes } from 'react'
 
 interface props extends ButtonHTMLAttributes<HTMLButtonElement>  {
   text: string,
-
 }
 
 export const Button: React.FC<props> = ({text, ...props}) => {
