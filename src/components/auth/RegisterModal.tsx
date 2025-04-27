@@ -24,16 +24,19 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
     // validations
     if (!validateForm()) return
 
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const {confirm, ...inputs} = form
+
     // encrypt password and save in the form
     const passwordToSave = await hashPassword(password)
     const formToSubmit = {
-      ...form,
+      ...inputs,
       password: passwordToSave
     }
 
     console.log(formToSubmit)
-    handleReset()
     closeModal()
+    handleReset()
   }
 
   return (
@@ -47,7 +50,7 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
         </div>
         <form onSubmit={handleSubmit} className='w-2/3 flex flex-col gap-4'>
           <Input type='text' text='Nombre completo' error={errors.name} onChange={handleInputChange} placeholder='Juan Perez' name='name' value={name} />
-          <Input type='email' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder='ejemplo@mail.com' name='email' value={email}/>
+          <Input type='text' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder='ejemplo@mail.com' name='email' value={email}/>
           <Input type='number' text='Telefono' onChange={handleInputChange} error={errors.phone} placeholder='300 1234567' name='phone' value={phone}/>
           <div className='flex justify-between gap-3 items-center'>
             <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.password} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password}/>
