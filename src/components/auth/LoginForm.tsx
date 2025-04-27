@@ -5,7 +5,7 @@ import { Input } from '../generics/Input'
 
 export const LoginForm = () => {
 
-  const {email, password, form, handleInputChange, handleReset, showPassword, handleToggleShow, errors, validateForm} = useForm({email: '', password: ''})
+  const {email, login_password, form, handleInputChange, handleReset, showPassword, handleToggleShow, errors, validateForm} = useForm({email: '', login_password: ''})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,7 +21,7 @@ export const LoginForm = () => {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Input text='Correo electrónico' error={errors.email} onChange={handleInputChange} placeholder='ejemplo@mail.com' name='email' value={email} type='text'/>
       <div className='flex justify-between items-center gap-3'>
-        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.text} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password}/>
+        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.login_password} onChange={handleInputChange} placeholder='Tu contraseña' name='login_password' value={login_password}/>
         <button type='button' className='' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
       <Button text='Entrar' type='submit'/>
