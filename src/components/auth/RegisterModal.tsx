@@ -10,7 +10,7 @@ interface props {
 
 export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
 
-  const {name, email, phone, password, confirm, form, showPassword, handleToggleShow, handleInputChange, hashPassword, handleReset} = useForm({
+  const {name, email, phone, password, confirm, form, showPassword, handleToggleShow, handleInputChange, hashPassword, handleReset, errors, validateForm} = useForm({
     name: '',
     email: '',
     phone: '',
@@ -21,6 +21,9 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // validations
+    if (!validateForm()) return
+
     // encrypt password and save in the form
     const passwordToSave = await hashPassword(password)
     const formToSubmit = {
@@ -30,6 +33,7 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
 
     console.log(formToSubmit)
     handleReset()
+    closeModal()
   }
 
   return (
@@ -41,16 +45,15 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
             <FaXmark size={36}/>
           </button>
         </div>
-        <form onSubmit={handleSubmit} className='w-2/3'>
-          <Input type='text' text='Nombre completo' onChange={handleInputChange} placeholder='Juan Perez' name='name' value={name} />
-          <Input type='email' text='Correo electrónico' onChange={handleInputChange} placeholder='ejemplo@mail.com' name='email' value={email}/>
-          <Input type='number' text='Telefono' onChange={handleInputChange} placeholder='300 1234567' name='phone' value={phone}/>
-          <div className='flex gap-2 items-center'>
-            <Input type={showPassword ? 'text' : 'password'} text='Contraseña' onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password}/>
-            <button type='button' className='h-full mt-2' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
+        <form onSubmit={handleSubmit} className='w-2/3 flex flex-col gap-4'>
+          <Input type='text' text='Nombre completo' error={errors.name} onChange={handleInputChange} placeholder='Juan Perez' name='name' value={name} />
+          <Input type='email' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder='ejemplo@mail.com' name='email' value={email}/>
+          <Input type='number' text='Telefono' onChange={handleInputChange} error={errors.phone} placeholder='300 1234567' name='phone' value={phone}/>
+          <div className='flex justify-between gap-3 items-center'>
+            <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.password} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password}/>
+            <button type='button' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
           </div>
-          <Input type='password' text='Confirma tu contraseña' onChange={handleInputChange} placeholder='Tu contraseña otra vez' name='confirm' value={confirm}/>
-
+          <Input type='password' text='Confirma tu contraseña' error={errors.confirm} onChange={handleInputChange} placeholder='Tu contraseña otra vez' name='confirm' value={confirm}/>
           <Button text='Registrarme' type='submit'/>
         </form>
       </div>
