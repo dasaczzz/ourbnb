@@ -18,6 +18,7 @@ export const Login = () => {
           <img src="ourbnb.svg" className='w-32 h-24' alt="logo empresarial" />
           <h1 className="font-bold text-primary-400 text-6xl">Ourbnb</h1>
           <h1 className="font-bold text-primary-400 text-6xl">CHANGE!!</h1>
+          <h1 className="font-bold text-primary-400 text-6xl">MORE CHANGES</h1>
         </div>
 
         <LoginForm />
