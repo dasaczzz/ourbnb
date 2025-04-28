@@ -2,8 +2,6 @@ import { useState } from 'react'
 import bcrypt from 'bcryptjs'
 
 // Define validator types for better type safety
-type Validator = (value: string, form?: Record<string, unknown>) => string
-type Validators = Record<string, Validator>
 
 export function useForm<T extends Record<string, unknown>> (initialForm: T) {
 
@@ -21,11 +19,12 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
   }
 
   // validators that use regular expressions to match errors
-  const validators: Validators = {
-    email: (value) => !/^\S+@\S+\.\S+$/.test(value) ? 'Correo electrónico inválido' : '',
-    password: (value) => value.length < 6 ? 'La contraseña debe tener al menos 6 caracteres' : '',
-    phone: (value) => !/^\d{10}$/.test(value) ? 'El teléfono debe tener 10 dígitos' : '',
-    confirm: (value) => {
+  // eslint-disable-next-line no-unused-vars
+  const validators: Record<string, (value: string) => string> = {
+    email: (value: string) => !/^\S+@\S+\.\S+$/.test(value) ? 'Correo electrónico inválido' : '',
+    password: (value: string) => value.length < 6 ? 'La contraseña debe tener al menos 6 caracteres' : '',
+    phone: (value: string) => !/^\d{10}$/.test(value) ? 'El teléfono debe tener 10 dígitos' : '',
+    confirm: (value: string) => {
       // Check if passwords match
       return value !== form.password ? 'Las contraseñas no coinciden' : ''
     },
@@ -37,7 +36,7 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
 
     // Validate each field
     Object.entries(form).forEach(([name, value]) => {
-      const trimmedValue = value.trim()
+      const trimmedValue = (value as string).trim()
 
       if (!trimmedValue) {
         newErrors[name] = 'Debes llenar este campo para continuar'
