@@ -44,14 +44,9 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
-  
-  deploy:
-    needs: [lint, build-image]
-    runs-on: ubuntu-22.04
-    steps:
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
         env:
-          SAMPLE_DIGEST: ${{ needs.build-image.outputs.digest }}
+          SAMPLE_DIGEST: ${{ steps.push.outputs.digest }}
         with:
           token: ${{ secrets.DIGITALOCEAN_API_KEY }}
