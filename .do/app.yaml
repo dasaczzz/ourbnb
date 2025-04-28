@@ -26,4 +26,4 @@ services:
 github:
   branch: main
   deploy_on_push: true
-  repo: ourbnb-frontend
+  repo: dasaczzz/ourbnb-frontend
