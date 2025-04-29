@@ -3,6 +3,9 @@ name: deploy
 on: 
   push:
     branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml' 
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,8 +23,10 @@ jobs:
           node-version: '22'
       - name: install dependencies
         run: npm ci
+        working-directory: ./frontend
       - name: lint
         run: npm run lint
+        working-directory: ./frontend
         
   build-image:
     runs-on: ubuntu-22.04
