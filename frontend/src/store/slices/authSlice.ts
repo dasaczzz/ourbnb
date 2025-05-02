@@ -20,14 +20,12 @@ export const authSlice = createSlice({
 
   reducers: {
     register: (state, {payload}) => {
-      state.status = states.AUTHENTICATED
       state.email = payload.email
       state.name = payload.name
       state.phone = payload.phone
       state.password = payload.password
       state.confirmPassowrd = payload.confirmPassword
       state.errorMessage = null
-      state.token = Math.floor(Math.random() * 100)
     },
 
     checkingCredentials: (state) => {
@@ -37,4 +35,4 @@ export const authSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { register } = authSlice.actions
+export const { checkingCredentials, register } = authSlice.actions

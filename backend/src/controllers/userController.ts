@@ -3,6 +3,7 @@ import * as usuariosService from '../service/userService'
 
 export const createUser = async (req: Request, res: Response) => {
   try {
+    console.log(req.body)
     const newUser = await usuariosService.createUser(req.body)
     res.status(201).json(newUser)
 

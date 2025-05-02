@@ -2,6 +2,9 @@ import { useForm } from '../../hooks/useForm'
 import { FaXmark, FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { Button } from '../generics/Button'
 import { Input } from '../generics/Input'
+import { startRegister } from '../../store/thunks/authThunk'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../../store/store'
 
 interface props {
   isOpen: boolean,
@@ -9,6 +12,8 @@ interface props {
 }
 
 export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
+
+  const dispatch = useDispatch<AppDispatch>()
 
   const {name, email, phone, password, confirm, form, showPassword, handleToggleShow, handleInputChange, hashPassword, handleReset, errors, validateForm} = useForm({
     name: '',
@@ -34,7 +39,7 @@ export const RegisterModal: React.FC<props> = ({isOpen, closeModal}) => {
       password: passwordToSave
     }
 
-    console.log(formToSubmit)
+    dispatch(startRegister(formToSubmit))
     closeModal()
     handleReset()
   }

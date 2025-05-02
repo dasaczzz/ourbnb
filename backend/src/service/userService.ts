@@ -1,10 +1,9 @@
-import { Prisma } from '@prisma/client'
 import prisma from '../lib/prisma'
 
-type CreateUserInput = Parameters<typeof prisma.user.create>[0];
+type CreateUserInput = Parameters<typeof prisma.user.create>[0]['data'];
 
 export const createUser = async (data: CreateUserInput) => {
-  return await prisma.user.create(data)
+  return await prisma.user.create({data})
 }
 
 export const getAllUsers = async () => {
