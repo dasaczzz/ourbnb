@@ -1,1 +1,6 @@
 node_modules
+.cache
+**/.cache
+Dockerfile
+.dockerignore
+.env
