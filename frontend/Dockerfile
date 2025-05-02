@@ -7,9 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 # copy source code
-COPY prisma ./prisma
-COPY tsconfig.json ./
-COPY src ./src
+COPY . .
 
 RUN npm run build
 
