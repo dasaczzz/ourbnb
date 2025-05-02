@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type PostLocation {
+  city     String
+  country  String
+  location String
+}
+
+model Booking {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  end_date     DateTime @db.Date
+  init_date    DateTime @db.Date
+  post         Post     @relation(fields: [post_id], references: [id])
+  post_id      String   @db.ObjectId
+  service_cost Int
+  total_cost   Int
+  users        String[]
+}
+
+model Message {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  issuingUser  User   @relation(name: "issuing", fields: [issuing_user], references: [id])
+  issuing_user String @db.ObjectId
+
+  receivingUser  User   @relation(name: "receiving", fields: [receiving_user], references: [id])
+  receiving_user String @db.ObjectId
+
+  text String
+}
+
+model Post {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  images      String[]
+  location    PostLocation
+  night_cost  String
+  reviews     String[]
+  title       String
+  user        User         @relation(fields: [user_id], references: [id])
+  user_id     String       @db.ObjectId
+  Booking     Booking[]
+}
+
+model Review {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment       String
+  date__review  DateTime @db.Date
+  qualification Int
+  user          User     @relation(fields: [user_id], references: [id])
+  user_id       String   @db.ObjectId
+}
+
+model User {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email       String    @unique
+  name        String
+  password    String
+  phone       String?
+  profilepick String?
+  Review      Review[]
+  issuing     Message[] @relation("issuing")
+  receiving   Message[] @relation("receiving")
+  Post        Post[]
+}
