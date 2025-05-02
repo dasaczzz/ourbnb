@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { LoginForm } from '../../components/auth/LoginForm'
-import { RegisterModal } from '../../components/auth/RegisterModal'
+import { Modal } from '../../components/generics/Modal'
+import { RegisterForm } from '../../components/auth/RegisterForm'
 
 export const Login = () => {
 
@@ -13,6 +14,7 @@ export const Login = () => {
   return (
     <div className="flex flex-col w-1/2 bg-secondary-200 h-screen justify-center items-center">
       <section className="w-1/2 flex flex-col gap-10">
+
         {/* logo and title  */}
         <div className="flex gap-4 justify-center items-center">
           <img src="ourbnb.svg" className='w-32 h-24' alt="logo empresarial" />
@@ -30,7 +32,14 @@ export const Login = () => {
           </div>
         </div>
       </section>
-      <RegisterModal isOpen={open} closeModal={handleCloseModal}/>
+
+      {/* deconstruct modal to allow form reset */}
+      {open && (
+        <Modal title='Crea una cuenta!' isOpen={open} closeModal={handleCloseModal}>
+          <RegisterForm />
+        </Modal>
+      )}
+
     </div>
   )
 }

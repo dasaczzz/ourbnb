@@ -1,5 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit'
 import { checkingCredentials } from '../slices/authSlice'
+import { toast } from 'sonner'
 
 export const startRegister = (form: Record<string, unknown>) => {
   return async(dispatch: Dispatch) => {
@@ -13,6 +14,10 @@ export const startRegister = (form: Record<string, unknown>) => {
       body: JSON.stringify(form),
       }
     )
-    return result.json()
+
+    if(result.ok) {
+      toast.success('Usuario registrado exitosamente')
+    }
+
   }
 }
