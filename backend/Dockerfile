@@ -15,4 +15,7 @@ RUN npx prisma generate
 
 RUN npm run build
 
+# use the port 80
+EXPOSE 4000
+
 CMD [ "npm", "run", "server" ]
