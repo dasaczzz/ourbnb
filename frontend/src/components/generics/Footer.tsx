@@ -1,4 +1,4 @@
-import { IconButton } from './IconButton'
+import { IconButton } from '../primitives/IconButton'
 import { FiGithub } from 'react-icons/fi'
 
 export const Footer = () => {

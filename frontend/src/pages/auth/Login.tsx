@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { LoginForm } from '../../components/auth/LoginForm'
-import { Modal } from '../../components/generics/Modal'
+import { Modal } from '../../components/primitives/Modal'
 import { RegisterForm } from '../../components/auth/RegisterForm'
 
 export const Login = () => {

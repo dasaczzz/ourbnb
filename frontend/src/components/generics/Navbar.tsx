@@ -1,4 +1,4 @@
-import { IconButton } from './IconButton'
+import { IconButton } from '../primitives/IconButton'
 import { FaSearch } from 'react-icons/fa'
 
 export const Navbar = () => {
