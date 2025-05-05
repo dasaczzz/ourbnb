@@ -18,9 +18,9 @@ export const Footer = () => {
             <div className='flex flex-col gap-4 items-start w-44'>
               <span className='text-lg font-bold'>Paginas</span>
               <ul className='flex flex-col gap-3 items-start justify-center'>
-                <span className='hover:underline'>Inicio</span>
-                <span className='hover:underline'>Tu casa en Ourbnb</span>
-                <span className='hover:underline'>Iniciar sesion</span>
+                <span className='cursor-pointer hover:underline'>Inicio</span>
+                <span className='cursor-pointer hover:underline'>Tu casa en Ourbnb</span>
+                <span className='cursor-pointer hover:underline'>Iniciar sesion</span>
               </ul>
             </div>
 
@@ -38,7 +38,7 @@ export const Footer = () => {
         <div className="flex justify-between items-center">
           <span className="font-light text-sm text-secondary-500">© 2025 Ourbnb Todos los derechos reservados</span>
             <a href="https://github.com/dasaczzz/ourbnb" target="_blank" rel="noopener noreferrer">
-              <IconButton icon={<FiGithub size={16} />} color="secondary" />
+              <IconButton icon={<FiGithub size={16} />} color="bg-secondary-500" hoverColor='bg-secondary-400'/>
             </a>
         </div>
       </div>
