@@ -1,7 +1,7 @@
 import { useForm } from '../../hooks/useForm'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
-import { Button } from '../generics/Button'
-import { Input } from '../generics/Input'
+import { Button } from '../primitives/Button'
+import { Input } from '../primitives/Input'
 
 export const LoginForm = () => {
 
@@ -24,7 +24,7 @@ export const LoginForm = () => {
         <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.login_password} onChange={handleInputChange} placeholder='Tu contraseña' name='login_password' value={login_password}/>
         <button type='button' className='' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
-      <Button text='Entrar' type='submit'/>
+      <Button intent='primary' type='submit'>Entrar</Button>
     </form>
   )
 }

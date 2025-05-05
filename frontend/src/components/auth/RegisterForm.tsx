@@ -1,7 +1,7 @@
 import { useForm } from '../../hooks/useForm'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
-import { Button } from '../generics/Button'
-import { Input } from '../generics/Input'
+import { Button } from '../primitives/Button'
+import { Input } from '../primitives/Input'
 import { startRegister } from '../../store/thunks/authThunk'
 import { useDispatch } from 'react-redux'
 import type { AppDispatch } from '../../store/store'
@@ -46,7 +46,7 @@ export const RegisterForm = () => {
         <button type='button' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
       <Input type='password' text='Confirma tu contraseña' error={errors.confirm} onChange={handleInputChange} placeholder='Tu contraseña otra vez' name='confirm' value={confirm}/>
-      <Button text='Registrarme' type='submit'/>
+      <Button intent='primary' type='submit'>Registrarme</Button>
     </form>
   )
 }
