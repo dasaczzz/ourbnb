@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use(usuariosRoutes)
 app.use(postRoutes)
-//app.use(authRoutes)
+app.use(authRoutes)
 
 const PORT = config.port || 4000
 app.listen(PORT, () => {
