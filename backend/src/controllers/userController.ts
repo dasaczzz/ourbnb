@@ -16,6 +16,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
+    console.log("before service")
     const users = await usuariosService.getAllUsers()
     res.json(users)
 
