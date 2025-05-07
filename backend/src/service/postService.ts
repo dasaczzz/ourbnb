@@ -1,6 +1,5 @@
-import { PrismaClient, Post } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Post } from "@prisma/client";
+import { ClientSingleton } from "../lib/prisma";
 
 interface PublicationData {
   publicacionId?: string;
@@ -15,6 +14,8 @@ interface PublicationData {
   precioNoche?: number;
   imagenes?: string[];
 }
+
+const prisma = ClientSingleton.getInstance()
 
 const postService = {
   createPost: async (data: PublicationData): Promise<Post> => {
