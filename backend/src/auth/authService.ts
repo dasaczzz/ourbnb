@@ -1,10 +1,14 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { ClientSingleton } from "../lib/prisma";
+import config from "../lib/config";
 
 const prisma = ClientSingleton.getInstance()
 
-const SECRET = process.env.JWT_SECRET || "secreto123";
+const SECRET = config.jwt_secret;
+if (!SECRET) {
+  throw new Error("JWT secret is undefined");
+}
 
 const authService = {
   login: async (email: string, password: string): Promise<string> => {

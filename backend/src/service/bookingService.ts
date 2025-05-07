@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { ClientSingleton } from '../lib/prisma'
 
-const prisma = new PrismaClient();
+const prisma = ClientSingleton.getInstance()
 
 interface ReservationData {
   users: string[]; // array of user IDs

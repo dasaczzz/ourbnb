@@ -1,4 +1,4 @@
-import { ClientSingleton} from '../lib/prisma'
+import { ClientSingleton } from '../lib/prisma'
 
 type CreateUserInput = Parameters<typeof prisma.user.create>[0]['data'];
 
