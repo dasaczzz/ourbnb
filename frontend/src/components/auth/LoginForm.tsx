@@ -2,9 +2,13 @@ import { useForm } from '../../hooks/useForm'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { Button } from '../primitives/Button'
 import { Input } from '../primitives/Input'
+import { AppDispatch } from '../../store/store'
+import { useDispatch } from 'react-redux'
+import { startLogin } from '../../store/thunks/authThunk'
 
 export const LoginForm = () => {
 
+  const dispatch = useDispatch<AppDispatch>()
   const {email, login_password, form, handleInputChange, handleReset, showPassword, handleToggleShow, errors, validateForm} = useForm({email: '', login_password: ''})
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -12,8 +16,7 @@ export const LoginForm = () => {
 
     if (!validateForm()) return
 
-    console.log(form)
-
+    dispatch(startLogin(form))
     handleReset()
   }
 

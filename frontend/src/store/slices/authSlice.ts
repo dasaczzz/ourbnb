@@ -28,6 +28,16 @@ export const authSlice = createSlice({
       state.errorMessage = null
     },
 
+    login: (state, {payload}) => {
+      state.email = payload.email
+      state.name = payload.name
+      state.phone = payload.phone
+      state.password = payload.password
+      state.confirmPassowrd = payload.confirmPassword
+      state.token = payload.token
+      state.errorMessage = null
+    },
+
     checkingCredentials: (state) => {
       state.status = states.CHECKING
     }
