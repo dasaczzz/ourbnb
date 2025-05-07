@@ -1,6 +1,8 @@
-import prisma from '../lib/prisma'
+import { ClientSingleton} from '../lib/prisma'
 
 type CreateUserInput = Parameters<typeof prisma.user.create>[0]['data'];
+
+const prisma = ClientSingleton.getInstance()
 
 export const createUser = async (data: CreateUserInput) => {
   return await prisma.user.create({data})

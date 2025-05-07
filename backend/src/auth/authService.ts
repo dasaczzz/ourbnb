@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import { ClientSingleton } from "../lib/prisma";
 
-const prisma = new PrismaClient();
+const prisma = ClientSingleton.getInstance()
+
 const SECRET = process.env.JWT_SECRET || "secreto123";
 
 const authService = {
