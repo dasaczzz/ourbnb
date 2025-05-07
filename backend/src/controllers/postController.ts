@@ -15,7 +15,7 @@ const postController = {
       res.status(500).json({ error: "Error creando publicacion", details: error.message });
     }
   },
-
+  
   // get all posts 
   getAllPosts: async (req: Request, res: Response): Promise<void> => {
     try {
