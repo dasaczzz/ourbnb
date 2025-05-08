@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import config from "../lib/config";
 
-const SECRET = process.env.JWT_SECRET || "secreto123";
+const SECRET = config.jwt_secret;
+if (!SECRET) {
+  throw new Error("JWT not found");
+}
 
 interface JwtPayload {
-  id: number;
-  email: string;
+  id: string;
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
@@ -14,14 +17,13 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
     res.status(401).json({ error: "Token requerido" });
     return;
   }
-
   const token = authHeader.split(" ")[1];
-
   try {
-    const decoded = jwt.verify(token, SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, SECRET) as unknown as JwtPayload;
+    
     (req as any).user = decoded; // puedes definir una interfaz extendida para Request si prefieres evitar el `any`
     next();
-  } catch (err) {
+  } catch (err) { 
     res.status(403).json({ error: "Token inválido" });
   }
 };
