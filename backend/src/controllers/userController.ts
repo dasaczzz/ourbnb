@@ -50,3 +50,14 @@ export const deleteUserById = async (req: Request, res: Response) => {
     }
   }
 }
+
+export const updateUserById = async (req: Request, res: Response) => {
+  try {
+    const updatedUser = await usuariosService.updateUserById(req.params.id, req.body)
+    res.json(updatedUser)
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: 'error updating user', details: error.message })
+    }
+  }
+}
