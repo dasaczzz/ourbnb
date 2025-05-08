@@ -3,7 +3,6 @@ import * as usuariosService from '../service/userService'
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    console.log(req.body)
     const newUser = await usuariosService.createUser(req.body)
     res.status(201).json(newUser)
 
@@ -16,7 +15,6 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    console.log("before service")
     const users = await usuariosService.getAllUsers()
     res.json(users)
 
@@ -46,7 +44,7 @@ export const deleteUserById = async (req: Request, res: Response) => {
 
   } catch(error) {
     if (error instanceof Error) {
-      res.status(500).json({ error: 'error creating user', details: error.message })
+      res.status(500).json({ error: 'error deleting user', details: error.message })
     }
   }
 }

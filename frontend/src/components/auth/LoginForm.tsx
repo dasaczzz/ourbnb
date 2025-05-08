@@ -16,7 +16,8 @@ export const LoginForm = () => {
 
     if (!validateForm()) return
 
-    dispatch(startLogin(form))
+    const result = await dispatch(startLogin(form))
+    console.log(result)
     handleReset()
   }
 
