@@ -1,42 +1,18 @@
 import { Post } from "@prisma/client";
 import { ClientSingleton } from "../lib/prisma";
 
-interface PublicationData {
-  publicacionId?: string;
-  usuarioId: string;
-  titulo: string;
-  descripcion: string;
-  ubicacion?: {
-    city: string;
-    country: string;
-    location: string;
-  };
-  precioNoche?: number;
-  imagenes?: string[];
-}
+const prisma = ClientSingleton.getInstance();
 
-const prisma = ClientSingleton.getInstance()
+type CreatePostInput = Parameters<typeof prisma.post.create>[0]['data'];
 
 const postService = {
-  createPost: async (data: PublicationData): Promise<Post> => {
-    if (!data.usuarioId) {
-      throw new Error("usuarioId is required");
+  createPost: async (data: CreatePostInput): Promise<Post> => {
+    if (!data.user_id) {
+      throw new Error("el user_id es requerido");
     }
-    const createData: any = {
-      title: data.titulo,
-      description: data.descripcion,
-      night_cost: data.precioNoche ? data.precioNoche.toString() : undefined,
-      images: data.imagenes || [],
-      user_id: data.usuarioId,
-    };
-    if (data.ubicacion) {
-      createData.location = {
-        set: data.ubicacion,
-      };
-    }
-    console.log("Creando publicacion con los datos = ", createData);
+    console.log("Creando publicacion con los datos = ", data);
     return await prisma.post.create({
-      data: createData,
+      data: data,
     });
   },
 
@@ -66,19 +42,19 @@ const postService = {
     }
   },
 
-  updatePostById: async (id: string, data: Partial<PublicationData>): Promise<Post> => {
+  updatePostById: async (id: string, data: Partial<CreatePostInput>): Promise<Post> => {
     try {
       const updateData: any = {};
-      if (data.titulo !== undefined) updateData.title = data.titulo;
-      if (data.descripcion !== undefined) updateData.description = data.descripcion;
-      if (data.ubicacion !== undefined) {
+      if (data.title !== undefined) updateData.title = data.title;
+      if (data.description !== undefined) updateData.description = data.description;
+      if (data.location !== undefined) {
         updateData.location = {
-          set: data.ubicacion,
+          set: data.location,
         };
       }
-      if (data.precioNoche !== undefined) updateData.night_cost = data.precioNoche.toString();
-      if (data.imagenes !== undefined) updateData.images = data.imagenes;
-      if (data.usuarioId !== undefined) updateData.user_id = data.usuarioId;
+      if (data.night_cost !== undefined) updateData.night_cost = data.night_cost;
+      if (data.images !== undefined) updateData.images = data.images;
+      if (data.user_id !== undefined) updateData.user_id = data.user_id;
 
       const updatedPost = await prisma.post.update({
         where: { id: id },
