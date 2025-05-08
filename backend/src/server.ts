@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes'
 import postRoutes from './routes/postRoutes'
 import bookingRoutes from './routes/bookingRoutes'
 import cloudflareRoutes from './routes/cloudflareRoutes'
+import reviewRoutes from './routes/reviewRoutes'
 import config from './lib/config'
 import dotenv from 'dotenv';
 
@@ -19,7 +20,8 @@ app.use(usuariosRoutes)
 app.use(postRoutes)
 app.use(bookingRoutes)
 app.use(authRoutes)
-app.use(cloudflareRoutes);
+app.use(cloudflareRoutes)
+app.use(reviewRoutes)
 
 
 const PORT = config.port || 4000
