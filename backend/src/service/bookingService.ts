@@ -1,31 +1,46 @@
-import { PrismaClient } from "@prisma/client";
+import { Booking } from "@prisma/client";
+import { ClientSingleton } from "../lib/prisma";
 
-const prisma = new PrismaClient();
+const prisma = ClientSingleton.getInstance();
 
-interface ReservationData {
-  users: string[]; // array of user IDs
-  post_id: string;
-  init_date: Date | string;
-  end_date: Date | string;
-  service_cost: number;
-  total_cost: number;
-}
+type CreateBookingInput = Parameters<typeof prisma.booking.create>[0]['data'];
 
 const bookingService = {
-  createBooking: async (data: ReservationData) => {
-    const createData = {
-      users: data.users,
-      post_id: data.post_id,
-      init_date: data.init_date,
-      end_date: data.end_date,
-      service_cost: data.service_cost,
-      total_cost: data.total_cost,
-    };
-    console.log("Creando reserva con los datos = ", createData);
+  createBooking: async (data: CreateBookingInput): Promise<Booking> => {
+    if (!data.post_id) {
+      throw new Error("el post_id es requerido");
+    }
+    console.log("Creando reserva con los datos = ", data);
     return await prisma.booking.create({
-      data: createData,
+      data: data,
     });
   },
+
+  getAllBookings: async(): Promise<Booking []> => {
+    return await prisma.booking.findMany();
+  },
+
+  getBookingById: async(id: string): Promise<Booking | null> => {
+    return await prisma.booking.findUnique({
+      where: {
+        id: id,
+      }
+    });
+  },
+
+  deleteBookingById: async(id: string): Promise<Booking> => {
+    try {
+      const deleted = await prisma.booking.delete({
+        where: {
+          id: id,
+        },
+      });
+      return deleted;
+    } catch (error) {
+      console.error("Error en deleteBookingById:", error);
+      throw error;
+    }
+  }
 };
 
 export default bookingService;

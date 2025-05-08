@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import postService from "../service/postService";
-
-const prisma = new PrismaClient();
 
 const postController = {
   // crear publication

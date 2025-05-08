@@ -41,7 +41,7 @@ model Post {
   description String
   images      String[]
   location    PostLocation
-  night_cost  String
+  night_cost  Int
   reviews     String[]
   title       String
   user        User         @relation(fields: [user_id], references: [id])
