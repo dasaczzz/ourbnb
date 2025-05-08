@@ -3,6 +3,15 @@ import bcrypt from "bcryptjs";
 import { ClientSingleton } from "../lib/prisma";
 import config from "../lib/config";
 
+export interface UserLogged {
+  id: string
+  email: string
+  name: string
+  phone: string | null
+  profilepick: string | null
+  token: string
+}
+
 const prisma = ClientSingleton.getInstance()
 
 const SECRET = config.jwt_secret;
@@ -11,8 +20,9 @@ if (!SECRET) {
 }
 
 const authService = {
-  login: async (email: string, password: string): Promise<string> => {
+  login: async (email: string, password: string): Promise<UserLogged> => {
     const user = await prisma.user.findUnique({ where: { email } });
+    console.log(user)
 
     // Verifica si el usuario existe
     if (!user) throw new Error("Usuario no encontrado");
@@ -28,7 +38,14 @@ const authService = {
         SECRET,
         { expiresIn: "2h" }
       );
-      return token;
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        profilepick: user.profilepick,
+        token: token
+      };
     } else {
       throw new Error("Usuario sin ID o email válido");
     }

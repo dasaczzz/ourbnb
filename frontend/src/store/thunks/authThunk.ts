@@ -17,7 +17,6 @@ export const startRegister = (form: Record<string, unknown>) => {
     if(result.ok) {
       toast.success('Usuario registrado exitosamente')
     }
-
   }
 }
 
@@ -29,7 +28,6 @@ export const startLogin = (form: Record<string, unknown>) => {
       email: form.email,
       password: form.login_password
     }
-    console.log(formToSubmit)
     // call backend
     const result = await fetch('http://localhost:4000/login', {
       method: 'POST',
@@ -39,6 +37,6 @@ export const startLogin = (form: Record<string, unknown>) => {
       body: JSON.stringify(formToSubmit)
     })
     const data = await result.json()
-    console.log(data)
+    return data
   }
 }
