@@ -12,20 +12,21 @@ interface JwtPayload {
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    res.status(401).json({ error: "Token requerido" });
-    return;
-  }
-  const token = authHeader.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, SECRET) as unknown as JwtPayload;
-    
-    (req as any).user = decoded; // puedes definir una interfaz extendida para Request si prefieres evitar el `any`
-    next();
-  } catch (err) { 
-    res.status(403).json({ error: "Token inválido" });
-  }
-};
+  const token = req.cookies?.token
 
-export default authMiddleware;
+  if (!token) {
+    res.status(401).json({ error: "Token requerido" })
+    return
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET) as JwtPayload
+    // add the id to the request
+    ;(req as any).id = String(decoded.id)
+    next()
+  } catch (err) {
+    res.status(403).json({ error: "Token inválido" })
+  }
+}
+
+export default authMiddleware
