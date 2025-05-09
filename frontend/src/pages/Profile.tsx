@@ -3,7 +3,7 @@ import { UserForm } from '../components/generics/UserForm'
 import { Modal } from '../components/primitives/Modal'
 import { Button } from '../components/primitives/Button'
 
-export const UserInfo = () => {
+export const Profile = () => {
 
   const [open, setOpen] = useState(false)
 

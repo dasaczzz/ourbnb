@@ -2,47 +2,33 @@ import { createSlice } from '@reduxjs/toolkit'
 
 enum states {
   // eslint-disable-next-line no-unused-vars
-  AUTHENTICATED, NOT_AUTHENTICATED, CHECKING
+  AUTHENTICATED = 'authenticated', NOT_AUTHENTICATED = 'not authenticated', CHECKING = 'checking'
 }
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     status: states.NOT_AUTHENTICATED,
-    email: null,
-    name: null,
-    phone: null,
-    password: null,
-    confirmPassowrd: null,
-    token: 0,
     errorMessage: null
   },
 
   reducers: {
-    register: (state, {payload}) => {
-      state.email = payload.email
-      state.name = payload.name
-      state.phone = payload.phone
-      state.password = payload.password
-      state.confirmPassowrd = payload.confirmPassword
+    login: (state) => {
+      state.status = states.AUTHENTICATED
       state.errorMessage = null
     },
 
-    login: (state, {payload}) => {
-      state.email = payload.email
-      state.name = payload.name
-      state.phone = payload.phone
-      state.password = payload.password
-      state.confirmPassowrd = payload.confirmPassword
-      state.token = payload.token
-      state.errorMessage = null
+    logout: (state, {payload}) => {
+      state.status = states.NOT_AUTHENTICATED
+      state.errorMessage = payload.errorMessage ?? null
     },
 
     checkingCredentials: (state) => {
       state.status = states.CHECKING
+      state.errorMessage = null
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { checkingCredentials, register } = authSlice.actions
+export const { checkingCredentials, login, logout } = authSlice.actions
