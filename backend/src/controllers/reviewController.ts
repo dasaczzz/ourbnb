@@ -26,7 +26,7 @@ const reviewController = {
     // get reviews por id de user
     getReviewsByUserId: async (req: Request, res: Response): Promise<void> => {
         try {
-            const userReviews = await reviewService.getReviewsByUsertId(req.params.id);
+            const userReviews = await reviewService.getReviewsByUserId(req.params.id);
             res.json(userReviews);
         } catch(error: any) {
             res.status(500).json({message: error.message});
