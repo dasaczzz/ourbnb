@@ -5,6 +5,6 @@ const router = Router()
 
 router.post('/reviews', reviewController.createReview)
 router.get('/reviewsByPost/:post_id', reviewController.getReviewsByPostId)
-router.delete('/reviews:id', reviewController.deleteReviewById)
+router.delete('/reviews/:id', reviewController.deleteReviewById)
 
 export default router
