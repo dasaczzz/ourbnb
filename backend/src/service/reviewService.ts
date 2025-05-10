@@ -26,6 +26,14 @@ const reviewService = {
         });
     },
 
+    getReviewsByUserId: async (user_id: string): Promise<Review[]> => {
+        return await prisma.review.findMany({
+            where: {
+                user_id: user_id
+            },
+        });
+    },
+
     updateReviewById: async (id: string, data: Partial<CreateReviewInput>): Promise<Review> => {
         try {
             const updateData: Partial<CreateReviewInput> = {};
