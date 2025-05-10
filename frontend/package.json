@@ -12,7 +12,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/vite": "^4.1.4",
-    "bcryptjs": "^3.0.2",
     "cva": "npm:class-variance-authority@^0.7.1",
     "dotenv": "^16.5.0",
     "js-cookie": "^3.0.5",

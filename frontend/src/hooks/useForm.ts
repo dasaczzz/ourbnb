@@ -1,7 +1,4 @@
 import { useState } from 'react'
-import bcrypt from 'bcryptjs'
-
-// Define validator types for better type safety
 
 export function useForm<T extends Record<string, unknown>> (initialForm: T) {
 
@@ -56,15 +53,6 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
     return Object.keys(newErrors).length === 0
   }
 
-  // handle hash for passwords
-  const hashPassword = async (plainPassword: string) => {
-
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(plainPassword, salt)
-
-    return hashedPassword
-  }
-
   // allow to see the password field
   const handleToggleShow = () => {
     setShowPassword(!showPassword)
@@ -83,7 +71,6 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
     errors,
     showPassword,
     handleInputChange,
-    hashPassword,
     handleToggleShow,
     handleReset,
     validateForm

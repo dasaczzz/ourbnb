@@ -5,12 +5,19 @@ import { Input } from '../primitives/Input'
 import { startRegister } from '../../store/thunks/authThunk'
 import { useDispatch } from 'react-redux'
 import type { AppDispatch } from '../../store/store'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-export const RegisterForm = () => {
+interface props {
+  closeModal: () => void
+}
 
+export const RegisterForm: React.FC<props> = ({closeModal}) => {
+
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  const {name, email, phone, password, confirm, form, showPassword, handleToggleShow, handleInputChange, hashPassword, handleReset, errors, validateForm} = useForm({
+  const {name, email, phone, password, confirm, form, showPassword, handleToggleShow, handleInputChange, handleReset, errors, validateForm} = useForm({
     name: '',
     email: '',
     phone: '',
@@ -25,15 +32,10 @@ export const RegisterForm = () => {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const {confirm, ...inputs} = form
 
-    // encrypt password and save in the form
-    const passwordToSave = await hashPassword(password)
-    const formToSubmit = {
-      ...inputs,
-      password: passwordToSave
-    }
-
-    dispatch(startRegister(formToSubmit))
+    dispatch(startRegister({...inputs}))
+    closeModal()
     handleReset()
+    navigate('/')
   }
 
   return (
