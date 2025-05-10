@@ -26,6 +26,26 @@ const reviewService = {
         });
     },
 
+    updateReviewById: async (id: string, data: Partial<CreateReviewInput>): Promise<Review> => {
+        try {
+            const updateData: Partial<CreateReviewInput> = {};
+            if (data.comment !== undefined) updateData.comment = data.comment;
+            if (data.date_review !== undefined) updateData.date_review = data.date_review;
+            if (data.qualification !== undefined) updateData.qualification = data.qualification;
+            if (data.user_id !== undefined) updateData.user_id = data.user_id;
+            if (data.post_id !== undefined) updateData.post_id = data.post_id;
+
+            const updatedReview = await prisma.review.update({
+                where: { id },
+                data: updateData,
+            });
+            return updatedReview;
+        } catch (error: any) {
+            console.error("Error en updateReviewById:", error);
+            throw error;
+        }
+    },
+
     deleteReviewById: async (id: string): Promise<Review> => {
         try {
             const deleted = await prisma.review.delete({
@@ -38,7 +58,7 @@ const reviewService = {
             console.error("Error en deleteReviewById:", error);
             throw error;
         }
-    }
+    },
 }
 
 export default reviewService;
