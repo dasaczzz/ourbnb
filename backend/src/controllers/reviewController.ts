@@ -23,6 +23,7 @@ const reviewController = {
         }
     },
 
+    // update review por id
     updateReviewById: async (req: Request, res: Response): Promise<void> => {
         try {
             const updatedReview = await reviewService.updateReviewById(req.params.id, req.body);
@@ -32,6 +33,7 @@ const reviewController = {
         }
     },
 
+    // delete review por id
     deleteReviewById: async (req: Request, res: Response): Promise<void> => {
         try {
             const deletedReview = await reviewService.deleteReviewById(req.params.id);
