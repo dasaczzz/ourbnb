@@ -43,7 +43,7 @@ model Post {
   images      String[]
   location    PostLocation
   night_cost  Int
-  reviews     Review[] @relation("PostReviews")
+  reviews     Review[]     @relation("PostReviews")
   user        User         @relation(fields: [user_id], references: [id])
   user_id     String       @db.ObjectId
   Booking     Booking[]
@@ -56,19 +56,19 @@ model Review {
   qualification Int
   user          User     @relation(fields: [user_id], references: [id])
   user_id       String   @db.ObjectId
-  post Post     @relation("PostReviews", fields: [post_id], references: [id])
+  post          Post     @relation("PostReviews", fields: [post_id], references: [id])
   post_id       String   @db.ObjectId
 }
 
 model User {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  email       String    @unique
-  password    String
-  phone       String?
-  profilepick String    @default("https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/default.JPG")
-  Review      Review[]
-  issuing     Message[] @relation("issuing")
-  receiving   Message[] @relation("receiving")
-  Post        Post[]
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String    @unique
+  password   String
+  phone      String?
+  profilepic String    @default("https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/default.JPG")
+  Review     Review[]
+  issuing    Message[] @relation("issuing")
+  receiving  Message[] @relation("receiving")
+  Post       Post[]
 }
