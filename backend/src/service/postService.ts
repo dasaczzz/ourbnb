@@ -28,6 +28,14 @@ const postService = {
     });
   },
 
+  getPostsByUserId: async (user_id: string): Promise<Post[]> => {
+    return await prisma.post.findMany({
+      where: {
+        user_id: user_id,
+      },
+    });
+  },
+
   deletePostById: async (id: string): Promise<Post> => {
     try {
       const deleted = await prisma.post.delete({
