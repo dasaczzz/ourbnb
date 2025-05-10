@@ -1,11 +1,13 @@
 import { Request, Response } from 'express'
 import * as usuariosService from '../service/userService'
+import { hashPassword } from '../lib/utils'
 
 export const createUser = async (req: Request, res: Response) => {
+  const hashedPassword = hashPassword(req.body.password)
+  req.body.password = hashedPassword
   try {
     const newUser = await usuariosService.createUser(req.body)
     res.status(201).json(newUser)
-
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: 'error creating user', details: error.message })
