@@ -38,12 +38,12 @@ model Message {
 
 model Post {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
   description String
   images      String[]
   location    PostLocation
   night_cost  Int
   reviews     Review[] @relation("PostReviews")
-  title       String
   user        User         @relation(fields: [user_id], references: [id])
   user_id     String       @db.ObjectId
   Booking     Booking[]
