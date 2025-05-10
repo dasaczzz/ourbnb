@@ -24,6 +24,20 @@ const reviewService = {
                 post_id: post_id
             },
         });
+    },
+
+    deleteReviewById: async (id: string): Promise<Review> => {
+        try {
+            const deleted = await prisma.review.delete({
+                where: {
+                 id: id,
+                },
+            });
+            return deleted;
+        } catch (error: any) {
+            console.error("Error en deleteReviewById:", error);
+            throw error;
+        }
     }
 }
 
