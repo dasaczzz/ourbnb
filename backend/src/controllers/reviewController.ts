@@ -13,15 +13,24 @@ const reviewController = {
         }
     },
 
-// get reviews por id de post
-getReviewsByPostId: async (req: Request, res: Response): Promise<void> => {
-    try {
-        const postReviews = await reviewService.getReviewsByPostId(req.params.id);
-        res.json(postReviews);
-    } catch(error: any) {
-        res.status(500).json({message: error.message});
+    // get reviews por id de post
+    getReviewsByPostId: async (req: Request, res: Response): Promise<void> => {
+        try {
+            const postReviews = await reviewService.getReviewsByPostId(req.params.id);
+            res.json(postReviews);
+        } catch(error: any) {
+            res.status(500).json({message: error.message});
+        }
+    },
+
+    deleteReviewById: async (req: Request, res: Response): Promise<void> => {
+        try {
+            const deletedReview = await reviewService.deleteReviewById(req.params.id);
+            res.json(deletedReview);
+        } catch(error: any) {
+            res.status(500).json({message: error.message});
+        }
     }
-}
 }
 
 export default reviewController;
