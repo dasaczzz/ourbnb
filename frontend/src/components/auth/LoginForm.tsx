@@ -5,10 +5,12 @@ import { Input } from '../primitives/Input'
 import { AppDispatch } from '../../store/store'
 import { useDispatch } from 'react-redux'
 import { startLogin } from '../../store/thunks/authThunk'
+import { useNavigate } from 'react-router-dom'
 
 export const LoginForm = () => {
 
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
   const {email, login_password, form, handleInputChange, handleReset, showPassword, handleToggleShow, errors, validateForm} = useForm({email: '', login_password: ''})
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -16,8 +18,8 @@ export const LoginForm = () => {
 
     if (!validateForm()) return
 
-    const result = await dispatch(startLogin(form))
-    console.log(result)
+    await dispatch(startLogin(form))
+    navigate('/')
     handleReset()
   }
 
