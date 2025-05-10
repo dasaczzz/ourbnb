@@ -18,8 +18,8 @@ export const LoginForm = () => {
 
     if (!validateForm()) return
 
-    await dispatch(startLogin(form))
-    navigate('/')
+    const result = await dispatch(startLogin(form))
+    if (result) navigate('/')
     handleReset()
   }
 

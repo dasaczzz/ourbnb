@@ -33,6 +33,10 @@ export const fetchLogin = async (credentials: { email: string; password: string 
     body: JSON.stringify(credentials)
   })
 
+  if (response.status === 401) {
+    throw new Error('El usuario o la contraseña son incorrectas. Intentalo de nuevo')
+  }
+
   if (!response.ok) {
     const errorData = await response.json()
     throw new Error(errorData?.msg || 'Error de autenticación')

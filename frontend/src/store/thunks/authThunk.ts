@@ -35,8 +35,13 @@ export const startLogin = (form: Record<string, unknown>) => {
 
       const userData = await fetchUserInfo()
       dispatch(setUser(userData))
+      return true
     } catch (error) {
-      if(error instanceof Error) dispatch(logout({errorMessage: error.message}))
+      if(error instanceof Error) {
+        dispatch(logout({errorMessage: error.message}))
+        toast.error(error.message)
+        return false
+      }
     }
   }
 }
