@@ -35,7 +35,7 @@ const postController = {
   // get posts by user id
   getPostsByUserId: async (req: Request, res: Response): Promise<void> => {
     try {
-      const userPosts = await postService.getPostsByUserId(req.params.id);
+      const userPosts = await postService.getPostsByUserId(req.params.user_id);
       res.json(userPosts);
     } catch(error: any) {
       res.status(500).json({ error: "Error obteniendo las publicaciones del usuario", details: error.message });
