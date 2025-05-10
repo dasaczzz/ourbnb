@@ -36,7 +36,7 @@ export const Login = () => {
       {/* deconstruct modal to allow form reset */}
       {open && (
         <Modal title='Crea una cuenta!' isOpen={open} closeModal={handleCloseModal}>
-          <RegisterForm />
+          <RegisterForm closeModal={handleCloseModal}/>
         </Modal>
       )}
 
