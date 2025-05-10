@@ -23,6 +23,15 @@ const reviewController = {
         }
     },
 
+    updateReviewById: async (req: Request, res: Response): Promise<void> => {
+        try {
+            const updatedReview = await reviewService.updateReviewById(req.params.id, req.body);
+            res.json(updatedReview);
+        } catch(error:any) {
+            res.status(500).json({message: error.message});
+        }
+    },
+
     deleteReviewById: async (req: Request, res: Response): Promise<void> => {
         try {
             const deletedReview = await reviewService.deleteReviewById(req.params.id);
