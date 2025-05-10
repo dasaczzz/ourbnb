@@ -12,34 +12,51 @@ export const Login = () => {
   const handleCloseModal = () => { setOpen(false) }
 
   return (
-    <div className="flex flex-col w-1/2 bg-secondary-200 h-screen justify-center items-center">
-      <section className="w-1/2 flex flex-col gap-10">
+    <div className="flex h-screen">
 
-        {/* logo and title  */}
-        <div className="flex gap-4 justify-center items-center">
-          <img src="ourbnb.svg" className='w-32 h-24' alt="logo empresarial" />
-          <h1 className="font-bold text-primary-400 text-6xl">Ourbnb</h1>
-        </div>
+      {/* image */}
+      <div className="w-1/2 h-full">
+        <img
+          src="https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/0fc662bf-0fad-4f8b-9915-a805aef6d02b.jpeg"
+          alt="Fondo login"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-        <LoginForm />
+      {/* Login lado derecho */}
+      <div className="w-1/2 bg-secondary-200 flex flex-col justify-center items-center">
+        <section className="w-3/4 flex flex-col gap-10">
 
-        {/* Create account */}
-        <div className='flex flex-col gap-3'>
-          <hr/>
-          <div className="flex justify-center gap-2 text-lg">
-            <span>¿No tienes una cuenta?</span>
-            <button onClick={handleOpenModal} className="hover:underline underline-offset-4 hover:text-primary-300" >crear una cuenta</button>
+          {/* logo y títle */}
+          <div className="flex gap-4 justify-center items-center">
+            <img src="ourbnb.svg" className="w-32 h-24" alt="logo empresarial" />
+            <h1 className="font-bold text-primary-400 text-6xl">Ourbnb</h1>
           </div>
-        </div>
-      </section>
 
-      {/* deconstruct modal to allow form reset */}
-      {open && (
-        <Modal title='Crea una cuenta!' isOpen={open} closeModal={handleCloseModal}>
-          <RegisterForm closeModal={handleCloseModal}/>
-        </Modal>
-      )}
+          <LoginForm />
 
+          {/* create account */}
+          <div className="flex flex-col gap-3">
+            <hr />
+            <div className="flex justify-center gap-2 text-lg">
+              <span>¿No tienes una cuenta?</span>
+              <button
+                onClick={handleOpenModal}
+                className="hover:underline underline-offset-4 hover:text-primary-300"
+              >
+                Crear una cuenta
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* register modal */}
+        {open && (
+          <Modal title="¡Crea una cuenta!" isOpen={open} closeModal={handleCloseModal}>
+            <RegisterForm closeModal={handleCloseModal} />
+          </Modal>
+        )}
+      </div>
     </div>
   )
 }
