@@ -23,6 +23,16 @@ const reviewController = {
         }
     },
 
+    // get reviews por id de user
+    getReviewsByUserId: async (req: Request, res: Response): Promise<void> => {
+        try {
+            const userReviews = await reviewService.getReviewsByUsertId(req.params.id);
+            res.json(userReviews);
+        } catch(error: any) {
+            res.status(500).json({message: error.message});
+        }
+    },
+
     // update review por id
     updateReviewById: async (req: Request, res: Response): Promise<void> => {
         try {
