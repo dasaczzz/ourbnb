@@ -12,7 +12,8 @@ export const Profile = () => {
   const handleCloseModal = () => { setOpen(false) }
 
   return (
-    <section className='flex items-center justify-center h-full'>
+    <section className='flex items-center justify-center h-full py-4 flex-col gap-6'>
+      <h2 className='font-bold text-3xl'>Tu perfil</h2>
       <UserForm handleOpenModal={handleOpenModal} />
 
       <Modal title='Se eliminará tu cuenta' isOpen={open} closeModal={handleCloseModal}>
