@@ -5,7 +5,6 @@ import { hashPassword } from '../lib/utils'
 export const createUser = async (req: Request, res: Response) => {
   const hashedPassword = await hashPassword(req.body.password)
   req.body.password = hashedPassword
-  console.log(req.body.password)
   try {
     const newUser = await usuariosService.createUser(req.body)
     res.status(201).json(newUser)
