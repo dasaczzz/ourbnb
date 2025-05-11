@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton } from '../primitives/IconButton'
-import { FaSearch } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logout } from '../../store/slices/authSlice'
 import { clearUser } from '../../store/slices/userSlice'
 import { fetchLogout } from '../../lib/api'
 import { toast } from 'sonner'
+import { SearchBar } from '../primitives/SearchBar'
 
 export const Navbar = () => {
 
   const {profilepic} = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+   const location = useLocation()
 
   const handleLogout = async() => {
     dispatch(logout({}))
@@ -28,10 +28,8 @@ export const Navbar = () => {
         <h1 className="font-bold text-primary-400 text-3xl">Ourbnb</h1>
       </div>
 
-      <div className="flex gap-6 items-center p-4 bg-secondary-200 rounded-full my-2">
-        <input type="text" placeholder="Destino" className="shadow-sm bg-white rounded-full px-4 py-2 text-secondary-400  focus:outline-1 focus:outline-secondary-500" />
-        <IconButton icon={<FaSearch size={16}/>} color='bg-primary-500' hoverColor='bg-primary-400'/>
-      </div>
+      {/* Show the search bar only in the index page */}
+      {location.pathname === '/' && <SearchBar />}
 
       <div className='flex items-center gap-2'>
         <span className='text-lg'>Tu espacio en Ourbnb</span>
