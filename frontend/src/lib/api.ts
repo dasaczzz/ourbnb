@@ -45,6 +45,18 @@ export const fetchLogin = async (credentials: { email: string; password: string 
   return true
 }
 
+export const fetchLogout = async () => {
+  const response = await fetch('http://localhost:4000/logout', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData?.msg || 'No se pudo cerrar la sesion')
+  }
+}
 
 export const fetchUserInfo = async (): Promise<UserResponse> => {
   const response = await fetch('http://localhost:4000/user', {

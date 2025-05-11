@@ -1,7 +1,26 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { IconButton } from '../primitives/IconButton'
 import { FaSearch } from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../../store/slices/authSlice'
+import { clearUser } from '../../store/slices/userSlice'
+import { fetchLogout } from '../../lib/api'
+import { toast } from 'sonner'
 
 export const Navbar = () => {
+
+  const {profilepic} = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = async() => {
+    dispatch(logout({}))
+    dispatch(clearUser())
+    await fetchLogout()
+    toast.success('Se ha cerrado la sesion con exito')
+    navigate('/login')
+  }
+
   return (
     <div className="container flex justify-between h-24">
       <div className="flex items-center gap-2.5">
@@ -18,6 +37,15 @@ export const Navbar = () => {
         <span className='text-lg'>Tu espacio en Ourbnb</span>
         {/* division line */}
         <div className="border-l-2 h-9 border-secondary-400"></div>
+
+        {/* Image and user menu */}
+        <div className="relative group inline-block">
+          <img src={profilepic} alt="Imagen de usuario" className='rounded-full object-cover object-center size-10 aspect-square '/>
+          <div className="absolute opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-36">
+            <Link to='/profile' className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
+            <span onClick={handleLogout} className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
+          </div>
+        </div>
       </div>
     </div>
   )
