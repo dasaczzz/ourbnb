@@ -16,11 +16,11 @@ export const Footer = () => {
           <div className='flex justify-between items-start'>
 
             <div className='flex flex-col gap-4 items-start w-44'>
-              <span className='text-lg font-bold'>Paginas</span>
+              <span className='text-lg font-bold'>Páginas</span>
               <ul className='flex flex-col gap-3 items-start justify-center'>
                 <span className='cursor-pointer hover:underline'>Inicio</span>
                 <span className='cursor-pointer hover:underline'>Tu casa en Ourbnb</span>
-                <span className='cursor-pointer hover:underline'>Iniciar sesion</span>
+                <span className='cursor-pointer hover:underline'>Iniciar sesión</span>
               </ul>
             </div>
 
