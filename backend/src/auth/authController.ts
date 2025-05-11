@@ -10,13 +10,24 @@ const authController = {
         httpOnly: true,
         sameSite: 'lax',
         secure: false,
-        maxAge: 1000 * 60 * 60 * 2 // 2 hours to expire the cookie
+        maxAge: 1000 * 60 * 60 * 2, // 2 hours to expire the cookie
+        path: '/'
       })
       res.status(200).json('user logged')
     } catch (error: any) {
       res.status(401).json({ error: error.message });
     }
   },
+
+  logout: async (req: Request, res: Response) => {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+    })
+    res.status(200).json('logout exitoso')
+  }
 };
 
 export default authController;
