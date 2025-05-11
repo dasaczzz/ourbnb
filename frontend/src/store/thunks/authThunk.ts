@@ -17,7 +17,7 @@ export const startRegister = (form: Record<string, unknown>) => {
 
       toast.success('Usuario registrado exitosamente')
     } catch (error) {
-      if (error instanceof Error) toast.error('No se pudo registrar el usuario. Intentalo de nuevo')
+      if (error instanceof Error) toast.error(error.message)
     }
   }
 }
