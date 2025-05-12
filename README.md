@@ -26,3 +26,4 @@ Para la propuesta de diseño se desarrollaron mock ups de alta fidelidad en la h
 Se uso MongoDB debido a su flexibilidad y buen manejo con el lenguaje typescript
 
 ### Modelo de la base de datos
+![Modelo de la base de datos](./assets/bd_model.png)
