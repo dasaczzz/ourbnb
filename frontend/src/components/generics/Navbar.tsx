@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../../store/store'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logout } from '../../store/slices/authSlice'
 import { clearUser } from '../../store/slices/userSlice'
@@ -8,12 +9,14 @@ import { SearchBar } from '../primitives/SearchBar'
 
 export const Navbar = () => {
 
-  const {profilepic} = useSelector(state => state.user)
+  const { profilepic } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-   const location = useLocation()
+  const location = useLocation()
 
-  const handleLogout = async() => {
+  const defaultProfilePic = "https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/default.JPG"
+
+  const handleLogout = async () => {
     dispatch(logout({}))
     dispatch(clearUser())
     await fetchLogout()
@@ -39,13 +42,13 @@ export const Navbar = () => {
         <div className="border-l-2 h-9 border-secondary-400"></div>
 
         {/* Image and user menu */}
-        <div className="relative group inline-block">
-          <img src={profilepic} alt="Imagen de usuario" className='rounded-full object-cover object-center size-10 aspect-square '/>
-          <div className="absolute opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-36">
-            <Link to='/profile' className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
-            <span onClick={handleLogout} className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
+          <div className="relative group inline-block">
+            <img src={profilepic && profilepic.trim() !== '' ? profilepic : defaultProfilePic} alt="Imagen de usuario" className='rounded-full object-cover object-center size-10 aspect-square'/>
+            <div className="absolute opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-36">
+              <Link to='/profile' className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
+              <span onClick={handleLogout} className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
+            </div>
           </div>
-        </div>
       </div>
     </div>
   )
