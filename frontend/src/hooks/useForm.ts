@@ -35,8 +35,8 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
     Object.entries(form).forEach(([name, value]) => {
       const trimmedValue = (value as string).trim()
 
+      // Skip validation if field is empty (allow partial updates)
       if (!trimmedValue) {
-        newErrors[name] = 'Debes llenar este campo para continuar'
         return
       }
 

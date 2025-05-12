@@ -76,6 +76,7 @@ export const fetchDeleteUser = async (id: string) => {
    try {
     const response = await fetch(`http://localhost:4000/users/${id}`, {
       method: 'DELETE',
+      credentials: 'include',
     })
 
     if (!response.ok) {
@@ -86,4 +87,22 @@ export const fetchDeleteUser = async (id: string) => {
   } catch (error) {
     if (error instanceof Error) return false
   }
+}
+
+export const fetchUpdateUser = async (id: string, data: FormData | Record<string, any>) => {
+  const isFormData = data instanceof FormData
+  const response = await fetch(`http://localhost:4000/users/${id}`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
+    body: isFormData ? data : JSON.stringify(data),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData?.error || 'Error al actualizar el usuario')
+  }
+
+  const updatedUser = await response.json()
+  return updatedUser
 }

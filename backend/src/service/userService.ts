@@ -6,6 +6,15 @@ type CreateUserInput = Parameters<typeof prisma.user.create>[0]['data'];
 const prisma = ClientSingleton.getInstance()
 
 export const createUser = async (data: CreateUserInput) => {
+  // Check if email already exists
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  })
+  if (existingUser) {
+    throw new Error('El correo electrónico ya está registrado')
+  }
   return await prisma.user.create({data})
 }
 
