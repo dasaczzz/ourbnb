@@ -6,7 +6,6 @@ import { useRef } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { FaPen } from 'react-icons/fa'
 
-
 interface props {
   handleOpenModal: () => void
 }
@@ -23,7 +22,7 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
   })
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validateForm()) return
 
