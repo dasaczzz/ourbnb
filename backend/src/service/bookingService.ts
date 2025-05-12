@@ -28,6 +28,16 @@ const bookingService = {
     });
   },
 
+  getBookingsByUserId: async(user_id: string): Promise<Booking []> => {
+    return await prisma.booking.findMany({
+      where: {
+        users: {
+          has: user_id,
+        },
+      },
+    });
+  },
+
   deleteBookingById: async(id: string): Promise<Booking> => {
     try {
       const deleted = await prisma.booking.delete({
