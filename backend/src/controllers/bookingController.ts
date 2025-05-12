@@ -35,6 +35,16 @@ const bookingController = {
     }
   },
 
+  getBookingsByUserId: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userBookings = await bookingService.getBookingsByUserId(req.params.user_id);
+      res.json(userBookings);
+    } catch(error: any) {
+      console.error(error);
+      res.status(500).json({ error: "Error obteniendo reservaciones del usuario", details: error.message });
+    }
+  },
+
   //delete booking by id
   deleteBookingById: async (req: Request, res: Response): Promise<void> => {
     try {
