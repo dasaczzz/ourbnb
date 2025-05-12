@@ -71,3 +71,19 @@ export const fetchUserInfo = async (): Promise<UserResponse> => {
   const data = await response.json()
   return data
 }
+
+export const fetchDeleteUser = async (id: string) => {
+   try {
+    const response = await fetch(`http://localhost:4000/users/${id}`, {
+      method: 'DELETE',
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar el usuario')
+    }
+
+    return true
+  } catch (error) {
+    if (error instanceof Error) return false
+  }
+}
