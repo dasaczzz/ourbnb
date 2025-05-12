@@ -27,7 +27,7 @@ const cloudflareController = {
       console.log("Nombre de archivo usado para subir:", filename);
 
       const urlPublica = await uploadImageToR2(fileBuffer, filename, mimeType);
-      const updatedUser = await userService.updateUserById(req.params.id, { profilepick: urlPublica });
+      const updatedUser = await userService.updateUserById(req.params.id, { profilepic: urlPublica } as any);
 
       res.status(200).json({ message: "Foto de perfil actualizada", user: updatedUser });
     } catch (error: any) {
