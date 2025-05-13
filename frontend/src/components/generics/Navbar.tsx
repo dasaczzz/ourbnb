@@ -37,7 +37,7 @@ export const Navbar = () => {
       {location.pathname === '/' && <SearchBar />}
 
       <div className='flex items-center gap-2'>
-        <span className='text-lg'>Tu espacio en Ourbnb</span>
+        <Link to='/newPost' className='text-lg'>Tu espacio en Ourbnb</Link>
         {/* division line */}
         <div className="border-l-2 h-9 border-secondary-400"></div>
 
