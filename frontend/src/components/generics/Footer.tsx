@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom'
 import { IconButton } from '../primitives/IconButton'
 import { FiGithub } from 'react-icons/fi'
 
 export const Footer = () => {
   return (
     <footer className="bg-secondary-200">
-      <div className='container flex flex-col gap-4'>
+      <div className='container flex flex-col gap-4 py-3'>
         <div className='flex justify-between '>
           <div className='flex flex-col items-start gap-4 w-72'>
             <div className='flex items-center gap-2.5'>
@@ -18,9 +19,9 @@ export const Footer = () => {
             <div className='flex flex-col gap-4 items-start w-44'>
               <span className='text-lg font-bold'>Páginas</span>
               <ul className='flex flex-col gap-3 items-start justify-center'>
-                <span className='cursor-pointer hover:underline'>Inicio</span>
-                <span className='cursor-pointer hover:underline'>Tu casa en Ourbnb</span>
-                <span className='cursor-pointer hover:underline'>Iniciar sesión</span>
+                <Link to='/' className='cursor-pointer hover:underline'>Inicio</Link>
+                <Link to='/' className='cursor-pointer hover:underline'>Tu casa en Ourbnb</Link>
+                <Link to='/profile' className='cursor-pointer hover:underline'>Tu perfil</Link>
               </ul>
             </div>
 

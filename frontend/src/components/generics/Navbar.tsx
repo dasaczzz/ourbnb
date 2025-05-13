@@ -14,7 +14,7 @@ export const Navbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const defaultProfilePic = "https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/default.JPG"
+  const defaultProfilePic = 'https://pub-e91187236c2541009a993bce3a8e29c8.r2.dev/default.JPG'
 
   const handleLogout = async () => {
     dispatch(logout({}))
