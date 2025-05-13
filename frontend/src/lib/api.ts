@@ -89,7 +89,7 @@ export const fetchDeleteUser = async (id: string) => {
   }
 }
 
-export const fetchUpdateUser = async (id: string, data: FormData | Record<string, any>) => {
+export const fetchUpdateUser = async (id: string, data: FormData | Record<string, unknown>) => {
   const isFormData = data instanceof FormData
   const response = await fetch(`http://localhost:4000/users/${id}`, {
     method: 'PUT',
@@ -105,4 +105,18 @@ export const fetchUpdateUser = async (id: string, data: FormData | Record<string
 
   const updatedUser = await response.json()
   return updatedUser
+}
+
+export const fetchPosts = async () => {
+  try {
+    const response = await fetch('http://localhost:4000/posts')
+    if (!response.ok) {
+    throw new Error('No se pudo obtener la información del usuario')
+  }
+    const data = response.json()
+    return data
+  }
+  catch (error) {
+    if (error instanceof Error) return false
+  }
 }
