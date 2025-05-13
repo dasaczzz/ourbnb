@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { UserForm } from '../components/generics/UserForm'
+import { UserForm } from '../components/profile/UserForm'
 import { Modal } from '../components/primitives/Modal'
 import { Button } from '../components/primitives/Button'
 import { toast } from 'sonner'
