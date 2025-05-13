@@ -1,5 +1,7 @@
+import { Stepper } from '../components/newPost/Stepper'
+
 export const NewPost = () => {
   return (
-    <div>NewPost</div>
+    <Stepper />
   )
 }
