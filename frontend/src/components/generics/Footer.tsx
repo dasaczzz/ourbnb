@@ -20,7 +20,7 @@ export const Footer = () => {
               <span className='text-lg font-bold'>Páginas</span>
               <ul className='flex flex-col gap-3 items-start justify-center'>
                 <Link to='/' className='cursor-pointer hover:underline'>Inicio</Link>
-                <Link to='/' className='cursor-pointer hover:underline'>Tu casa en Ourbnb</Link>
+                <Link to='/newPost' className='cursor-pointer hover:underline'>Tu casa en Ourbnb</Link>
                 <Link to='/profile' className='cursor-pointer hover:underline'>Tu perfil</Link>
               </ul>
             </div>
