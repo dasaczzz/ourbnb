@@ -5,6 +5,7 @@ import { Profile } from './pages/Profile'
 import { ProtectedRoutes } from './pages/auth/ProtectRoutes'
 import { Layout } from './pages/Layout'
 import { NewPost } from './pages/NewPost'
+import PostDetail from './pages/PostDetail'
 
 export const Ourbnb = () => {
   return (
@@ -16,6 +17,7 @@ export const Ourbnb = () => {
           <Route path='/profile' element={<Profile />}/>
           <Route path='/' element={<Index />} />
           <Route path='/newPost' element={<NewPost />}/>
+          <Route path='/post/:post_id' element={<PostDetail />} />
         </Route>
       </Route>
     </Routes>
