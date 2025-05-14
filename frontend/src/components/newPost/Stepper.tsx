@@ -1,6 +1,6 @@
 export const Stepper = () => {
   return (
-    <ol className="container items-center flex justify-around w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
+    <ol className="items-center flex justify-around w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse">
       <li className="flex flex-col gap-2 items-center text-primary-400 space-x-2.5 rtl:space-x-reverse">
         <span className="flex items-center justify-center w-10 h-10 border-2 border-primary-400 text-primary-400 text-lg font-semibold rounded-full shrink-0">
           1
