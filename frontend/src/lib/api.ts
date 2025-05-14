@@ -5,6 +5,19 @@ export interface UserResponse {
   phone: string
   profilepic: string
 }
+export interface Post {
+  id: string
+  title: string
+  description: string
+  images: string[]
+  location: {
+    city: string
+    country: string
+    location: string
+  }
+  night_cost: number
+  user_id: string
+}
 
 export const fetchRegister = async (form: Record<string, unknown>) => {
   const response = await fetch('http://localhost:4000/users', {
@@ -119,4 +132,13 @@ export const fetchPosts = async () => {
   catch (error) {
     if (error instanceof Error) return false
   }
+}
+
+export const fetchPost = async (post_id: string): Promise<Post> => {
+  const response = await fetch(`http://localhost:4000/posts/${post_id}`)
+  if (!response.ok) {
+    throw new Error('No se pudo obtener la información del post')
+  }
+  const data = await response.json()
+  return data
 }
