@@ -41,6 +41,22 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 }
 
+export const getUserByIdByParam = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id
+    const user = await usuariosService.getUserById(userId)
+    if (!user) {
+      res.status(404).json({ error: 'User not found' })
+      return
+    }
+    res.json(user)
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: 'error getting user by id', details: error.message })
+    }
+  }
+}
+
 export const deleteUserById = async (req: Request, res: Response) => {
   const userIdFromToken = (req as any).id;
   const userIdFromParams = req.params.id;
