@@ -37,6 +37,7 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
 
       // Skip validation if field is empty (allow partial updates)
       if (!trimmedValue) {
+        newErrors[name] = 'Este campo es obligatorio'
         return
       }
 
