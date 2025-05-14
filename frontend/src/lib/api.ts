@@ -85,6 +85,20 @@ export const fetchUserInfo = async (): Promise<UserResponse> => {
   return data
 }
 
+export const fetchUserById = async (user_id: string): Promise<UserResponse> => {
+  const response = await fetch(`http://localhost:4000/users/${user_id}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+
+  if (!response.ok) {
+    throw new Error('No se pudo obtener la información del usuario por ID')
+  }
+
+  const data = await response.json()
+  return data
+}
+
 export const fetchDeleteUser = async (id: string) => {
    try {
     const response = await fetch(`http://localhost:4000/users/${id}`, {
