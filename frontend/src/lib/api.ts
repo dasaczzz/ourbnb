@@ -18,6 +18,14 @@ export interface Post {
   night_cost: number
   user_id: string
 }
+export interface BookingData {
+  init_date: Date
+  end_date: Date
+  post_id: string
+  service_cost: number
+  total_cost: number
+  users: string[]
+}
 
 export const fetchRegister = async (form: Record<string, unknown>) => {
   const response = await fetch('http://localhost:4000/users', {
@@ -153,6 +161,39 @@ export const fetchPost = async (post_id: string): Promise<Post> => {
   if (!response.ok) {
     throw new Error('No se pudo obtener la información del post')
   }
+  const data = await response.json()
+  return data
+}
+
+export const createBooking = async (bookingData: BookingData) => {
+  const response = await fetch('http://localhost:4000/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bookingData)
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al crear la reservación')
+  }
+
+  const data = await response.json()
+  return data
+}
+
+export const fetchBookingsByUser = async (user_id: string) => {
+  const response = await fetch(`http://localhost:4000/bookingsByUser/${user_id}`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al obtener las reservaciones del usuario')
+  }
+
   const data = await response.json()
   return data
 }
