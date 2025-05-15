@@ -6,6 +6,7 @@ import { ProtectedRoutes } from './pages/auth/ProtectRoutes'
 import { Layout } from './pages/Layout'
 import { NewPost } from './pages/NewPost'
 import PostDetail from './pages/PostDetail'
+import BookingConfirmation from './pages/BookingConfirmation'
 
 export const Ourbnb = () => {
   return (
@@ -18,6 +19,8 @@ export const Ourbnb = () => {
           <Route path='/' element={<Index />} />
           <Route path='/newPost' element={<NewPost />}/>
           <Route path='/post/:post_id' element={<PostDetail />} />
+          <Route path="/bookingConfirmation/:post_id" element={<BookingConfirmation />} />
+
         </Route>
       </Route>
     </Routes>
