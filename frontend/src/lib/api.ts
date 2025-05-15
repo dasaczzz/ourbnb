@@ -197,3 +197,20 @@ export const fetchBookingsByUser = async (user_id: string) => {
   const data = await response.json()
   return data
 }
+
+export const fetchDeleteBooking = async (id: string) => {
+   try {
+    const response = await fetch(`http://localhost:4000/bookings/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar el reserva')
+    }
+
+    return true
+  } catch (error) {
+    if (error instanceof Error) return false
+  }
+}

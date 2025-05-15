@@ -3,7 +3,7 @@ import { UserForm } from '../components/profile/UserForm'
 import { Modal } from '../components/primitives/Modal'
 import { Button } from '../components/primitives/Button'
 import { toast } from 'sonner'
-import { fetchDeleteUser, fetchLogout, fetchPost } from '../lib/api'
+import { fetchDeleteBooking, fetchDeleteUser, fetchLogout, fetchPost } from '../lib/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../store/store'
 import { logout } from '../store/slices/authSlice'
@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { startGetBookingsByUser } from '../store/thunks/bookingThunk'
 import { selectBookings } from '../store/slices/bookingSlice'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 export const Profile = () => {
 
@@ -26,7 +27,7 @@ export const Profile = () => {
   const handleOpenModal = () => { setOpen(true) }
   const handleCloseModal = () => { setOpen(false) }
 
-  const handleDelete = async() => {
+  const handleDeleteUser = async() => {
     const response = await fetchDeleteUser(state.id)
     if (!response) return toast.error('No se pudo eliminar tu usuario. Intentalo de nuevo')
     toast.success('Su usuario se ha eliminado con exito')
@@ -34,6 +35,17 @@ export const Profile = () => {
     await fetchLogout()
     dispatch(clearUser())
     navigate('/login')
+  }
+
+  const handleDeleteBooking = async(id: string) => {
+    const response = await fetchDeleteBooking(id)
+    if (!response) {
+      toast.error('No se pudo cancelar la reservación.')
+      return
+    }
+    toast.success('Reservación cancelada con éxito.')
+    await dispatch(startGetBookingsByUser(state.id))
+    navigate('/')
   }
 
   const handleNavigate = () => {
@@ -80,36 +92,59 @@ export const Profile = () => {
     <section className='flex items-center justify-center h-full py-4 flex-col gap-6'>
 
       {/* Reservaciones*/}
-      <div className="flex-[0.6] min-w-0 w-full sm:max-w-[1000px]">
+      <div className="mx-10 flex-[0.6] w-full sm:max-w-[1000px]">
         <div className="p-5 flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Tus Reservaciones</h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-5 shadow-xl rounded-xl"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.3,
+                },
+              },
+            }}
+          >
             {bookings.map((item, index) => {
               const post = posts[item.post_id]
               if (!post) return null
               return (
-                <Link to={`/post/${item.post_id}`} key={`${item.post_id}-${index}`} className="bg-white rounded-3xl shadow-md p-6 max-w-xs flex flex-row gap-4">
-                  <div className="overflow-hidden rounded-xl mb-4 flex-shrink-0 w-24 h-24">
-                    <img src={post.images[0]} alt={post.title} className="w-full h-full object-cover rounded-xl"/>
-                  </div>
+                <motion.div
+                  key={`${item.post_id}-${index}`}
+                  className="bg-white rounded-2xl shadow-md p-6 max-w-xs flex flex-row gap-4"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                >
+                  <Link to={`/post/${item.post_id}`} className="flex flex-row gap-4 w-full">
+                    <div className="overflow-hidden rounded-xl mb-4 flex-shrink-0 w-24 h-24">
+                      <img src={post.images[0]} alt={post.title} className="w-full h-full object-cover rounded-xl"/>
+                    </div>
 
-                  <div className="flex flex-col justify-between">
-                    <h2 className="font-semibold text-lg mb-1">{post.title}</h2>
-                    <p className="text-gray-700 mb-1"> {item.init_date ? formatDate(item.init_date) : ''} – {item.end_date ? formatDate(item.end_date) : ''} </p>
-                    <p className="text-gray-600 mb-1"> {item.users.length || 1} huésped{(item.users.length || 1) > 1 ? 'es' : ''} </p>
+                    <div className="flex flex-col justify-between">
 
-                    <p className="text-gray-600 font-semibold"> Total pagado{' '}
-                      {item.total_cost.toLocaleString('es-CO', {
-                        style: 'currency',
-                        currency: 'COP',
-                      })}
-                    </p>
-                  </div>
-                </Link>
+                      <h2 className="font-semibold text-lg mb-1">{post.title}</h2>
+                      <p className="text-gray-700 mb-1"> {item.init_date ? formatDate(item.init_date) : ''} – {item.end_date ? formatDate(item.end_date) : ''} </p>
+                      <p className="text-gray-600 mb-1"> {item.users.length || 1} huésped{(item.users.length || 1) > 1 ? 'es' : ''} </p>
+
+                      <p className="text-gray-600 font-semibold mb-1"> Total pagado{' '}
+                        {item.total_cost.toLocaleString('es-CO', {
+                          style: 'currency',
+                          currency: 'COP',
+                        })}
+                      </p>
+
+                      <button onClick={() => handleDeleteBooking(item.id)} className="bg-gradient-to-r from-[#800000] to-[#d15700] text-white text-sm px-3 py-1 rounded-lg hover:opacity-80 transition">Cancelar reservación</button>
+                    </div>
+                  </Link>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
           
           {/* si no hay reservas */}
           {!bookings.length && (
@@ -130,7 +165,7 @@ export const Profile = () => {
           <p className='text-lg'>Todos tus datos seran eliminados. Si quieres volver a acceder deberas crear nuevamente una cuenta.</p>
           <div className='w-1/2 flex gap-3 items-end justify-end'>
             <Button intent='secondary' onClick={handleCloseModal}>Cancelar</Button>
-            <Button onClick={handleDelete} intent='primary'>Aceptar</Button>
+            <Button onClick={handleDeleteUser} intent='primary'>Aceptar</Button>
           </div>
         </div>
       </Modal>
