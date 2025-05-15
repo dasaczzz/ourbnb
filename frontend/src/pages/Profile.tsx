@@ -17,7 +17,7 @@ import { motion } from 'framer-motion'
 export const Profile = () => {
 
   const state = useSelector(state => state.user)
-  const bookings = useSelector(selectBookings)
+  const bookings = useSelector(selectBookings) || []
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)

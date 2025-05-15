@@ -158,7 +158,7 @@ const PostDetail = () => {
       })
 
   return (
-  <div className="p-5 bg-gray-50 min-h-screen">
+  <div className="p-5 min-h-screen">
     <div className="max-w-7xl mx-auto w-full flex flex-col gap-5 rounded-lg p-5 bg-white">
       {/* Título y ubicación */}
       <div className="flex flex-col lg:flex-row gap-2 items-start lg:items-center justify-between mb-4">

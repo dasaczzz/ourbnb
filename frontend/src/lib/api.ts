@@ -193,6 +193,9 @@ export const fetchBookingsByUser = async (user_id: string) => {
     const errorData = await response.json()
     throw new Error(errorData.message || 'Error al obtener las reservaciones del usuario')
   }
+
+  const data = await response.json()
+  return data
 }
 
 export const fetchVerifyCookie = async() => {
