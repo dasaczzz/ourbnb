@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { startGetPost } from '../store/thunks/postThunk'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchUserById, UserResponse, createBooking } from '../lib/api'
+import { toast } from 'sonner'
+import { motion } from 'framer-motion'
 
 interface PostLocation {
   city: string
@@ -35,6 +37,7 @@ const PostDetail = () => {
   const [priceToPrintWithNights, setPriceToPrintWithNights] = useState<string>('')
   const [bookingPrice, setBookingPrice] = useState<number>(0)
   const [bookingPriceToPrint, setBookingPriceToPrint] = useState<string>("")
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(post ? new Array(post.images.length).fill(false) : [])
 
   const user = useSelector((state: RootState) => state.user)
   const navigate = useNavigate()
@@ -65,14 +68,14 @@ const PostDetail = () => {
 
     try {
       await createBooking(bookingData)
-      console.log('Reservación creada con éxito')
+      toast.success('Reservación creada con éxito')
       navigate(`/bookingConfirmation/${post.id}`, { state: { bookingData } })
 
     } catch (error) {
       if (error instanceof Error) {
-        console.log('Error al crear reservación: ' + error.message)
+        toast.error('Error al crear reservación: ' + error.message)
       } else {
-        console.log('Error desconocido al crear reservación')
+        toast.error('Error desconocido al crear reservación')
       }
     }
   }
@@ -168,21 +171,43 @@ const PostDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-[500px] overflow-hidden rounded-xl">
       {/* Imagen grande (columna 1) */}
         <div className="col-span-1 md:col-span-2 h-full">
-          <img
+          <motion.img
             src={post.images[0]}
             alt="Imagen principal"
             className="w-full h-full object-cover"
+            loading="lazy"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: imagesLoaded[0] ? 1 : 0, scale: imagesLoaded[0] ? 1 : 0.95 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            onLoad={() => {
+              setImagesLoaded(prev => {
+                const newLoaded = [...prev]
+                newLoaded[0] = true
+                return newLoaded
+              })
+            }}
           />
         </div>
 
       {/* Cuatro imágenes pequeñas (2x2) */}
         <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
           {post.images.slice(1, 5).map((img, i) => (
-            <img
+            <motion.img
               key={i}
               src={img}
               alt={`Imagen ${i + 2}`}
               className="w-full h-full object-cover"
+              loading="lazy"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: imagesLoaded[i + 1] ? 1 : 0, scale: imagesLoaded[i + 1] ? 1 : 0.95 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              onLoad={() => {
+                  setImagesLoaded(prev => {
+                    const newLoaded = [...prev]
+                    newLoaded[i + 1] = true
+                    return newLoaded
+                  })
+                }}
             />
           ))}
         </div>

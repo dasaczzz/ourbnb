@@ -14,6 +14,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "cva": "npm:class-variance-authority@^0.7.1",
     "dotenv": "^16.5.0",
+    "framer-motion": "^12.11.4",
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
