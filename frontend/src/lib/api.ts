@@ -193,7 +193,16 @@ export const fetchBookingsByUser = async (user_id: string) => {
     const errorData = await response.json()
     throw new Error(errorData.message || 'Error al obtener las reservaciones del usuario')
   }
+}
 
+export const fetchVerifyCookie = async() => {
+  const response = await fetch('/api/auth/verify', {
+    method: 'GET',
+    credentials: 'include'
+  })
+  if (!response.ok) {
+    throw new Error('No autenticado')
+  }
   const data = await response.json()
   return data
 }

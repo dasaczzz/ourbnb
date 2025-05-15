@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import authService from "./authService";
+import { getUserById } from "../service/userService";
 
 const authController = {
   login: async (req: Request, res: Response)  => {
@@ -27,6 +28,20 @@ const authController = {
       path: '/',
     })
     res.status(200).json('logout exitoso')
+  },
+
+  verifyCookie: async(req: Request, res: Response) => {
+    const userId = (req as any).id
+
+    try {
+      const user = getUserById(userId)
+      if (!user) {
+        res.status(404).json({ error: 'Usuario no encontrado' })
+      }
+      res.status(200).json({ user })
+    } catch (err) {
+      res.status(500).json({ error: 'Error del servidor' })
+    }
   }
 };
 

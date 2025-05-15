@@ -7,8 +7,19 @@ import { Layout } from './pages/Layout'
 import { NewPost } from './pages/NewPost'
 import PostDetail from './pages/PostDetail'
 import BookingConfirmation from './pages/BookingConfirmation'
+import { useEffect } from 'react'
+import { AppDispatch } from './store/store'
+import { useDispatch } from 'react-redux'
+import { checkAuthStatus } from './store/thunks/authThunk'
 
 export const Ourbnb = () => {
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    dispatch(checkAuthStatus())
+  }, [dispatch])
+
   return (
     <Routes>
       <Route path='/login' element={<Login />}/>

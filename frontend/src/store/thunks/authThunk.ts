@@ -1,7 +1,7 @@
 import { checkingCredentials, login, logout } from '../slices/authSlice'
 import { toast } from 'sonner'
 import { AppDispatch } from '../store'
-import { fetchLogin, fetchRegister, fetchUserInfo } from '../../lib/api'
+import { fetchLogin, fetchRegister, fetchUserInfo, fetchVerifyCookie } from '../../lib/api'
 import { setUser } from '../slices/userSlice'
 
 export const startRegister = (form: Record<string, unknown>) => {
@@ -43,6 +43,21 @@ export const startLogin = (form: Record<string, unknown>) => {
         toast.error(error.message)
         return false
       }
+    }
+  }
+}
+
+// verify if a cookie is active to stay in session
+export const checkAuthStatus = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(checkingCredentials())
+    try {
+      const userData = await fetchVerifyCookie()
+
+      dispatch(login())
+      dispatch(setUser(userData.user))
+    } catch (error) {
+      if (error instanceof Error) dispatch(logout(error.message))
     }
   }
 }
