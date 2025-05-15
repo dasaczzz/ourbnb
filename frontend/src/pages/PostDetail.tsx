@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { startGetPost } from '../store/thunks/postThunk'
 import { AppDispatch, RootState } from '../store/store'
-import { fetchUserById, UserResponse } from '../lib/api'
+import { fetchUserById, UserResponse, createBooking } from '../lib/api'
 
 interface PostLocation {
   city: string
@@ -25,8 +25,58 @@ const PostDetail = () => {
   const {post_id} = useParams()
   const dispatch = useDispatch<AppDispatch>()
   const post = useSelector((state: RootState) => state.post.post) as Post | null;
+  const ourbnbServiceCost = useSelector((state: RootState) => state.booking.ourbnbServiceCost)
   const [host, setHost] = useState<UserResponse | null>(null)
 
+  const [fechaLlegada, setFechaLlegada] = useState<string>('')
+  const [fechaSalida, setFechaSalida] = useState<string>('')
+  const [nightNumber, setNightNumber] = useState<number>(0)
+  const [priceWithNights, setPriceWithNights] = useState<number>(0)
+  const [priceToPrintWithNights, setPriceToPrintWithNights] = useState<string>('')
+  const [bookingPrice, setBookingPrice] = useState<number>(0)
+  const [bookingPriceToPrint, setBookingPriceToPrint] = useState<string>("")
+
+  const user = useSelector((state: RootState) => state.user)
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!fechaLlegada || !fechaSalida || !post || !user?.id) {
+      alert('Por favor completa todas las fechas')
+      return
+    }
+
+    const init_date = new Date(fechaLlegada)
+    const end_date = new Date(fechaSalida)
+    const post_id = post.id
+    const service_cost = ourbnbServiceCost
+    const total_cost = (post.night_cost * nightNumber) + service_cost
+    const users = [user.id]
+
+    const bookingData = {
+      init_date,
+      end_date,
+      post_id,
+      service_cost,
+      total_cost,
+      users
+    }
+
+    try {
+      await createBooking(bookingData)
+      console.log('Reservación creada con éxito')
+      navigate(`/bookingConfirmation/${post.id}`, { state: { bookingData } })
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error al crear reservación: ' + error.message)
+      } else {
+        console.log('Error desconocido al crear reservación')
+      }
+    }
+  }
+  
   useEffect(() => {
     if (post_id) {
       dispatch(startGetPost(post_id))
@@ -47,6 +97,49 @@ const PostDetail = () => {
     fetchHost()
   }, [post])
 
+  // Calcular número noches
+  useEffect(() => {
+    if (fechaLlegada && fechaSalida) {
+      const llegada = new Date(fechaLlegada)
+      const salida = new Date(fechaSalida)
+      const diffTime = salida.getTime() - llegada.getTime()
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      setNightNumber(diffDays > 0 ? diffDays : 0)
+    } else {
+      setNightNumber(0)
+    }
+  }, [fechaLlegada, fechaSalida])
+
+  // Calcular priceToPrintWithNights
+  useEffect(() => {
+    if (nightNumber && post?.night_cost ) {
+      const price = (nightNumber * post.night_cost)
+      const priceToPrintWithNights = price.toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'COP',
+      })
+      setPriceWithNights(price)
+      setPriceToPrintWithNights(priceToPrintWithNights)
+    } else {
+      setPriceToPrintWithNights("")
+    }
+  }, [nightNumber, post])
+
+  // Calcular bookingPrice
+  useEffect(() => {
+    if (priceWithNights && ourbnbServiceCost) {
+      const bookingPrice = (priceWithNights + ourbnbServiceCost)
+      const bookingPriceToPrint = bookingPrice.toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'COP',
+      })
+      setBookingPrice(bookingPrice)
+      setBookingPriceToPrint(bookingPriceToPrint)
+    } else {
+      setBookingPrice(0)
+    }
+  }, [priceWithNights, ourbnbServiceCost])
+
   if (!post) {
     return <div>Cargando...</div>
   }
@@ -55,6 +148,11 @@ const PostDetail = () => {
     style: 'currency',
     currency: 'COP',
   })
+
+  const ourbnbServiceCostToPrint = ourbnbServiceCost.toLocaleString('es-MX', {
+        style: 'currency',
+        currency: 'COP',
+      })
 
   return (
   <div className="p-5 bg-gray-50 min-h-screen">
@@ -115,45 +213,62 @@ const PostDetail = () => {
         {/* Columna derecha */}
         <div className="w-full lg:w-[360px]">
           <div className="mt-3 p-5 shadow-lg border border-gray-300 rounded-2xl flex flex-col gap-3">
-            <div>
-              <p className="text-xs text-gray-500 mt-2">Precio total sin impuestos</p>
+            <div className='flex items-center gap-1'>
               <p className="text-2xl font-bold">{priceToPrint}</p>
+              <p className="text-xl">noche</p>
             </div>
 
+            {/* formulario*/}
+            <form onSubmit={handleSubmit}>
             {/* Selector de fechas */}
-            <div className="shadow-xl grid grid-cols-2 gap-2 border border-gray-300 rounded-lg overflow-hidden">
+            <div className="shadow-md grid grid-cols-2 gap-2 border border-gray-300 rounded-lg overflow-hidden mb-2">
               <div className="flex flex-col border-r border-gray-300 px-3 py-2">
                 <label className="text-xs font-semibold text-gray-500 mb-1">Llegada</label>
-                <input type="date" className="text-xs text-gray-700" />
+                <input type="date" className="text-xs text-gray-700" value={fechaLlegada} onChange={e => setFechaLlegada(e.target.value)} />
               </div>
               <div className="flex flex-col px-3 py-2">
                 <label className="text-xs font-semibold text-gray-500 mb-1">Salida</label>
-                <input type="date" className="text-xs text-gray-700" />
+                <input type="date" className="text-xs text-gray-700" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} />
               </div>
             </div>
 
             {/* Selector de huéspedes */}
-            <div className="shadow-xl border border-gray-300 rounded-lg overflow-hidden">
+            <div className="shadow-md border border-gray-300 rounded-lg overflow-hidden mb-2">
               <div className="flex flex-col px-3 py-2">
                 <label className="text-xs font-semibold text-gray-500 mb-1">Huéspedes</label>
-                <input type="text" className="text-xs text-gray-700" placeholder="1 huésped" />
+                <input type="text" className="text-xs text-gray-700" placeholder="Seleccionar huesped" />
               </div>
             </div>
 
-            <button className="shadow-xl w-full bg-gradient-to-r from-[#2c6d67] to-blue-500 text-white font-semibold py-3 rounded-2xl hover:opacity-80 transition">
-              Reserva
+            <button type="submit" className="shadow-xl w-full bg-gradient-to-r from-[#2c6d67] to-blue-500 text-white font-semibold py-3 rounded-2xl hover:opacity-80 transition">
+              Reservar
             </button>
+            
+            </form>
 
-            <p className="text-center text-xs text-gray-500">
-              Pasarás a checkout para proceder con el pago
-            </p>
+            <div className='flex justify-between'>
+              <p className="text-sm">{priceToPrint} x {nightNumber} noches </p>
+              { priceToPrint && fechaSalida ?
+               <p className="text-sm underline">{priceToPrintWithNights}</p> : ""}
+            </div>
+            <div className='flex justify-between'>
+              <p className="text-sm">Tarifa por servicio de Ourbnb</p>
+              { ourbnbServiceCostToPrint && fechaSalida ?
+               <p className="text-sm underline">{ourbnbServiceCostToPrint}</p> : ""}
+            </div>
+              
+            <hr />
+            { bookingPrice && bookingPriceToPrint ?
+              <p className="text-sm underline text-right">Total: {bookingPriceToPrint}</p>
+              : ""
+            }
+
           </div>
         </div>
       </div>
     </div>
   </div>
   );
-
 }
 
 export default PostDetail;
