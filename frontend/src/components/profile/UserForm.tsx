@@ -20,7 +20,7 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
   const state = useSelector(state => state.user)
   const dispatch = useDispatch<AppDispatch>()
 
-  const {name, email, phone, password, form, showPassword, handleToggleShow, handleInputChange, handleReset, errors, validateForm} = useForm({
+  const {name, email, phone, password, showPassword, handleToggleShow, handleInputChange, handleReset, errors, validateForm} = useForm({
     name: '',
     email: '',
     phone: '',
@@ -66,7 +66,9 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='w-1/3 flex flex-col gap-4 items-center justify-center'>
+    <form onSubmit={handleSubmit} className='flex items-center justify-center h-full py-4 flex-col w-1/3  gap-4'>
+      <h2 className='font-bold text-3xl'>Tu perfil</h2>
+
       <div className="flex items-center relative">
         <img
           src={previewImage || state.profilepic}
@@ -97,7 +99,7 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
       </div>
       <hr />
       <div className='flex justify-between w-full gap-4'>
-        <Button intent='secondary' onClick={handleOpenModal} type='button'>Eliminar cuenta</Button>
+        <Button intent='cancel' onClick={handleOpenModal} type='button'>Eliminar cuenta</Button>
         <Button intent='primary' type='submit'>Actualizar información</Button>
       </div>
     </form>
