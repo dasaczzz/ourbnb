@@ -8,7 +8,7 @@ enum states {
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    status: states.NOT_AUTHENTICATED,
+    status: states.CHECKING,
     errorMessage: null
   },
 
