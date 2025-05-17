@@ -43,9 +43,9 @@ export const Profile = () => {
       toast.error('No se pudo cancelar la reservación.')
       return
     }
+    navigate('/')
     toast.success('Reservación cancelada con éxito.')
     await dispatch(startGetBookingsByUser(state.id))
-    navigate('/')
   }
 
   const handleNavigate = () => {
