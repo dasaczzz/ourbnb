@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from '../store/store'
 import { startGetPosts } from '../store/thunks/postThunk'
 import { PostState } from '../store/slices/postSlice'
 import { HostCard } from '../components/index/HostCard'
-import { Link } from 'react-router-dom'
 
 export const Index = () => {
 
@@ -20,11 +19,9 @@ export const Index = () => {
   }, [dispatch])
 
   return (
-    <section className="container flex justify-between items-start content-start flex-wrap py-20">
+    <section className="container flex justify-between items-start content-start flex-wrap py-20 *:rounded-2xl">
       {posts.map((item: PostState) => (
-        <Link to={`/post/${item.id}`} key={item.id}>
         <HostCard post={item}/>
-        </Link>
       ))}
     </section>
   )
