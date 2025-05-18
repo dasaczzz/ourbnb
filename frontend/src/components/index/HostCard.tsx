@@ -13,12 +13,14 @@ export const HostCard: React.FC<props> = ({post}) => {
   })
 
   return (
-    <div className="flex flex-col w-3xs rounded-full">
+    <div className="flex flex-col w-3xs rounded-xl">
       <Link to={`/post/${post.id}`} key={post.id}>
-        <img src={post.images[0]} alt="Hospedaje" className='object-cover object-center size-64 aspect-square'/>
-        <div className='flex flex-col p-2 items-start gap-3 bg-secondary-200 '>
-          <span className='text-xl font-bold text-secondary-500'>{post.title}</span>
-          <span className='text-lg text-secondary-500'><b className='font-bold'>{priceToPrint}</b> noche</span>
+      <div className='flex flex-col items-start gap-3 bg-secondary-200 rounded-2xl shadow-md mb-3'>
+        <img src={post.images && post.images.length > 0 ? post.images[0] : '/placeholder.jpg'} alt="Hospedaje" className='object-cover object-center size-64 aspect-square rounded-t-2xl'/>
+          <div className='flex flex-col mx-2 gap-2'>
+            <span className='text-xl font-bold text-secondary-500'>{post.title}</span>
+            <span className='text-lg text-secondary-500 mb-3'><b className='font-bold'>{priceToPrint}</b> noche</span>
+          </div>
         </div>
       </Link>
 
