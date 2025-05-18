@@ -9,11 +9,12 @@ import { AppDispatch } from '../store/store'
 import { logout } from '../store/slices/authSlice'
 import { clearUser } from '../store/slices/userSlice'
 import { useNavigate } from 'react-router-dom'
-import { Bookings } from '../components/profile/Bookings'
+import { UserProfileBookings } from '../components/profile/UserProfileBookings'
+import UserProfilePosts from '../components/profile/UserProfilePosts'
 
 export const Profile = () => {
 
-  const state = useSelector(state => state.user)
+  const state = useSelector((state: any) => state.user)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -36,7 +37,8 @@ export const Profile = () => {
 
     <section className='container flex flex-col items-center gap-6'>
 
-      <Bookings />
+      <UserProfileBookings />
+      <UserProfilePosts />
 
        {/* Perfil*/}
       <UserForm handleOpenModal={handleOpenModal} />

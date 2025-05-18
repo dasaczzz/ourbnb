@@ -226,3 +226,18 @@ export const fetchDeleteBooking = async (id: string) => {
     if (error instanceof Error) return false
   }
 }
+
+export const fetchPostsByUser = async (user_id: string) => {
+  const response = await fetch(`http://localhost:4000/postsByUser/${user_id}`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al obtener las publicaciones del usuario')
+  }
+
+  const data = await response.json()
+  return data
+}

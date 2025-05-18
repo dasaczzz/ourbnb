@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 import { AppDispatch } from '../store'
-import { pending, setPosts, setPost } from '../slices/postSlice'
-import { fetchPosts } from '../../lib/api'
+import { pending, setPosts, setPost, setUserPosts } from '../slices/postSlice'
+import { fetchPosts, fetchPostsByUser } from '../../lib/api'
 import { fetchPost } from '../../lib/api'
 
 export const startGetPosts = () => {
@@ -24,6 +24,18 @@ export const startGetPost = (post_id: string) => {
       if (data) {
         dispatch(setPost({post: data}))
       }
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message)
+    }
+  }
+}
+
+export const startGetPostsByUser = (user_id: string) => {
+  return async(dispatch: AppDispatch) => {
+    try {
+      dispatch(pending())
+      const data = await fetchPostsByUser(user_id)
+      dispatch(setUserPosts({posts: data}))
     } catch (error) {
       if (error instanceof Error) toast.error(error.message)
     }

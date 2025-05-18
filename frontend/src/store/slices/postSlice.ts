@@ -19,6 +19,7 @@ export const postSlice = createSlice({
   initialState: {
     posts: [],
     post: null,
+    userPosts: [],
     isLoading: false,
     error: null
   },
@@ -36,8 +37,12 @@ export const postSlice = createSlice({
       state.post = payload.post
       state.isLoading = false
     },
+    setUserPosts: (state, {payload}) => {
+      state.userPosts = payload.posts
+      state.isLoading = false
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { pending, setPosts, setPost } = postSlice.actions
+export const { pending, setPosts, setPost, setUserPosts } = postSlice.actions
