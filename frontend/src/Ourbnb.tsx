@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Index } from './pages/Index'
 import { Login } from './pages/auth/Login'
 import { Profile } from './pages/Profile'
+import HostProfile from './pages/HostProfile'
 import { ProtectedRoutes } from './pages/auth/ProtectRoutes'
 import { Layout } from './pages/Layout'
 import { NewPost } from './pages/NewPost'
@@ -34,7 +35,7 @@ export const Ourbnb = () => {
             <Route path='/newPost' element={<AnimatedPage><NewPost /></AnimatedPage>}/>
             <Route path='/post/:post_id' element={<AnimatedPage><PostDetail /></AnimatedPage>} />
             <Route path="/bookingConfirmation/:post_id" element={<AnimatedPage><BookingConfirmation /></AnimatedPage>} />
-
+            <Route path="/HostProfile/:user_id" element={<AnimatedPage><HostProfile /></AnimatedPage>} />
           </Route>
         </Route>
       </Routes>

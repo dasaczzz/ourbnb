@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '../store/store'
 import { fetchUserById, UserResponse, createBooking } from '../lib/api'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 interface PostLocation {
   city: string
@@ -158,17 +159,17 @@ const PostDetail = () => {
       })
 
   return (
-  <div className="p-5 min-h-screen">
-    <div className="max-w-7xl mx-auto w-full flex flex-col gap-5 rounded-lg p-5 bg-white">
+  <div className="mx-5 min-h-screen">
+    <div className="max-w-7xl mx-auto w-full flex flex-col gap-3 rounded-lg p-5 bg-white">
       {/* Título y ubicación */}
-      <div className="flex flex-col lg:flex-row gap-2 items-start lg:items-center justify-between mb-4">
+      <div className="flex flex-col lg:flex-row gap-2 items-start lg:items-center justify-between">
         <h1 className="text-2xl font-bold">{post.title}</h1>
         <h3 className="font-bold text-gray-900">
           {post.location.city}, {post.location.country}
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-[500px] overflow-hidden rounded-xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-[480px] overflow-hidden rounded-xl">
       {/* Imagen grande (columna 1) */}
         <div className="col-span-1 md:col-span-2 h-full">
           <motion.img
@@ -190,7 +191,7 @@ const PostDetail = () => {
         </div>
 
       {/* Cuatro imágenes pequeñas (2x2) */}
-        <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+        <div className="grid grid-cols-2 grid-rows-2 gap-2 h-120">
           {post.images.slice(1, 5).map((img, i) => (
             <motion.img
               key={i}
@@ -219,11 +220,11 @@ const PostDetail = () => {
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         {/* Columna izquierda */}
         <div className="flex-1">
-          <div className="flex items-center gap-1.5 mb-4">
+          <Link to={`/HostProfile/${host?.id}`} className="flex items-center gap-1.5 mb-4 border border-gray-300 rounded-2xl p-2 shadow-md w-fit hover:bg-gradient-to-r hover:from-[#2c6d67] hover:to-blue-500 hover:text-white transition">
             <img src={host ? host.profilepic : "?"} className="rounded-full object-cover object-center size-8 aspect-square" alt="Foto del anfitrión"/>
             <p className="font-bold">Anfitrión:</p>
-            <p>{host ? host.name : 'Nombre no disponible'}</p>
-          </div>
+            <p>{host ? host.name : 'Cargando Anfitrión'}</p>
+          </Link>
 
           <hr />
 
