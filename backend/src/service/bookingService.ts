@@ -50,7 +50,31 @@ const bookingService = {
       console.error("Error en deleteBookingById:", error);
       throw error;
     }
+  },
+  
+  validateUsersForBooking: async (data: { users: string[] }) => {
+    const usersInDb = await prisma.user.findMany({
+      where: { 
+        email: { in: data.users }
+      },
+      select: {
+        id: true,
+        email: true
+      }
+    });
+
+    const foundEmails = usersInDb.map(user => user.email);
+    const missingEmails = data.users.filter(email => !foundEmails.includes(email));
+
+    if (missingEmails.length > 0) {
+      throw new Error(`Los siguientes emails no existen en la base de datos: ${missingEmails.join(', ')}`);
+    }
+
+    // retorna los IDs de los usuarios para la reserva
+    return usersInDb.map(user => user.id);
   }
+
+
 };
 
 export default bookingService;

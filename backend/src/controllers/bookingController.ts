@@ -54,7 +54,19 @@ const bookingController = {
       console.error(error);
       res.status(500).json({ error: "Error eliminando reservacion", details: error.message });
     }
+  },
+
+  //validate users for booking
+  validateUsersForBooking: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const bookingUsers = await bookingService.validateUsersForBooking(req.body);
+      res.json(bookingUsers);
+    } catch(error:any) {
+      console.error(error);
+      res.status(500).json({ error: "Error validando usuarios para la reservacion", details: error.message });
+    }
   }
+
 };
 
 export default bookingController;

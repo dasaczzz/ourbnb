@@ -243,12 +243,12 @@ export const fetchPostsByUser = async (user_id: string) => {
 }
 
 export const fetchPostsBySearch = async (query: string) => {
-  const response = await fetch(`http://localhost:4000/posts/search?query=${encodeURIComponent(query)}`, {
-    method: 'GET',
+ const response = await fetch(`http://localhost:4000/posts/search?query=${encodeURIComponent(query)}`, {
+   method: 'GET',
   })
 
-  if (!response.ok) {
-    const errorData = await response.json()
+ if (!response.ok) {
+  const errorData = await response.json()
     throw new Error(errorData.message || 'Error al buscar las publicaciones')
   }
 
