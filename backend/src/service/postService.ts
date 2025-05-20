@@ -74,6 +74,27 @@ const postService = {
       throw error;
     }
   },
+
+  searchPosts: async (query: string): Promise<Post[]> => {
+    return await prisma.post.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+    });
+  },
 };
 
 export default postService;

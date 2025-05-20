@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import postService from "../service/postService";
 
+
 const postController = {
   // crear publication
   createPost: async (req: Request, res: Response): Promise<void> => {
@@ -62,6 +63,22 @@ const postController = {
       res.status(500).json({ error: "Error actualizando publicación", details: error.message });
     }
   },
+
+  // search posts by query in title or description
+  searchPosts: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const query = req.query.query as string;
+      if (!query) {
+        res.status(400).json({ error: "Query parameter is required" });
+        return;
+      }
+      const posts = await postService.searchPosts(query);
+      res.json(posts);
+    } catch (error: any) {
+      res.status(500).json({ error: "Error buscando publicaciones", details: error.message });
+    }
+  },
 };
 
 export default postController;
+

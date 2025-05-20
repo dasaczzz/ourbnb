@@ -22,7 +22,8 @@ export const Index = () => {
     <section className="container flex justify-between items-start content-start flex-wrap py-8 *:rounded-2xl">
       {posts.map((item: PostState) => (
         <HostCard post={item}/>
-      ))}
+      ))
+      }
     </section>
   )
 }
