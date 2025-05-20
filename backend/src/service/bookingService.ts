@@ -52,10 +52,10 @@ const bookingService = {
     }
   },
   
-  validateUsersForBooking: async (data: { users: string[] }) => {
+  validateUsersForBooking: async (emails: string[]) => {
     const usersInDb = await prisma.user.findMany({
       where: { 
-        email: { in: data.users }
+        email: { in: emails }
       },
       select: {
         id: true,
@@ -64,7 +64,7 @@ const bookingService = {
     });
 
     const foundEmails = usersInDb.map(user => user.email);
-    const missingEmails = data.users.filter(email => !foundEmails.includes(email));
+    const missingEmails = emails.filter(email => !foundEmails.includes(email));
 
     if (missingEmails.length > 0) {
       throw new Error(`Los siguientes emails no existen en la base de datos: ${missingEmails.join(', ')}`);
