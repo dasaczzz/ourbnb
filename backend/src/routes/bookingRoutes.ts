@@ -8,5 +8,6 @@ router.get("/bookings", bookingController.getAllBookings);
 router.get("/bookings/:id", bookingController.getBookingById);
 router.get("/bookingsByUser/:user_id", bookingController.getBookingsByUserId);
 router.delete("/bookings/:id", bookingController.deleteBookingById);
+router.post("/bookingsUsersValidate", bookingController.validateUsersForBooking);
 
 export default router;
