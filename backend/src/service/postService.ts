@@ -16,8 +16,56 @@ const postService = {
     });
   },
 
-  getAllPosts: async (): Promise<Post[]> => {
-    return await prisma.post.findMany();
+  getAllPosts: async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }): Promise<Post[]> => {
+    const { city, country, minPrice, maxPrice } = filters || {};
+
+    // Build MongoDB query object
+    const query: any = {};
+
+    if (city) {
+      query['location.city'] = { $regex: city, $options: 'i' };
+    }
+
+    if (country) {
+      query['location.country'] = { $regex: country, $options: 'i' };
+    }
+
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      query.night_cost = {};
+      if (minPrice !== undefined) {
+        query.night_cost.$gte = minPrice;
+      }
+      if (maxPrice !== undefined) {
+        query.night_cost.$lte = maxPrice;
+      }
+    }
+
+    // Use $and if both city and country filters exist
+    let finalQuery = query;
+    if (city && country) {
+      finalQuery = { $and: [{ 'location.city': { $regex: city, $options: 'i' } }, { 'location.country': { $regex: country, $options: 'i' } }] };
+      if (minPrice !== undefined || maxPrice !== undefined) {
+        finalQuery.$and.push({ night_cost: query.night_cost });
+      }
+    } else if ((city || country) && (minPrice !== undefined || maxPrice !== undefined)) {
+      finalQuery = { $and: [query] };
+    }
+
+    const whereClause: any = {};
+
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      whereClause.night_cost = {};
+      if (minPrice !== undefined) {
+        whereClause.night_cost.gte = minPrice;
+      }
+      if (maxPrice !== undefined) {
+        whereClause.night_cost.lte = maxPrice;
+      }
+    }
+
+    return await prisma.post.findMany({
+      where: whereClause,
+    });
   },
 
   getPostById: async (id: string): Promise<Post | null> => {

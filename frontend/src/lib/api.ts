@@ -142,17 +142,31 @@ export const fetchUpdateUser = async (id: string, data: FormData | Record<string
   return updatedUser
 }
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }) => {
   try {
-    const response = await fetch('http://localhost:4000/posts')
+    let url = 'http://localhost:4000/posts';
+    const params = new URLSearchParams();
+
+    if (filters) {
+      if (filters.city) params.append('city', filters.city);
+      if (filters.country) params.append('country', filters.country);
+      if (filters.minPrice !== undefined) params.append('minPrice', filters.minPrice.toString());
+      if (filters.maxPrice !== undefined) params.append('maxPrice', filters.maxPrice.toString());
+    }
+
+    if (Array.from(params).length > 0) {
+      url += `?${params.toString()}`;
+    }
+
+    const response = await fetch(url);
     if (!response.ok) {
-    throw new Error('No se pudo obtener la información del usuario')
-  }
-    const data = response.json()
-    return data
+      throw new Error('No se pudo obtener la información del usuario');
+    }
+    const data = await response.json();
+    return data;
   }
   catch (error) {
-    if (error instanceof Error) return false
+    if (error instanceof Error) return false;
   }
 }
 

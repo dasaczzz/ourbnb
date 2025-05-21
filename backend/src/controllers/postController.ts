@@ -16,7 +16,20 @@ const postController = {
   // get all posts 
   getAllPosts: async (req: Request, res: Response): Promise<void> => {
     try {
-      const posts = await postService.getAllPosts();
+      const { city, country, minPrice, maxPrice } = req.query;
+
+      // Convert minPrice and maxPrice to numbers if they exist
+      const min = minPrice ? Number(minPrice) : undefined;
+      const max = maxPrice ? Number(maxPrice) : undefined;
+
+      const filters = {
+        city: city ? String(city) : undefined,
+        country: country ? String(country) : undefined,
+        minPrice: min,
+        maxPrice: max,
+      };
+
+      const posts = await postService.getAllPosts(filters);
       res.json(posts);
     } catch (error: any) {
       res.status(500).json({ error: "Error obteniendo publicaciones", details: error.message });

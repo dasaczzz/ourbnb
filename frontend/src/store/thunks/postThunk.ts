@@ -4,11 +4,11 @@ import { pending, setPosts, setPost, setUserPosts } from '../slices/postSlice'
 import { fetchPosts, fetchPostsByUser, fetchPostsBySearch } from '../../lib/api'
 import { fetchPost } from '../../lib/api'
 
-export const startGetPosts = () => {
+export const startGetPosts = (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }) => {
   return async(dispatch: AppDispatch) => {
     try {
       dispatch(pending())
-      const data = await fetchPosts()
+      const data = await fetchPosts(filters)
       dispatch(setPosts({posts: data}))
     } catch (error) {
       if (error instanceof Error) toast.error(error.message)
