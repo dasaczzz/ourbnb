@@ -275,3 +275,18 @@ export const fetchBookingsUsersValidate = async (huespedes: string[]) => {
 
   return data
 }
+
+export const fetchReviewsByPostId = async (post_id: string) => {
+  const response = await fetch(`http://localhost:4000/reviewsByPost/${post_id}`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al obtener las reviews del post')
+  }
+
+  const data = await response.json()
+  return data
+}
