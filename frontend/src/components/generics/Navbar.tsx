@@ -6,6 +6,7 @@ import { clearUser } from '../../store/slices/userSlice'
 import { fetchLogout } from '../../lib/api'
 import { toast } from 'sonner'
 import { SearchBar } from '../primitives/SearchBar'
+import { Button } from '../primitives/Button'
 
 export const Navbar = () => {
 
@@ -43,11 +44,23 @@ export const Navbar = () => {
 
         {/* Image and user menu */}
           <div className="relative group inline-block">
+
+            { profilepic ?
+
+            <div>
             <img src={profilepic && profilepic.trim() !== '' ? profilepic : defaultProfilePic} alt="Imagen de usuario" className='rounded-full object-cover object-center size-10 aspect-square'/>
             <div className="absolute opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-36">
               <Link to='/profile' className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
               <span onClick={handleLogout} className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
             </div>
+            </div>
+
+            : 
+            
+            <Link to= '/login'>
+            <Button intent='primary' className="px-4">Iniciar Sesión</Button>
+            </Link>
+            }
           </div>
       </div>
     </div>
