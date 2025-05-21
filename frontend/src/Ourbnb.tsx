@@ -26,12 +26,15 @@ export const Ourbnb = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes>
+        <Route element={<Layout />}>
+          <Route path='/' element={<AnimatedPage><Index /></AnimatedPage>} />
+        </Route>
         <Route path='/login' element={<Login />}/>
+        
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<Layout />}>
             <Route path='/profile' element={<AnimatedPage><Profile /></AnimatedPage>}/>
-            <Route path='/' element={<AnimatedPage><Index /></AnimatedPage>} />
             <Route path='/newPost' element={<AnimatedPage><NewPost /></AnimatedPage>}/>
             <Route path='/post/:post_id' element={<AnimatedPage><PostDetail /></AnimatedPage>} />
             <Route path="/bookingConfirmation/:post_id" element={<AnimatedPage><BookingConfirmation /></AnimatedPage>} />
