@@ -7,6 +7,7 @@ import { fetchUserById, UserResponse } from '../lib/api'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import BookingForm from '../components/booking/BookingForm'
+import { ReviewCard } from '../components/reviews/ReviewCard'
 
 interface PostLocation {
   city: string
@@ -130,7 +131,12 @@ const PostDetail = () => {
 
           <hr />
 
-          <p className="font-bold text-xl mt-4 mb-1">Lo que este lugar ofrece</p>
+          <p className="font-bold text-xl mt-4 mb-4">Lo que este lugar ofrece</p>
+
+          <hr />
+
+          <ReviewCard/>
+
         </div>
 
         {/* Columna derecha */}
