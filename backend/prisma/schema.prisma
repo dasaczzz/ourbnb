@@ -42,6 +42,7 @@ model Post {
   description String
   images      String[]
   location    PostLocation
+  type        String
   night_cost  Int
   reviews     Review[]     @relation("PostReviews")
   user        User         @relation(fields: [user_id], references: [id])
