@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '../../store/store'
 import { createBooking } from '../../lib/api'
 import { toast } from 'sonner'
 import { fetchBookingsUsersValidate } from '../../lib/api' 
+import { Button } from '../primitives/Button'
 
 interface PostLocation {
     city: string
@@ -202,20 +203,22 @@ const BookingForm = () => {
                   <div key={index} className="flex gap-2 mb-2">
                       <input type="email" value={email} onChange={e => handleGuestEmailChange(index, e.target.value)}
                           placeholder="Escribe el correo del huésped" className="text-xs text-gray-700 flex-1" />
-                      <button type="button" onClick={() => removeGuestField(index)} className="text-red-500 hover:text-red-700">
-                          ✕
-                      </button>
+                      {email !== user.email && (
+                          <button type="button" onClick={() => removeGuestField(index)} className="text-[#2c6d67] hover:text-gray-700">
+                              ✕
+                          </button>
+                      )}
                   </div>
               ))}
-              <button type="button" onClick={addGuestField} className="text-[#2c6d67] hover:text-blue-500 text-sm font-medium flex items-center gap-1">
+              <button type="button" onClick={addGuestField} className="text-[#2c6d67] hover:text-blue-500 text-sm font-bold flex items-center gap-1">
                   <span>+</span> Agregar otro huésped
               </button>
             </div>
           </div>
 
-          <button type="submit" className="shadow-xl w-full bg-gradient-to-r from-[#2c6d67] to-blue-500 text-white font-semibold py-3 rounded-2xl hover:opacity-80 transition">
+          <Button type="submit" intent="secondary">
             Reservar
-          </button>
+          </Button>
           
           </form>
 
