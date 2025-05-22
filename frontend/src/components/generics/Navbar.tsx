@@ -29,7 +29,7 @@ export const Navbar = () => {
     <div className="container flex justify-between h-24">
       <div className="flex items-center gap-2.5">
         <Link to='/' className='flex justify-center items-center'>
-          <img src="ourbnb.svg" className='w-20 h-14' alt="logo empresarial" />
+          <img src="/ourbnb.svg" className='w-20 h-14' alt="logo empresarial" />
           <h1 className="font-bold text-primary-400 text-3xl">Ourbnb</h1>
         </Link>
       </div>
@@ -58,7 +58,7 @@ export const Navbar = () => {
             : 
             
             <Link to= '/login'>
-            <Button intent='primary' className="px-4">Iniciar Sesión</Button>
+              <Button intent='primary' className="px-4">Iniciar Sesión</Button>
             </Link>
             }
           </div>
