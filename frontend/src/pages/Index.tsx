@@ -85,6 +85,7 @@ export const Index = () => {
         <Button
           type="button"
           intent="secondary"
+          className='mx-33 mt-10'
           onClick={() => setFilterOpen(!filterOpen)}
           aria-expanded={filterOpen}
           aria-haspopup="true"
