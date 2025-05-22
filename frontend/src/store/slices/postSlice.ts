@@ -10,6 +10,7 @@ export interface PostState {
     country: string
     location: string
   }
+  type: string
   night_cost: number | null
   user_id: string | null
 }
