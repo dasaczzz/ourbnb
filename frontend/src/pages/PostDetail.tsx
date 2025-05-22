@@ -21,6 +21,7 @@ interface Post {
   description: string
   images: string[]
   location: PostLocation
+  type: string
   night_cost: number
   user_id: string
 }
@@ -118,11 +119,17 @@ const PostDetail = () => {
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         {/* Columna izquierda */}
         <div className="flex-1">
+          <div className='justify-between flex items-center'>
           <Link to={`/HostProfile/${host?.id}`} className="flex items-center gap-1.5 mb-4 border border-gray-300 rounded-2xl p-2 shadow-md w-fit hover:bg-gradient-to-r hover:from-[#2c6d67] hover:to-blue-500 hover:text-white transition">
             <img src={host ? host.profilepic : "?"} className="rounded-full object-cover object-center size-8 aspect-square" alt="Foto del anfitrión"/>
             <p className="font-bold">Anfitrión:</p>
             <p>{host ? host.name : 'Cargando Anfitrión'}</p>
           </Link>
+          <div className='flex'>
+          <p className='font-bold mr-1 text-secondary-400'>Tipo: </p>
+          <p className="text-md text-secondary-400 capitalize">{post.type}</p>
+          </div>
+          </div>
 
           <hr />
 
