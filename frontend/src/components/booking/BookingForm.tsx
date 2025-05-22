@@ -216,7 +216,7 @@ const BookingForm = () => {
             </div>
           </div>
 
-          <Button type="submit" intent="secondary">
+          <Button type="submit" intent="fade">
             Reservar
           </Button>
           
