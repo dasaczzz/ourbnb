@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className='flex justify-between '>
           <div className='flex flex-col items-start gap-4 w-72'>
             <div className='flex items-center gap-2.5'>
-              <img src="ourbnb.svg" className='w-12 h-9' alt="logo empresarial" />
+              <img src="/ourbnb.svg" className='w-12 h-9' alt="logo empresarial" />
               <h3 className="font-bold text-secondary-500 text-2xl">Ourbnb</h3>
             </div>
             <p>Aplicación clon de Airbnb para la reserva de hospedajes en grupo</p>
