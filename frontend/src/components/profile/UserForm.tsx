@@ -17,7 +17,7 @@ interface props {
 
 export const UserForm: React.FC<props> = ({handleOpenModal}) => {
 
-  const state = useSelector(state => state.user)
+  const state = useSelector((state: any) => state.user)
   const dispatch = useDispatch<AppDispatch>()
 
   const {name, email, phone, password, showPassword, handleToggleShow, handleInputChange, handleReset, errors, validateForm} = useForm({
