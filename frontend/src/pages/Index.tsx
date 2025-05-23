@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '../store/store'
 import { startGetPosts } from '../store/thunks/postThunk'
 import { PostState } from '../store/slices/postSlice'
 import { HostCard } from '../components/index/HostCard'
-import { Button } from '../components/primitives/Button'
+
 export const Index = () => {
 
   const {posts} = useSelector((state: RootState) => state.post)
@@ -81,11 +81,10 @@ export const Index = () => {
 
   return (
     <>
-      <div className="relative inline-block text-left mb-6">
-        <Button
+      <div className=" flex inline-block mx-40">
+        <button
           type="button"
-          intent="secondary"
-          className='mx-33 mt-10'
+          className='border w-30 rounded-xl shadow-md outline-1 text-primary-400 outline-primary-400 hover:text-primary-500 hover:outline-primary-500 hover:bg-gray-200 transition'
           onClick={() => setFilterOpen(!filterOpen)}
           aria-expanded={filterOpen}
           aria-haspopup="true"
@@ -100,31 +99,31 @@ export const Index = () => {
           >
             <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z" clipRule="evenodd" />
           </svg>
-        </Button>
+        </button>
 
         {filterOpen && (
-          <div className="origin-top-right absolute left-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 p-4">
-            <div className="flex flex-col gap-3">
+          <div className="transition origin-top-right absolute left-0 mt-2 ml-40 w-35 rounded-xl shadow-md bg-white/80 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none z-10 p-4">
+            <div className="flex flex-col gap-1">
               <input
                 type="text"
                 placeholder="City"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="input input-bordered"
+                className="input input-bordered border border-gray-300 shadow-sm hover:bg-gray-200 transition rounded-md p-1"
               />
               <input
                 type="text"
                 placeholder="Country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                className="input input-bordered"
+                className="input input-bordered border border-gray-300 shadow-sm hover:bg-gray-200 transition rounded-md p-1"
               />
               <input
                 type="number"
                 placeholder="Min Price"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                className="input input-bordered"
+                className="input input-bordered border border-gray-300 shadow-sm hover:bg-gray-200 transition rounded-md p-1"
                 min={0}
               />
               <input
@@ -132,7 +131,7 @@ export const Index = () => {
                 placeholder="Max Price"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                className="input input-bordered"
+                className="input input-bordered border border-gray-300 shadow-sm hover:bg-gray-200 transition rounded-md p-1"
                 min={0}
               />
             </div>
@@ -140,13 +139,13 @@ export const Index = () => {
         )}
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mx-80">
         {city && (
-          <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+          <span className="shadow-md inline-flex items-center rounded-full bg-primary-400 px-3 py-1 text-sm font-medium text-white">
             City: {city}
             <button
               type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700"
+              className="ml-2 border border-gray-100/30 h-6 w-6 rounded-full text-green-500 hover:bg-green-700"
               onClick={() => removeFilter('city')}
             >
               &times;
@@ -154,11 +153,11 @@ export const Index = () => {
           </span>
         )}
         {country && (
-          <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+          <span className="shadow-md inline-flex items-center rounded-full bg-primary-400 px-3 py-1 text-sm font-medium text-white">
             Country: {country}
             <button
               type="button"
-              className="ml-2 text-green-500 hover:text-green-700"
+              className="ml-2 text-green-500 border border-gray-100/30 h-6 w-6 rounded-full hover:bg-green-700"
               onClick={() => removeFilter('country')}
             >
               &times;
@@ -166,11 +165,11 @@ export const Index = () => {
           </span>
         )}
         {minPrice !== '' && (
-          <span className="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-700">
+          <span className="shadow-md inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-700">
             Min Price: {minPrice}
             <button
               type="button"
-              className="ml-2 text-yellow-500 hover:text-yellow-700"
+              className="ml-2 text-yellow-500 border border-yellow-600/40 h-6 w-6 rounded-full hover:bg-yellow-700/20"
               onClick={() => removeFilter('minPrice')}
             >
               &times;
@@ -178,11 +177,11 @@ export const Index = () => {
           </span>
         )}
         {maxPrice !== '' && (
-          <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-700">
+          <span className="shadow-md inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-700">
             Max Price: {maxPrice}
             <button
               type="button"
-              className="ml-2 text-red-500 hover:text-red-700"
+              className="ml-2 text-red-500 border border-red-600/20 h-6 w-6 rounded-full hover:bg-red-700/20"
               onClick={() => removeFilter('maxPrice')}
             >
               &times;
