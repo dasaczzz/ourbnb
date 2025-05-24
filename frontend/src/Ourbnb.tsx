@@ -30,7 +30,7 @@ export const Ourbnb = () => {
           <Route path='/' element={<AnimatedPage><Index /></AnimatedPage>} />
         </Route>
         <Route path='/login' element={<Login />}/>
-        
+
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<Layout />}>
