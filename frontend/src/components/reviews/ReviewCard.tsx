@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchDeleteBooking, fetchReviewsByPostId } from '../../lib/api'
+import { useSelector } from 'react-redux'
+import { fetchCreateReview, fetchReviewsByPostId } from '../../lib/api'
 import { toast } from 'sonner'
-import { AppDispatch } from '../../store/store'
-import { startGetBookingsByUser } from '../../store/thunks/bookingThunk'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 interface Review {
   id: string;
   comment: string;
-  date_review: Date;
+  date_review: {
+    $date: string;
+  };
   qualification: number;
-  user_id: string;
+  user_id: {
+    $oid: string;
+  };
   post_id: string;
   user: {
     name: string;
@@ -20,11 +22,12 @@ interface Review {
 }
 
 export const ReviewCard = () => {
-  const { post_id } = useParams()
+  const {post_id} = useParams()
   const state = useSelector((state:any) => state.user)
   const [reviews, setReviews] = useState<Review[]>([])
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
+  const [refresh, setRefresh] = useState(0)
+  const [ comment, setComment] = useState('')
+  const [qualification, setQualification] = useState(0)
 
   /*cambiar esto a reviews
   const handleDeleteBooking = async(id: string) => {
@@ -39,40 +42,80 @@ export const ReviewCard = () => {
   }
   */
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!comment) {
+        toast.error('Debes poner un comentario')
+    return
+    }
+    if (!qualification) {
+      toast.error('Debes calificar')
+    return
+    }
+
+    const date_review = new Date().toISOString()
+    const user_id = state.id
+    
+    const reviewData = {
+      comment,
+      date_review,
+      qualification,
+      user_id,
+      post_id,
+    }
+
+    try {
+        await fetchCreateReview(reviewData)
+        toast.success('Review creada con éxito!')
+        setRefresh(prev => prev + 1)
+    } catch (error: any) {
+        if (error.response?.data?.details) {
+            toast.error(error.response.data.details)
+        } else if (error.response?.data?.error) {
+            toast.error(error.response.data.error)
+        } else {
+            toast.error('Error desconocido al crear la reseña')
+        }
+    }
+  }
+
   useEffect(() => {
-    const getReviews = async () => {
+    const getReviews = async (post_id: string) => {
       try {
-        if (!post_id) return;
         const reviews = await fetchReviewsByPostId(post_id)
         setReviews(reviews)
       } catch (error) {
         console.error('Error fetching reviews:', error)
       }
     }
-    getReviews()
-  }, [post_id])
+    if (post_id) {
+      getReviews(post_id)
+    }
+  }, [post_id, refresh])
 
   return (
-    <div className="flex-[0.6] w-full">
+    <div className="flex-[0.6] w-auto">
       <div className="flex flex-col gap-2">
-        <h2 className="text-xl font-bold mt-3 mb-2">Reseñas</h2>
+        <h2 className="text-3xl font-bold mt-4 mb-2">Reseñas</h2>
 
+        {/* pa las reviews */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-xl">
           {reviews.map((review, index) => (
-            <div key={`${review.id}-${index}`} className="bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4 transition duration-200 hover:bg-gray-100">
+            <div key={`${review.id}-${index}`} className=" border border-gray-300 bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4">
               <div className="flex flex-col w-full">
-                <div className="flex items-center gap-2 mb-2">
-                  <img src={"no hay fotico"} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
+                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100">
+                  <img src={review.user.profilepic} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
                   <div>
-                    <h3 className="font-semibold">{"todavía no se como poner el nombre jaja :("}</h3>
+                    <h3 className="font-semibold">{review.user.name}</h3>
                     <p className="text-sm text-gray-500">
-                      {new Date(review.date_review).toLocaleDateString()}
+                      {new Date(review.date_review.$date).toLocaleDateString()}
                     </p>
                   </div>
-                </div>
-                <div className="flex items-center mb-2">
+                </Link>
+
+                <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className={`text-xl ${i < review.qualification ? 'text-blue-400' : 'text-gray-300'}`}>
+                    <span key={i} className={`text-xl ${i < review.qualification ? 'text-[#2c6d67]' : 'text-gray-300'}`}>
                       ★
                     </span>
                   ))}
@@ -81,6 +124,38 @@ export const ReviewCard = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* crear reviews */}
+        <div className="gap-2 w-full">
+          <form onSubmit={handleSubmit} className=' gap-3 border border-gray-300 shadow-md rounded-xl p-3 w-100'>
+            <h3 className='text-xl font-bold'> Crear reseña</h3>
+            
+            <div className=" items-center gap-1">
+              {[...Array(5)].map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setQualification(index + 1)}
+                  className={`text-2xl transition-colors ${
+                    index < qualification ? 'text-[#2c6d67]' : 'text-gray-300'
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+
+            <textarea 
+              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93' 
+              placeholder='Comparte tu experiencia con este espacio.'
+              value={comment} onChange={e => setComment(e.target.value)}/>
+            <div>
+              <button type="submit" className='text-white bg-[#2c6d67] rounded-xl p-2 w-full t-8 transition duration-200 hover:bg-[#2c6d67]/80'>
+                Publicar
+              </button>
+            </div>
+          </form>
         </div>
 
         {/* si no hay reviews */}
