@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import BookingForm from '../components/booking/BookingForm'
 import { ReviewCard } from '../components/reviews/ReviewCard'
+import { LoadingSpinner } from '../components/primitives/LoadingSpinner'
 
 interface PostLocation {
   city: string
@@ -32,7 +33,7 @@ const PostDetail = () => {
   const post = useSelector((state: RootState) => state.post.post) as Post | null;
   const [host, setHost] = useState<UserResponse | null>(null)
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(post ? new Array(post.images.length).fill(false) : [])
-  
+
   useEffect(() => {
     if (post_id) {
       dispatch(startGetPost(post_id))
@@ -70,7 +71,12 @@ const PostDetail = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 h-[480px] overflow-hidden rounded-xl">
       {/* Imagen grande (columna 1) */}
-        <div className="col-span-1 md:col-span-2 h-full">
+        <div className="col-span-1 md:col-span-2 h-full relative">
+          {!imagesLoaded[0] && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <LoadingSpinner />
+            </div>
+          )}
           <motion.img
             src={post.images[0]}
             alt="Imagen principal"
@@ -92,23 +98,29 @@ const PostDetail = () => {
       {/* Cuatro imágenes pequeñas (2x2) */}
         <div className="grid grid-cols-2 grid-rows-2 gap-2 h-120">
           {post.images.slice(1, 5).map((img, i) => (
-            <motion.img
-              key={i}
-              src={img}
-              alt={`Imagen ${i + 2}`}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: imagesLoaded[i + 1] ? 1 : 0, scale: imagesLoaded[i + 1] ? 1 : 0.95 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              onLoad={() => {
-                  setImagesLoaded(prev => {
-                    const newLoaded = [...prev]
-                    newLoaded[i + 1] = true
-                    return newLoaded
-                  })
-                }}
-            />
+            <div key={i} className="relative">
+              {!imagesLoaded[i + 1] && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <LoadingSpinner />
+                </div>
+              )}
+              <motion.img
+                src={img}
+                alt={`Imagen ${i + 2}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: imagesLoaded[i + 1] ? 1 : 0, scale: imagesLoaded[i + 1] ? 1 : 0.95 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                onLoad={() => {
+                    setImagesLoaded(prev => {
+                      const newLoaded = [...prev]
+                      newLoaded[i + 1] = true
+                      return newLoaded
+                    })
+                  }}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -142,8 +154,6 @@ const PostDetail = () => {
 
           <hr />
 
-          <ReviewCard/>
-
         </div>
 
         {/* Columna derecha */}
@@ -152,7 +162,9 @@ const PostDetail = () => {
           <BookingForm />
 
         </div>
+        
       </div>
+      <ReviewCard/>
     </div>
   </div>
   );
