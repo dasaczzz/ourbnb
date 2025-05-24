@@ -20,42 +20,19 @@ const reviewService = {
     },
 
     getReviewsByPostId: async (post_id: string): Promise<any> => {
-        return await prisma.review.aggregateRaw({
-            pipeline: [
-                {
-                    $match: {
-                        post_id: post_id
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "User",
-                        localField: "user_id",
-                        foreignField: "_id",
-                        as: "user"
-                    }
-                },
-                {
-                    $unwind: {
-                        path: "$user",
-                        preserveNullAndEmptyArrays: true
-                    }
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        comment: 1,
-                        qualification: 1,
-                        date_review: 1,
-                        user_id: 1,
-                        post_id: 1,
-                        user: {
-                            name: 1,
-                            profilepic: 1
-                        }
+        return await prisma.review.findMany({
+            where: {
+                post_id: post_id
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        profilepic: true
                     }
                 }
-            ]
+            }
         });
     },
 
