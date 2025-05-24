@@ -12,7 +12,7 @@ export const UserProfileBookings = () => {
 
   const state = useSelector((state:any) => state.user)
   const [posts, setPosts] = useState<Record<string, unknown>>({})
-  const bookings = useSelector(selectBookings) || []
+  const bookings = useSelector(selectBookings)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 

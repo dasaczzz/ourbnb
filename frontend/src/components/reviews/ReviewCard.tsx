@@ -55,7 +55,7 @@ export const ReviewCard = () => {
 
     const date_review = new Date().toISOString()
     const user_id = state.id
-    
+
     const reviewData = {
       comment,
       date_review,
@@ -104,7 +104,7 @@ export const ReviewCard = () => {
             <div key={`${review.id}-${index}`} className=" border border-gray-300 bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4">
               <div className="flex flex-col w-full">
                 <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100">
-                  <img src={review.user.profilepic} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
+                  <img src={review.user.profilepic} alt={'nombre'} className="w-10 h-10 rounded-full object-cover"/>
                   <div>
                     <h3 className="font-semibold">{review.user.name}</h3>
                     <p className="text-sm text-gray-500">
@@ -130,7 +130,7 @@ export const ReviewCard = () => {
         <div className="gap-2 w-full">
           <form onSubmit={handleSubmit} className=' gap-3 border border-gray-300 shadow-md rounded-xl p-3 w-100'>
             <h3 className='text-xl font-bold'> Crear reseña</h3>
-            
+
             <div className=" items-center gap-1">
               {[...Array(5)].map((_, index) => (
                 <button
@@ -146,8 +146,8 @@ export const ReviewCard = () => {
               ))}
             </div>
 
-            <textarea 
-              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93' 
+            <textarea
+              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93'
               placeholder='Comparte tu experiencia con este espacio.'
               value={comment} onChange={e => setComment(e.target.value)}/>
             <div>

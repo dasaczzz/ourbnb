@@ -5,7 +5,7 @@ import { startGetPost } from '../../store/thunks/postThunk'
 import { AppDispatch, RootState } from '../../store/store'
 import { createBooking } from '../../lib/api'
 import { toast } from 'sonner'
-import { fetchBookingsUsersValidate } from '../../lib/api' 
+import { fetchBookingsUsersValidate } from '../../lib/api'
 import { Button } from '../primitives/Button'
 
 interface PostLocation {
@@ -13,7 +13,7 @@ interface PostLocation {
     country: string
     location: string
 }
-  
+
 interface Post {
     id: string
     title: string
@@ -28,7 +28,7 @@ const BookingForm = () => {
     const {post_id} = useParams()
 
     const dispatch = useDispatch<AppDispatch>()
-    const post = useSelector((state: RootState) => state.post.post) as Post | null;
+    const post = useSelector((state: RootState) => state.post.post) as Post | null
     const ourbnbServiceCost = useSelector((state: RootState) => state.booking.ourbnbServiceCost)
 
     const [fechaLlegada, setFechaLlegada] = useState<string>('')
@@ -37,12 +37,12 @@ const BookingForm = () => {
     const [priceWithNights, setPriceWithNights] = useState<number>(0)
     const [priceToPrintWithNights, setPriceToPrintWithNights] = useState<string>('')
     const [bookingPrice, setBookingPrice] = useState<number>(0)
-    const [bookingPriceToPrint, setBookingPriceToPrint] = useState<string>("")
+    const [bookingPriceToPrint, setBookingPriceToPrint] = useState<string>('')
     const user = useSelector((state: RootState) => state.user)
     const [huespedes, setHuespedes] = useState<string[]>([`${user.email}`])
 
     const navigate = useNavigate()
-    
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -56,20 +56,20 @@ const BookingForm = () => {
         const post_id = post.id
         const service_cost = ourbnbServiceCost
         const total_cost = (post.night_cost * nightNumber) + service_cost
-        
-        let users;
+
+        let users
         try {
-            users = await fetchBookingsUsersValidate(huespedes);
+            users = await fetchBookingsUsersValidate(huespedes)
         } catch (error: any) {
-            console.log('Error completo:', error);
-            console.log('Error response:', error.response);
-            console.log('Error data:', error.response?.data);
+            console.log('Error completo:', error)
+            console.log('Error response:', error.response)
+            console.log('Error data:', error.response?.data)
             if (error.details) {
                 toast.error(error.details)
             } else if (error.error) {
                 toast.error(error.error)
             }
-            return;
+            return
         }
 
         const bookingData = {
@@ -126,7 +126,7 @@ const BookingForm = () => {
       setPriceWithNights(price)
       setPriceToPrintWithNights(priceToPrintWithNights)
     } else {
-      setPriceToPrintWithNights("")
+      setPriceToPrintWithNights('')
     }
     }, [nightNumber, post])
 
@@ -168,12 +168,12 @@ const BookingForm = () => {
         style: 'currency',
         currency: 'COP',
       })
-    
+
     const ourbnbServiceCostToPrint = ourbnbServiceCost.toLocaleString('es-MX', {
             style: 'currency',
             currency: 'COP',
     })
-   
+
     return (
         <div className="mt-3 p-5 shadow-lg border border-gray-300 rounded-2xl flex flex-col gap-3">
           <div className='flex items-center gap-1'>
@@ -219,28 +219,28 @@ const BookingForm = () => {
           <Button type="submit" intent="fade">
             Reservar
           </Button>
-          
+
           </form>
 
           <div className='flex justify-between'>
             <p className="text-sm">{priceToPrint} x {nightNumber} noches </p>
             { priceToPrint && fechaSalida ?
-             <p className="text-sm underline">{priceToPrintWithNights}</p> : ""}
+             <p className="text-sm underline">{priceToPrintWithNights}</p> : ''}
           </div>
           <div className='flex justify-between'>
             <p className="text-sm">Tarifa por servicio de Ourbnb</p>
             { ourbnbServiceCostToPrint && fechaSalida ?
-             <p className="text-sm underline">{ourbnbServiceCostToPrint}</p> : ""}
+             <p className="text-sm underline">{ourbnbServiceCostToPrint}</p> : ''}
           </div>
-            
+
           <hr />
           { bookingPrice && bookingPriceToPrint ?
             <p className="text-sm underline text-right">Total: {bookingPriceToPrint}</p>
-            : ""
+            : ''
           }
 
         </div>
     )
-};
+}
 
-export default BookingForm;
+export default BookingForm
