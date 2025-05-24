@@ -304,3 +304,21 @@ export const fetchReviewsByPostId = async (post_id: string) => {
   const data = await response.json()
   return data
 }
+
+export const fetchCreateReview = async (reviewData: any) => {
+  const response = await fetch('http://localhost:4000/reviews', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(reviewData)
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al crear la reseña')
+  }
+
+  const data = await response.json()
+  return data
+}
