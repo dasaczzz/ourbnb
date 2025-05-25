@@ -144,29 +144,29 @@ export const fetchUpdateUser = async (id: string, data: FormData | Record<string
 
 export const fetchPosts = async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }) => {
   try {
-    let url = 'http://localhost:4000/posts';
-    const params = new URLSearchParams();
+    let url = 'http://localhost:4000/posts'
+    const params = new URLSearchParams()
 
     if (filters) {
-      if (filters.city) params.append('city', filters.city);
-      if (filters.country) params.append('country', filters.country);
-      if (filters.minPrice !== undefined) params.append('minPrice', filters.minPrice.toString());
-      if (filters.maxPrice !== undefined) params.append('maxPrice', filters.maxPrice.toString());
+      if (filters.city) params.append('city', filters.city)
+      if (filters.country) params.append('country', filters.country)
+      if (filters.minPrice !== undefined) params.append('minPrice', filters.minPrice.toString())
+      if (filters.maxPrice !== undefined) params.append('maxPrice', filters.maxPrice.toString())
     }
 
     if (Array.from(params).length > 0) {
-      url += `?${params.toString()}`;
+      url += `?${params.toString()}`
     }
 
-    const response = await fetch(url);
+    const response = await fetch(url)
     if (!response.ok) {
-      throw new Error('No se pudo obtener la información del usuario');
+      throw new Error('No se pudo obtener la información del usuario')
     }
-    const data = await response.json();
-    return data;
+    const data = await response.json()
+    return data
   }
   catch (error) {
-    if (error instanceof Error) return false;
+    if (error instanceof Error) return false
   }
 }
 
@@ -213,7 +213,7 @@ export const fetchBookingsByUser = async (user_id: string) => {
 }
 
 export const fetchVerifyCookie = async() => {
-  const response = await fetch('/api/auth/verify', {
+  const response = await fetch('http://localhost:4000/verify', {
     method: 'GET',
     credentials: 'include'
   })
@@ -272,7 +272,7 @@ export const fetchPostsBySearch = async (query: string) => {
 
 
 export const fetchBookingsUsersValidate = async (huespedes: string[]) => {
-  const response = await fetch(`http://localhost:4000/bookingsUsersValidate`, {
+  const response = await fetch('http://localhost:4000/bookingsUsersValidate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

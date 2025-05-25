@@ -9,7 +9,7 @@ interface SearchBarProps {
   placeholder?: string
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ placeholder = "Destino" }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Destino' }) => {
   const dispatch = useDispatch<AppDispatch>()
   const [searchQuery, setSearchQuery] = useState('')
 

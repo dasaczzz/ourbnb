@@ -52,7 +52,7 @@ export const ReviewCard = () => {
 
     const date_review = new Date().toISOString()
     const user_id = state.id
-    
+
     const reviewData = {
       comment,
       date_review,
@@ -139,7 +139,7 @@ export const ReviewCard = () => {
         <div className="gap-2 w-full">
           <form onSubmit={handleSubmit} className=' gap-3 border border-gray-300 shadow-md rounded-xl p-3 w-100'>
             <h3 className='text-xl font-bold'> Crear reseña</h3>
-            
+
             <div className=" items-center gap-1">
               {[...Array(5)].map((_, index) => (
                 <button
@@ -155,8 +155,8 @@ export const ReviewCard = () => {
               ))}
             </div>
 
-            <textarea 
-              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93' 
+            <textarea
+              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93'
               placeholder='Comparte tu experiencia con este espacio.'
               value={comment} onChange={e => setComment(e.target.value)}/>
             <div>

@@ -1,13 +1,18 @@
 import { useState } from 'react'
 import { Stepper } from '../components/newPost/Stepper'
 import { Button } from '../components/primitives/Button'
+import { Describe } from '../components/newPost/Describe'
 
-const StepOne = () => <div>Paso 1</div>
 const StepTwo = () => <div>Paso 2</div>
 const StepThree = () => <div>Paso 3</div>
 
+const handleSelect = (type: string) => {
+    console.log('Alojamiento seleccionado:', type)
+    // Aquí podrías llamar a nextStep() o guardar en el contexto
+}
+
 const steps = [
-  { id: 1, component: <StepOne /> },
+  { id: 1, component: <Describe handleSelect={handleSelect}/> },
   { id: 2, component: <StepTwo /> },
   { id: 3, component: <StepThree /> },
 ]
@@ -30,7 +35,7 @@ export const NewPost = () => {
 
   return (
     <section className='container'>
-      <Stepper />
+      <Stepper currentStep={currentStep}/>
       <div className="mb-4">{steps[currentStep].component}</div>
 
         <div className="flex gap-4">

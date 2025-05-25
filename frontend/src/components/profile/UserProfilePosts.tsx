@@ -8,7 +8,7 @@ import { startGetPostsByUser } from '../../store/thunks/postThunk'
 export const UserProfilePosts = () => {
 
     const user = useSelector((state: any) => state.user)
-    const userPosts = useSelector((state: any) => state.post.userPosts ?? []);
+    const userPosts = useSelector((state: any) => state.post.userPosts ?? [])
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export const UserProfilePosts = () => {
         <p className="text-sm text-gray-500">Este anfitrión aún no tiene publicaciones.</p>
       )}
     </div>
-    );
+    )
 }
 
-export default UserProfilePosts;
+export default UserProfilePosts
