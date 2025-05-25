@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchCreateReview, fetchReviewsByPostId } from '../../lib/api'
+import { fetchCreateReview, fetchDeleteReviewById, fetchReviewsByPostId } from '../../lib/api'
 import { toast } from 'sonner'
 import { Link, useParams } from 'react-router-dom'
 
@@ -29,18 +29,15 @@ export const ReviewCard = () => {
   const [ comment, setComment] = useState('')
   const [qualification, setQualification] = useState(0)
 
-  /*cambiar esto a reviews
-  const handleDeleteBooking = async(id: string) => {
-    const response = await fetchDeleteBooking(id)
+  const handleDeleteReview = async(id: string) => {
+    const response = await fetchDeleteReviewById(id)
+    setRefresh(prev => prev + 1)
     if (!response) {
-      toast.error('No se pudo cancelar la reservación.')
+      toast.error('No se pudo eliminar la reseña.')
       return
     }
-    toast.success('Reservación cancelada con éxito.')
-    await dispatch(startGetBookingsByUser(state.id))
-    navigate('/')
+    toast.success('Has eliminado la reseña.')
   }
-  */
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -96,14 +93,14 @@ export const ReviewCard = () => {
   return (
     <div className="flex-[0.6] w-auto">
       <div className="flex flex-col gap-2">
-        <h2 className="text-3xl font-bold mt-4 mb-2">Reseñas</h2>
+        <h2 className="text-3xl font-bold mt-4">Reseñas</h2>
 
         {/* pa las reviews */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-xl">
           {reviews.map((review, index) => (
             <div key={`${review.id}-${index}`} className=" border border-gray-300 bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4">
               <div className="flex flex-col w-full">
-                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100">
+                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100 w-40">
                   <img src={review.user.profilepic} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
                   <div>
                     <h3 className="font-semibold">{review.user.name}</h3>
@@ -121,10 +118,22 @@ export const ReviewCard = () => {
                   ))}
                 </div>
                 <p className="text-gray-700">{review.comment}</p>
+                <button 
+                  onClick={() => handleDeleteReview(review.id)} 
+                  className='border h-8 bg-[#2c6d67] text-white rounded-xl mt-1.5 transition duration-200 hover:bg-red-300 w-40'
+                  >Eliminar Reseña
+                </button>
               </div>
             </div>
           ))}
         </div>
+
+        {/* si no hay reviews */}
+        {!reviews.length && (
+          <div className='flex items-center'>
+            <p className="text-sm text-gray-500 mr-1.5">La publicación no tiene reseñas. ¡Haz la primera!</p>
+          </div>
+        )}
 
         {/* crear reviews */}
         <div className="gap-2 w-full">
@@ -157,13 +166,6 @@ export const ReviewCard = () => {
             </div>
           </form>
         </div>
-
-        {/* si no hay reviews */}
-        {!reviews.length && (
-          <div className='flex items-center'>
-            <p className="text-sm text-gray-500 mr-1.5">La publicación no tiene reseñas. ¡Haz la primera!</p>
-          </div>
-        )}
       </div>
     </div>
   )
