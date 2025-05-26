@@ -5,7 +5,7 @@ import { Input } from '../primitives/Input'
 import { AppDispatch } from '../../store/store'
 import { useDispatch } from 'react-redux'
 import { startLogin } from '../../store/thunks/authThunk'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const LoginForm = () => {
 
@@ -31,6 +31,12 @@ export const LoginForm = () => {
         <button type='button' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
       <Button intent='primary' type='submit'>Entrar</Button>
+      <div className='flex items-center'>
+        <p className='mr-2'>También puedes:</p>
+        <Link to={"/"}>
+        <button className="cursor-pointer p-2 bg-primary-400 text-white rounded-xl hover:bg-primary-300">Entrar como invitado</button>
+        </Link>
+      </div>
     </form>
   )
 }
