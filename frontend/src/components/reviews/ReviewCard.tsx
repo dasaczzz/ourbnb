@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { fetchCreateReview, fetchDeleteReviewById, fetchReviewsByPostId } from '../../lib/api'
 import { toast } from 'sonner'
 import { Link, useParams } from 'react-router-dom'
+import { Button } from '../primitives/Button'
 
 interface Review {
   id: string;
@@ -117,12 +118,14 @@ export const ReviewCard = () => {
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-700">{review.comment}</p>
-                <button 
-                  onClick={() => handleDeleteReview(review.id)} 
-                  className='border h-8 bg-[#2c6d67] text-white rounded-xl mt-1.5 transition duration-200 hover:bg-red-300 w-40'
-                  >Eliminar Reseña
-                </button>
+                <p className="text-gray-700 mb-2">{review.comment}</p>
+                {state.id == review.user_id &&
+                  <Button 
+                    onClick={() => handleDeleteReview(review.id)} 
+                    intent='cancel'
+                    >Eliminar Reseña
+                  </Button>
+                }
               </div>
             </div>
           ))}
@@ -140,30 +143,41 @@ export const ReviewCard = () => {
           <form onSubmit={handleSubmit} className=' gap-3 border border-gray-300 shadow-md rounded-xl p-3 w-100'>
             <h3 className='text-xl font-bold'> Crear reseña</h3>
 
-            <div className=" items-center gap-1">
-              {[...Array(5)].map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setQualification(index + 1)}
-                  className={`text-2xl transition-colors ${
-                    index < qualification ? 'text-[#2c6d67]' : 'text-gray-300'
-                  }`}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
+            {state.id?
+              <div>
+                <div className=" items-center gap-1">
+                  {[...Array(5)].map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setQualification(index + 1)}
+                      className={`text-2xl transition-colors ${
+                        index < qualification ? 'text-[#2c6d67]' : 'text-gray-300'
+                      }`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
 
-            <textarea
-              className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93'
-              placeholder='Comparte tu experiencia con este espacio.'
-              value={comment} onChange={e => setComment(e.target.value)}/>
-            <div>
-              <button type="submit" className='text-white bg-[#2c6d67] rounded-xl p-2 w-full t-8 transition duration-200 hover:bg-[#2c6d67]/80'>
-                Publicar
-              </button>
-            </div>
+                <textarea
+                  className='mt-2 text-sm text-gray-500 border border-gray-300 rounded-xl p-2 w-93'
+                  placeholder='Comparte tu experiencia con este espacio.'
+                  value={comment} onChange={e => setComment(e.target.value)}/>
+                <div>
+                  <button type="submit" className='cursor-pointer text-white bg-[#2c6d67] rounded-xl p-2 w-full t-8 transition duration-200 hover:bg-[#2c6d67]/80'>
+                    Publicar
+                  </button>
+                </div>
+                </div>
+              : 
+                <div>
+                  <h3 className="text-[#2c6d67] text-xs font-bold flex items-center gap-1 mb-2">Deberás iniciar sesión para publicar una reseña</h3>
+                  <Link to={"/login"}>
+                    <Button intent="primary">Iniciar Sesión</Button>
+                  </Link>
+                </div>
+              }
           </form>
         </div>
       </div>
