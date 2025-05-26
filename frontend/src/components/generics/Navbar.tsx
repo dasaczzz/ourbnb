@@ -47,11 +47,11 @@ export const Navbar = () => {
 
             { profilepic ?
 
-            <div>
+            <div className="relative">
             <img src={profilepic && profilepic.trim() !== '' ? profilepic : defaultProfilePic} alt="Imagen de usuario" className='rounded-full object-cover object-center size-10 aspect-square'/>
-            <div className="absolute opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-36">
-              <Link to='/profile' className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
-              <span onClick={handleLogout} className="block px-4 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
+            <div className="absolute left-full top-0 ml-0 opacity-0 bg-secondary-200 group-hover:opacity-100 transition-opacity duration-200 rounded-md hidden group-hover:block w-30">
+              <Link to='/profile' className="block px-3 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300">Perfil</Link>
+              <span onClick={handleLogout} className="block px-3 py-2 hover:text-primary-400 hover:font-semibold hover:bg-secondary-300 cursor-pointer">Cerrar sesión</span>
             </div>
             </div>
 
