@@ -28,15 +28,16 @@ export const Ourbnb = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path='/' element={<AnimatedPage><Index /></AnimatedPage>} />
+          <Route path='/post/:post_id' element={<AnimatedPage><PostDetail /></AnimatedPage>} />
         </Route>
         <Route path='/login' element={<Login />}/>
+        
 
 
         <Route element={<ProtectedRoutes />}>
           <Route element={<Layout />}>
             <Route path='/profile' element={<AnimatedPage><Profile /></AnimatedPage>}/>
             <Route path='/newPost' element={<AnimatedPage><NewPost /></AnimatedPage>}/>
-            <Route path='/post/:post_id' element={<AnimatedPage><PostDetail /></AnimatedPage>} />
             <Route path="/bookingConfirmation/:post_id" element={<AnimatedPage><BookingConfirmation /></AnimatedPage>} />
             <Route path="/HostProfile/:user_id" element={<AnimatedPage><HostProfile /></AnimatedPage>} />
           </Route>
