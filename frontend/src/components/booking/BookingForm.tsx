@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { startGetPost } from '../../store/thunks/postThunk'
 import { AppDispatch, RootState } from '../../store/store'
 import { createBooking } from '../../lib/api'
@@ -46,9 +46,21 @@ const BookingForm = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!fechaLlegada || !fechaSalida || !post || !user?.id) {
-            ('Por favor completa todas las fechas')
-        return
+        if(!post?.id) {
+          toast.error("Entra a una publicación para reservar")
+          return
+        }
+        if(!user?.id) {
+          toast.error("Por favor, selecciona la fecha de llegada")
+          return
+        }
+        if(!fechaSalida) {
+          toast.error("Por favor, selecciona la fecha de salida")
+          return
+        }
+        if (!fechaLlegada) {
+          toast.error('Por favor, selecciona la fecha de llegada')
+          return
         }
 
         const init_date = new Date(fechaLlegada)
@@ -187,15 +199,16 @@ const BookingForm = () => {
           <div className="shadow-md grid grid-cols-2 gap-2 border border-gray-300 rounded-lg overflow-hidden mb-2">
             <div className="flex flex-col border-r border-gray-300 px-3 py-2">
               <label className="text-xs font-semibold text-gray-500 mb-1">Llegada</label>
-              <input type="date" className="text-xs text-gray-700" value={fechaLlegada} onChange={e => setFechaLlegada(e.target.value)} />
+              <input type="date" className="cursor-pointer text-xs text-gray-700" value={fechaLlegada} onChange={e => setFechaLlegada(e.target.value)} />
             </div>
             <div className="flex flex-col px-3 py-2">
               <label className="text-xs font-semibold text-gray-500 mb-1">Salida</label>
-              <input type="date" className="text-xs text-gray-700" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} />
+              <input type="date" className="cursor-pointer text-xs text-gray-700" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} />
             </div>
           </div>
-
+          
           {/* Selector de huéspedes */}
+          {user.id?
           <div className="shadow-md border border-gray-300 rounded-lg overflow-hidden mb-2">
             <div className="flex flex-col px-3 py-2">
               <label className="text-xs font-semibold text-gray-500 mb-1">Huéspedes</label>
@@ -204,41 +217,55 @@ const BookingForm = () => {
                       <input type="email" value={email} onChange={e => handleGuestEmailChange(index, e.target.value)}
                           placeholder="Escribe el correo del huésped" className="text-xs text-gray-700 flex-1" />
                       {email !== user.email && (
-                          <button type="button" onClick={() => removeGuestField(index)} className="text-[#2c6d67] hover:text-gray-700">
+                          <button type="button" onClick={() => removeGuestField(index)} className="cursor-pointer text-[#2c6d67] hover:text-gray-700">
                               ✕
                           </button>
                       )}
                   </div>
               ))}
-              <button type="button" onClick={addGuestField} className="text-[#2c6d67] hover:text-blue-500 text-sm font-bold flex items-center gap-1">
+              <button type="button" onClick={addGuestField} className="cursor-pointer text-[#2c6d67] hover:text-blue-500 text-sm font-bold flex items-center gap-1">
                   <span>+</span> Agregar otro huésped
               </button>
             </div>
           </div>
-
+          : ""}
+          
+          {user.id? 
           <Button type="submit" intent="fade">
             Reservar
           </Button>
 
+          :
+          <div>
+            <h3 className="text-[#2c6d67] text-xs font-bold flex items-center gap-1 mb-2">Deberás iniciar sesión para realizar tu reserva</h3>
+            <Link to={"/login"}>
+              <Button intent="primary">Iniciar Sesión</Button>
+            </Link>
+          </div>
+          }
+
           </form>
 
+          {user.id? 
+          <div>
           <div className='flex justify-between'>
-            <p className="text-sm">{priceToPrint} x {nightNumber} noches </p>
+            <p className="text-xs">{priceToPrint} x {nightNumber} noches </p>
             { priceToPrint && fechaSalida ?
              <p className="text-sm underline">{priceToPrintWithNights}</p> : ''}
           </div>
           <div className='flex justify-between'>
-            <p className="text-sm">Tarifa por servicio de Ourbnb</p>
+            <p className="text-xs">Tarifa por servicio de Ourbnb</p>
             { ourbnbServiceCostToPrint && fechaSalida ?
-             <p className="text-sm underline">{ourbnbServiceCostToPrint}</p> : ''}
+             <p className="text-sm underline mb-2">{ourbnbServiceCostToPrint}</p> : ''}
           </div>
 
           <hr />
           { bookingPrice && bookingPriceToPrint ?
-            <p className="text-sm underline text-right">Total: {bookingPriceToPrint}</p>
+            <p className="text-sm text-right mt-2">Total: {bookingPriceToPrint}</p>
             : ''
           }
-
+          </div>
+          : ""}
         </div>
     )
 }
