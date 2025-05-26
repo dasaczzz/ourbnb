@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/vite": "^4.1.4",
     "cva": "npm:class-variance-authority@^0.7.1",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/google.maps": "^3.58.1",
     "@types/js-cookie": "^3.0.6",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
