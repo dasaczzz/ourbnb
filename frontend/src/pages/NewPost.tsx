@@ -6,13 +6,8 @@ import { Describe } from '../components/newPost/Describe'
 const StepTwo = () => <div>Paso 2</div>
 const StepThree = () => <div>Paso 3</div>
 
-const handleSelect = (type: string) => {
-    console.log('Alojamiento seleccionado:', type)
-    // Aquí podrías llamar a nextStep() o guardar en el contexto
-}
-
 const steps = [
-  { id: 1, component: <Describe handleSelect={handleSelect}/> },
+  { id: 1, component: <Describe/> },
   { id: 2, component: <StepTwo /> },
   { id: 3, component: <StepThree /> },
 ]

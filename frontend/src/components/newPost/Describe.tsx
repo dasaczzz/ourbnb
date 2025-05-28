@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../primitives/Button'
 import { FaHome, FaDoorClosed, FaDivide } from 'react-icons/fa'
-
-interface props {
-  // eslint-disable-next-line no-unused-vars
-  handleSelect: (type: string) => void
-}
+import { useDispatch } from 'react-redux'
+import { updateDraftPost } from '../../store/slices/postSlice'
 
 const options = [
   {
@@ -25,8 +22,15 @@ const options = [
   },
 ]
 
-export const Describe: React.FC<props> = ({ handleSelect }) => {
+export const Describe = () => {
+  const dispatch = useDispatch()
   const [selected, setSelected] = useState<string | null>(null)
+
+  const handleSelect = () => {
+    if (selected) {
+      dispatch(updateDraftPost({ type: selected }))
+    }
+  }
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
@@ -55,12 +59,8 @@ export const Describe: React.FC<props> = ({ handleSelect }) => {
         ))}
       </div>
 
-      <div className="text-right">
-        <Button
-          onClick={() => selected && handleSelect(selected)}
-          disabled={!selected}
-          intent="primary"
-        >
+      <div className="flex justify-end items-end w-1/3">
+        <Button onClick={handleSelect} disabled={!selected} intent="primary">
           Seleccionar
         </Button>
       </div>

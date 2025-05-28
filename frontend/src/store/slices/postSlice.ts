@@ -15,15 +15,27 @@ export interface PostState {
   user_id: string | null
 }
 
+interface PostSliceState {
+  posts: PostState[]
+  post: PostState | null
+  userPosts: PostState[]
+  draftPost: Partial<PostState>
+  isLoading: boolean
+  error: string | null
+}
+
+const initialState: PostSliceState = {
+  posts: [],
+  post: null,
+  userPosts: [],
+  draftPost: {},
+  isLoading: false,
+  error: null,
+}
+
 export const postSlice = createSlice({
   name: 'post',
-  initialState: {
-    posts: [],
-    post: null,
-    userPosts: [],
-    isLoading: false,
-    error: null
-  },
+  initialState,
   reducers: {
     pending: (state) => {
       state.isLoading = true
@@ -41,9 +53,19 @@ export const postSlice = createSlice({
     setUserPosts: (state, {payload}) => {
       state.userPosts = payload.posts
       state.isLoading = false
-    }
+    },
+    addPost: (state, {payload}) => {
+      state.posts.push(payload.post)
+      state.isLoading = false
+    },
+    updateDraftPost: (state, { payload }) => {
+      state.draftPost = {
+        ...state.draftPost,
+        ...payload,
+      }
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { pending, setPosts, setPost, setUserPosts } = postSlice.actions
+export const { pending, setPosts, setPost, setUserPosts, addPost, updateDraftPost } = postSlice.actions
