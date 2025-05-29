@@ -33,8 +33,8 @@ export const LoginForm = () => {
       <Button intent='primary' type='submit'>Entrar</Button>
       <div className='flex items-center'>
         <p className='mr-2'>También puedes:</p>
-        <Link to={"/"}>
-        <button className="cursor-pointer p-2 bg-primary-400 text-white rounded-xl hover:bg-primary-300">Entrar como invitado</button>
+        <Link to={'/'}>
+        <Button intent='secondary'>Entrar como invitado</Button>
         </Link>
       </div>
     </form>

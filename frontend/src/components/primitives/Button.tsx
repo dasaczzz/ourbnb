@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'cva'
 
 const variants = cva(
-  'w-full rounded-xl text-lg font-medium py-3 cursor-pointer transition-colors',
+  'w-full rounded-xl text-lg font-medium py-3 px-2 cursor-pointer transition-colors',
   {
     variants: {
       intent: {
