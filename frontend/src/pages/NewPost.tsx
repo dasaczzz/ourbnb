@@ -29,7 +29,7 @@ export const NewPost = () => {
   }
 
   return (
-    <section className='container'>
+    <section className='container flex flex-col gap-8'>
       <Stepper currentStep={currentStep}/>
       <div className="mb-4">{steps[currentStep].component}</div>
 
