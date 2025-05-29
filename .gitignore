@@ -19,3 +19,12 @@ dist-ssr
 .env
 
 .DS_Store
+
+# Cypress downloads
+downloads.html
+
+# Cypress generated files
+cypress/videos/
+cypress/screenshots/
+cypress/results/
+.cypress-cach/
