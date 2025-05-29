@@ -55,16 +55,16 @@ const PostDetail = () => {
   }, [post])
 
   if (!post) {
-    return <div>Cargando...</div>
+    return <div data-testid="loading-state">Cargando...</div>
   }
   
   return (
-  <div className="mx-5 min-h-screen">
+  <div className="mx-5 min-h-screen" data-testid="post-detail-page">
     <div className="max-w-7xl mx-auto w-full flex flex-col gap-3 rounded-lg p-5 bg-white">
       {/* Título y ubicación */}
       <div className="flex flex-col lg:flex-row gap-2 items-start lg:items-center justify-between">
-        <h1 className="text-2xl font-bold">{post.title}</h1>
-        <h3 className="font-bold text-gray-900">
+        <h1 data-testid="post-title" className="text-2xl font-bold">{post.title}</h1>
+        <h3 data-testid="post-location" className="font-bold text-gray-900">
           {post.location.city}, {post.location.country}
         </h3>
       </div>
@@ -132,7 +132,7 @@ const PostDetail = () => {
         {/* Columna izquierda */}
         <div className="flex-1">
           <div className='justify-between flex items-center'>
-          <Link to={`/HostProfile/${host?.id}`} className="flex items-center gap-1.5 mb-4 border border-gray-300 rounded-2xl p-2 shadow-md w-fit hover:bg-gradient-to-r hover:from-[#2c6d67] hover:to-blue-500 hover:text-white transition">
+          <Link to={`/HostProfile/${host?.id}`} data-testid="host-link" className="flex items-center gap-1.5 mb-4 border border-gray-300 rounded-2xl p-2 shadow-md w-fit hover:bg-gradient-to-r hover:from-[#2c6d67] hover:to-blue-500 hover:text-white transition">
             <img src={host ? host.profilepic : "?"} className="rounded-full object-cover object-center size-8 aspect-square" alt="Foto del anfitrión"/>
             <p className="font-bold">Anfitrión:</p>
             <p>{host ? host.name : 'Cargando Anfitrión'}</p>
@@ -146,7 +146,7 @@ const PostDetail = () => {
           <hr />
 
           <p className="font-bold text-xl mt-4 mb-1">Acerca de este lugar</p>
-          <p className="text-gray-600 text-sm mb-4">{post.description}</p>
+          <p data-testid="post-description" className="text-gray-600 text-sm mb-4">{post.description}</p>
 
           <hr />
 
@@ -159,7 +159,7 @@ const PostDetail = () => {
         {/* Columna derecha */}
         <div className="w-full lg:w-[360px]">
 
-          <BookingForm />
+          <BookingForm data-testid="booking-form" />
 
         </div>
         
