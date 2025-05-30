@@ -1,5 +1,5 @@
 import { AppDispatch } from '../store'
-import { fetchPosts, fetchPost, fetchPostsBySearch, fetchPostsByUser, fetchDeletePost } from '../../lib/api'
+import { fetchPosts, fetchPost, fetchPostsBySearch, fetchPostsByUser } from '../../lib/api'
 import { setPosts, setPost, setUserPosts } from '../slices/postSlice'
 import { toast } from 'sonner'
 
