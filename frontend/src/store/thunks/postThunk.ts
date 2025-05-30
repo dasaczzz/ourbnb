@@ -9,9 +9,17 @@ export const startGetPosts = (filters?: { city?: string; country?: string; minPr
     try {
       dispatch(pending())
       const data = await fetchPosts(filters)
-      dispatch(setPosts({posts: data}))
+      if (Array.isArray(data)) {
+        dispatch(setPosts({posts: data}))
+      } else {
+        dispatch(setPosts({posts: []}))
+        console.error('Los datos recibidos no son un array:', data)
+      }
     } catch (error) {
-      if (error instanceof Error) toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+        dispatch(setPosts({posts: []}))
+      }
     }
   }
 }
@@ -25,7 +33,10 @@ export const startGetPost = (post_id: string) => {
         dispatch(setPost({post: data}))
       }
     } catch (error) {
-      if (error instanceof Error) toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+        dispatch(setPost({post: null}))
+      }
     }
   }
 }
@@ -35,9 +46,17 @@ export const startGetPostsByUser = (user_id: string) => {
     try {
       dispatch(pending())
       const data = await fetchPostsByUser(user_id)
-      dispatch(setUserPosts({posts: data}))
+      if (Array.isArray(data)) {
+        dispatch(setUserPosts({posts: data}))
+      } else {
+        dispatch(setUserPosts({posts: []}))
+        console.error('Los datos recibidos no son un array:', data)
+      }
     } catch (error) {
-      if (error instanceof Error) toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+        dispatch(setUserPosts({posts: []}))
+      }
     }
   }
 }
@@ -47,9 +66,17 @@ export const startSearchPosts = (query: string) => {
     try {
       dispatch(pending())
       const data = await fetchPostsBySearch(query)
-      dispatch(setPosts({posts: data}))
+      if (Array.isArray(data)) {
+        dispatch(setPosts({posts: data}))
+      } else {
+        dispatch(setPosts({posts: []}))
+        console.error('Los datos recibidos no son un array:', data)
+      }
     } catch (error) {
-      if (error instanceof Error) toast.error(error.message)
+      if (error instanceof Error) {
+        toast.error(error.message)
+        dispatch(setPosts({posts: []}))
+      }
     }
   }
 }
