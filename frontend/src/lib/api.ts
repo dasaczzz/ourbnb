@@ -162,9 +162,14 @@ export const fetchPosts = async (filters?: { city?: string; country?: string; mi
       url += `?${params.toString()}`
     }
 
-    const response = await fetch(url)
+    const response = await fetch(url, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
     if (!response.ok) {
-      throw new Error('No se pudo obtener la información del usuario')
+      throw new Error('No se pudo obtener la información de los posts')
     }
     const data = await response.json()
     return data
@@ -175,7 +180,12 @@ export const fetchPosts = async (filters?: { city?: string; country?: string; mi
 }
 
 export const fetchPost = async (post_id: string): Promise<Post> => {
-  const response = await fetch(`${API_BASE_URL}/posts/${post_id}`)
+  const response = await fetch(`${API_BASE_URL}/posts/${post_id}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
   if (!response.ok) {
     throw new Error('No se pudo obtener la información del post')
   }
@@ -262,12 +272,16 @@ export const fetchPostsByUser = async (user_id: string) => {
 }
 
 export const fetchPostsBySearch = async (query: string) => {
- const response = await fetch(`${API_BASE_URL}/posts/search?query=${encodeURIComponent(query)}`, {
-   method: 'GET',
+  const response = await fetch(`${API_BASE_URL}/posts/search?query=${encodeURIComponent(query)}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
 
- if (!response.ok) {
-  const errorData = await response.json()
+  if (!response.ok) {
+    const errorData = await response.json()
     throw new Error(errorData.message || 'Error al buscar las publicaciones')
   }
 
