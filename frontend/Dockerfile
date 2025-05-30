@@ -12,7 +12,6 @@ ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 # install dependencies
 COPY package*.json ./
 RUN npm install
-RUN npm install -g typescript
 
 # copy source code
 ENV NODE_ENV=$NODE_ENV
