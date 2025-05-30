@@ -12,9 +12,6 @@ interface JwtPayload {
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  console.log('Auth middleware - Headers:', req.headers);
-  console.log('Auth middleware - Cookies:', req.cookies);
-  
   const token = req.cookies?.token
 
   if (!token) {
@@ -24,10 +21,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
   }
 
   try {
-    console.log('Verifying token:', token);
     const decoded = jwt.verify(token, SECRET) as JwtPayload
-    console.log('Token decoded:', decoded);
-    
     if (!decoded.id) {
       console.log('Token decoded but no id found');
       res.status(401).json({ error: "Token inválido: ID no encontrado" })
@@ -35,7 +29,6 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
     }
     // add the id to the request
     ;(req as any).id = String(decoded.id)
-    console.log('Token verified successfully, user id:', decoded.id);
     next()
   } catch (err) {
     console.log('Token verification failed:', err);
