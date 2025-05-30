@@ -65,6 +65,19 @@ const BookingForm = () => {
 
         const init_date = new Date(fechaLlegada)
         const end_date = new Date(fechaSalida)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        if (end_date <= init_date) {
+          toast.error('Debes escoger una fecha válida')
+          return
+        }
+
+        if (init_date < today) {
+          toast.error('La reserva debe ser para una fecha futura')
+          return
+        }
+
         const post_id = post.id
         const service_cost = ourbnbServiceCost
         const total_cost = (post.night_cost * nightNumber) + service_cost
