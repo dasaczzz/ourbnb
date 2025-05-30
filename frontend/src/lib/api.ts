@@ -339,3 +339,38 @@ export const fetchDeleteReviewById = async (id: string) => {
    if (error instanceof Error) return false
  }
 }
+
+export const fetchDeletePost = async (id: string) => {
+  try {
+    const response = await fetch(`http://localhost:4000/posts/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar la publicación')
+    }
+
+    return true
+  } catch (error) {
+    if (error instanceof Error) return false
+  }
+}
+
+export const fetchUpdatePost = async (id: string, data: FormData | Record<string, unknown>) => {
+  const isFormData = data instanceof FormData
+  const response = await fetch(`http://localhost:4000/posts/${id}`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
+    body: isFormData ? data : JSON.stringify(data),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData?.error || 'Error al actualizar la publicación')
+  }
+
+  const updatedPost = await response.json()
+  return updatedPost
+}
