@@ -8,6 +8,7 @@ import postRoutes from './routes/postRoutes'
 import bookingRoutes from './routes/bookingRoutes'
 import cloudflareRoutes from './routes/cloudflareRoutes'
 import reviewRoutes from './routes/reviewRoutes'
+import facilityRoutes from './routes/facilityRoutes'
 import config from './lib/config'
 import dotenv from 'dotenv';
 
@@ -37,6 +38,7 @@ app.use(bookingRoutes)
 app.use(authRoutes)
 app.use(cloudflareRoutes)
 app.use(reviewRoutes)
+app.use(facilityRoutes)
 
 // Puerto flexible para Digital Ocean
 const PORT = Number(process.env.PORT) || config.port || 4000

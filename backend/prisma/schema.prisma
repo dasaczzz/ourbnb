@@ -48,6 +48,7 @@ model Post {
   user        User         @relation(fields: [user_id], references: [id])
   user_id     String       @db.ObjectId
   Booking     Booking[]
+  facilities  String[]     @db.ObjectId
 }
 
 model Review {
@@ -72,4 +73,10 @@ model User {
   issuing    Message[] @relation("issuing")
   receiving  Message[] @relation("receiving")
   Post       Post[]
+}
+
+model Facility {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  icon  String
 }

@@ -31,6 +31,12 @@ export interface BookingData {
   users: string[]
 }
 
+export interface Facility {
+  id: string
+  name: string
+  icon: string
+}
+
 export const fetchRegister = async (form: Record<string, unknown>) => {
   const response = await fetch(`${API_BASE_URL}/users`, {
     method: 'POST',
@@ -410,4 +416,22 @@ export const fetchUpdatePost = async (id: string, data: FormData | Record<string
 
   const updatedPost = await response.json()
   return updatedPost
+}
+
+export const fetchFacilitiesByPostId = async (post_id: string): Promise<Facility[]> => {
+  const response = await fetch(`${API_BASE_URL}/facilities/${post_id}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || 'Error al obtener las facilidades del post')
+  }
+
+  const data = await response.json()
+  return data
 }
