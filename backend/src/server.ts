@@ -18,7 +18,7 @@ app.use(cors({
   origin: [
     'http://localhost:8080',
     'http://localhost:3000', 
-    'https://frontend-ourbnb-p6n7u.ondigitalocean.app/',
+    'https://frontend-ourbnb-p6n7u.ondigitalocean.app'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
