@@ -3,7 +3,7 @@ import authService from "./authService";
 import { getUserById } from "../service/userService";
 
 const authController = {
-  login: async (req: Request, res: Response): Promise<void> => {
+  login: async (req: Request, res: Response)  => {
     try {
       const { email, password } = req.body;
       const token = await authService.login(email, password);
@@ -20,7 +20,7 @@ const authController = {
     }
   },
 
-  logout: async (req: Request, res: Response): Promise<void> => {
+  logout: async (req: Request, res: Response) => {
     res.clearCookie('token', {
       httpOnly: true,
       secure: true,
@@ -30,18 +30,17 @@ const authController = {
     res.status(200).json('logout exitoso')
   },
 
-  verifyCookie: async(req: Request, res: Response): Promise<void> => {
+  verifyCookie: async(req: Request, res: Response) => {
     const userId = (req as any).id
 
     try {
       const user = await getUserById(userId)
       if (!user) {
-        res.status(404).json({ error: 'Usuario no encontrado' })
-        return
+        return res.status(404).json({ error: 'Usuario no encontrado' })
       }
-      res.status(200).json({ user })
+      return res.status(200).json({ user })
     } catch (err) {
-      res.status(500).json({ error: 'Error del servidor' })
+      return res.status(500).json({ error: 'Error del servidor' })
     }
   }
 };
