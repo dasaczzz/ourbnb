@@ -15,16 +15,23 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
   const token = req.cookies?.token
 
   if (!token) {
+    console.log('No token found in cookies');
     res.status(401).json({ error: "Token requerido" })
     return
   }
 
   try {
     const decoded = jwt.verify(token, SECRET) as JwtPayload
+    if (!decoded.id) {
+      console.log('Token decoded but no id found');
+      res.status(401).json({ error: "Token inválido: ID no encontrado" })
+      return
+    }
     // add the id to the request
     ;(req as any).id = String(decoded.id)
     next()
   } catch (err) {
+    console.log('Token verification failed:', err);
     res.status(403).json({ error: "Token inválido" })
   }
 }

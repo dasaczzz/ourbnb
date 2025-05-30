@@ -36,11 +36,11 @@ const authController = {
     try {
       const user = await getUserById(userId)
       if (!user) {
-        res.status(404).json({ error: 'Usuario no encontrado' })
+        return res.status(404).json({ error: 'Usuario no encontrado' })
       }
-      res.status(200).json({ user })
+      return res.status(200).json({ user })
     } catch (err) {
-      res.status(500).json({ error: 'Error del servidor' })
+      return res.status(500).json({ error: 'Error del servidor' })
     }
   }
 };
