@@ -10,7 +10,7 @@ const authController = {
       res.cookie('token', token, {
         httpOnly: true,
         sameSite: 'lax',
-        secure: false,
+        secure: true,
         maxAge: 1000 * 60 * 60 * 2, // 2 hours to expire the cookie
         path: '/'
       })
