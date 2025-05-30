@@ -1,3 +1,5 @@
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+
 export interface UserResponse {
   id: string
   name: string
@@ -5,6 +7,7 @@ export interface UserResponse {
   phone: string
   profilepic: string
 }
+
 export interface Post {
   id: string
   title: string
@@ -18,6 +21,7 @@ export interface Post {
   night_cost: number
   user_id: string
 }
+
 export interface BookingData {
   init_date: Date
   end_date: Date
@@ -28,7 +32,7 @@ export interface BookingData {
 }
 
 export const fetchRegister = async (form: Record<string, unknown>) => {
-  const response = await fetch('http://localhost:4000/users', {
+  const response = await fetch(`${API_BASE_URL}/users`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -47,7 +51,7 @@ export const fetchRegister = async (form: Record<string, unknown>) => {
 }
 
 export const fetchLogin = async (credentials: { email: string; password: string }) => {
-  const response = await fetch('http://localhost:4000/login', {
+  const response = await fetch(`${API_BASE_URL}/login`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -67,7 +71,7 @@ export const fetchLogin = async (credentials: { email: string; password: string 
 }
 
 export const fetchLogout = async () => {
-  const response = await fetch('http://localhost:4000/logout', {
+  const response = await fetch(`${API_BASE_URL}/logout`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -80,7 +84,7 @@ export const fetchLogout = async () => {
 }
 
 export const fetchUserInfo = async (): Promise<UserResponse> => {
-  const response = await fetch('http://localhost:4000/user', {
+  const response = await fetch(`${API_BASE_URL}/user`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -94,7 +98,7 @@ export const fetchUserInfo = async (): Promise<UserResponse> => {
 }
 
 export const fetchUserById = async (user_id: string): Promise<UserResponse> => {
-  const response = await fetch(`http://localhost:4000/users/${user_id}`, {
+  const response = await fetch(`${API_BASE_URL}/users/${user_id}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -109,7 +113,7 @@ export const fetchUserById = async (user_id: string): Promise<UserResponse> => {
 
 export const fetchDeleteUser = async (id: string) => {
    try {
-    const response = await fetch(`http://localhost:4000/users/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/users/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     })
@@ -126,7 +130,7 @@ export const fetchDeleteUser = async (id: string) => {
 
 export const fetchUpdateUser = async (id: string, data: FormData | Record<string, unknown>) => {
   const isFormData = data instanceof FormData
-  const response = await fetch(`http://localhost:4000/users/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     method: 'PUT',
     credentials: 'include',
     headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
@@ -144,7 +148,7 @@ export const fetchUpdateUser = async (id: string, data: FormData | Record<string
 
 export const fetchPosts = async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }) => {
   try {
-    let url = 'http://localhost:4000/posts'
+    let url = `${API_BASE_URL}/posts`
     const params = new URLSearchParams()
 
     if (filters) {
@@ -171,7 +175,7 @@ export const fetchPosts = async (filters?: { city?: string; country?: string; mi
 }
 
 export const fetchPost = async (post_id: string): Promise<Post> => {
-  const response = await fetch(`http://localhost:4000/posts/${post_id}`)
+  const response = await fetch(`${API_BASE_URL}/posts/${post_id}`)
   if (!response.ok) {
     throw new Error('No se pudo obtener la información del post')
   }
@@ -180,8 +184,9 @@ export const fetchPost = async (post_id: string): Promise<Post> => {
 }
 
 export const createBooking = async (bookingData: BookingData) => {
-  const response = await fetch('http://localhost:4000/bookings', {
+  const response = await fetch(`${API_BASE_URL}/bookings`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -198,7 +203,7 @@ export const createBooking = async (bookingData: BookingData) => {
 }
 
 export const fetchBookingsByUser = async (user_id: string) => {
-  const response = await fetch(`http://localhost:4000/bookingsByUser/${user_id}`, {
+  const response = await fetch(`${API_BASE_URL}/bookingsByUser/${user_id}`, {
     method: 'GET',
     credentials: 'include',
   })
@@ -213,7 +218,7 @@ export const fetchBookingsByUser = async (user_id: string) => {
 }
 
 export const fetchVerifyCookie = async() => {
-  const response = await fetch('http://localhost:4000/verify', {
+  const response = await fetch(`${API_BASE_URL}/verify`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -226,7 +231,7 @@ export const fetchVerifyCookie = async() => {
 
 export const fetchDeleteBooking = async (id: string) => {
    try {
-    const response = await fetch(`http://localhost:4000/bookings/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/bookings/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     })
@@ -242,7 +247,7 @@ export const fetchDeleteBooking = async (id: string) => {
 }
 
 export const fetchPostsByUser = async (user_id: string) => {
-  const response = await fetch(`http://localhost:4000/postsByUser/${user_id}`, {
+  const response = await fetch(`${API_BASE_URL}/postsByUser/${user_id}`, {
     method: 'GET',
     credentials: 'include',
   })
@@ -257,7 +262,7 @@ export const fetchPostsByUser = async (user_id: string) => {
 }
 
 export const fetchPostsBySearch = async (query: string) => {
- const response = await fetch(`http://localhost:4000/posts/search?query=${encodeURIComponent(query)}`, {
+ const response = await fetch(`${API_BASE_URL}/posts/search?query=${encodeURIComponent(query)}`, {
    method: 'GET',
   })
 
@@ -270,9 +275,8 @@ export const fetchPostsBySearch = async (query: string) => {
   return data
 }
 
-
 export const fetchBookingsUsersValidate = async (huespedes: string[]) => {
-  const response = await fetch('http://localhost:4000/bookingsUsersValidate', {
+  const response = await fetch(`${API_BASE_URL}/bookingsUsersValidate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -291,7 +295,7 @@ export const fetchBookingsUsersValidate = async (huespedes: string[]) => {
 }
 
 export const fetchReviewsByPostId = async (post_id: string) => {
-  const response = await fetch(`http://localhost:4000/reviewsByPost/${post_id}`, {
+  const response = await fetch(`${API_BASE_URL}/reviewsByPost/${post_id}`, {
     method: 'GET',
     credentials: 'include',
   })
@@ -306,8 +310,9 @@ export const fetchReviewsByPostId = async (post_id: string) => {
 }
 
 export const fetchCreateReview = async (reviewData: any) => {
-  const response = await fetch('http://localhost:4000/reviews', {
+  const response = await fetch(`${API_BASE_URL}/reviews`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -325,7 +330,7 @@ export const fetchCreateReview = async (reviewData: any) => {
 
 export const fetchDeleteReviewById = async (id: string) => {
   try {
-   const response = await fetch(`http://localhost:4000/reviews/${id}`, {
+   const response = await fetch(`${API_BASE_URL}/reviews/${id}`, {
      method: 'DELETE',
      credentials: 'include',
    })
@@ -342,7 +347,7 @@ export const fetchDeleteReviewById = async (id: string) => {
 
 export const fetchDeletePost = async (id: string) => {
   try {
-    const response = await fetch(`http://localhost:4000/posts/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     })
@@ -359,7 +364,7 @@ export const fetchDeletePost = async (id: string) => {
 
 export const fetchUpdatePost = async (id: string, data: FormData | Record<string, unknown>) => {
   const isFormData = data instanceof FormData
-  const response = await fetch(`http://localhost:4000/posts/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
     method: 'PUT',
     credentials: 'include',
     headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
