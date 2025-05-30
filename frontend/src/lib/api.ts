@@ -146,7 +146,7 @@ export const fetchUpdateUser = async (id: string, data: FormData | Record<string
   return updatedUser
 }
 
-export const fetchPosts = async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }) => {
+export const fetchPosts = async (filters?: { city?: string; country?: string; minPrice?: number; maxPrice?: number }): Promise<Post[]> => {
   try {
     let url = `${API_BASE_URL}/posts`
     const params = new URLSearchParams()
@@ -162,20 +162,38 @@ export const fetchPosts = async (filters?: { city?: string; country?: string; mi
       url += `?${params.toString()}`
     }
 
+    console.log('Fetching posts from:', url) // Para debugging
+
     const response = await fetch(url, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       }
     })
+
     if (!response.ok) {
-      throw new Error('No se pudo obtener la información de los posts')
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData?.message || `Error ${response.status}: No se pudo obtener la información de los posts`)
     }
+
     const data = await response.json()
+    
+    if (!Array.isArray(data)) {
+      console.error('La respuesta no es un array:', data)
+      throw new Error('Formato de respuesta inválido')
+    }
+
     return data
   }
   catch (error) {
-    if (error instanceof Error) return false
+    console.error('Error en fetchPosts:', error)
+    if (error instanceof Error) {
+      if (error.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+        throw new Error('La petición fue bloqueada por el navegador. Por favor, desactiva temporalmente el bloqueador de anuncios o las extensiones de seguridad.')
+      }
+      throw error
+    }
+    throw new Error('Error al obtener los posts')
   }
 }
 

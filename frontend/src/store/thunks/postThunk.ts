@@ -7,17 +7,7 @@ export const startGetPosts = () => {
   return async (dispatch: AppDispatch) => {
     try {
       const data = await fetchPosts()
-      // Asegurarnos de que data es un array
-      if (Array.isArray(data)) {
-        dispatch(setPosts({ posts: data }))
-      } else if (data && typeof data === 'object' && Array.isArray(data.posts)) {
-        // Si los posts están dentro de un objeto
-        dispatch(setPosts({ posts: data.posts }))
-      } else {
-        console.error('Los datos recibidos no son un array:', data)
-        dispatch(setPosts({ posts: [] }))
-        toast.error('Error al cargar los posts')
-      }
+      dispatch(setPosts({ posts: data }))
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -31,9 +21,7 @@ export const startGetPost = (post_id: string) => {
   return async(dispatch: AppDispatch) => {
     try {
       const data = await fetchPost(post_id)
-      if (data) {
-        dispatch(setPost({post: data}))
-      }
+      dispatch(setPost({post: data}))
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -49,8 +37,6 @@ export const startGetPostsByUser = (user_id: string) => {
       const data = await fetchPostsByUser(user_id)
       if (Array.isArray(data)) {
         dispatch(setUserPosts({posts: data}))
-      } else if (data && typeof data === 'object' && Array.isArray(data.posts)) {
-        dispatch(setUserPosts({posts: data.posts}))
       } else {
         console.error('Los datos recibidos no son un array:', data)
         dispatch(setUserPosts({posts: []}))
@@ -71,8 +57,6 @@ export const startSearchPosts = (query: string) => {
       const data = await fetchPostsBySearch(query)
       if (Array.isArray(data)) {
         dispatch(setPosts({posts: data}))
-      } else if (data && typeof data === 'object' && Array.isArray(data.posts)) {
-        dispatch(setPosts({posts: data.posts}))
       } else {
         console.error('Los datos recibidos no son un array:', data)
         dispatch(setPosts({posts: []}))
