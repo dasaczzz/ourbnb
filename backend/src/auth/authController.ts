@@ -14,7 +14,7 @@ const authController = {
       res.cookie('token', token, {
         httpOnly: true,
         sameSite: 'lax',
-        secure: true,
+        secure: false,
         maxAge: 1000 * 60 * 60 * 2, // 2 hours to expire the cookie
         path: '/'
       })
@@ -30,7 +30,7 @@ const authController = {
     console.log('Logout request received');
     res.clearCookie('token', {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: 'lax',
       path: '/',
     })
