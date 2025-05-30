@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "cva": "npm:class-variance-authority@^0.7.1",
     "dotenv": "^16.5.0",
+    "firebase": "^11.8.1",
     "framer-motion": "^12.11.4",
     "js-cookie": "^3.0.5",
     "react": "^19.0.0",

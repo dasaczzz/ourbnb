@@ -3,15 +3,21 @@ import { fetchUserById, UserResponse } from "../lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store/store";
+import { AppDispatch, RootState } from "../store/store";
 import { startGetPostsByUser } from "../store/thunks/postThunk";
 import { motion } from "framer-motion";
+import { database, ref, push, set, get, update } from '../lib/firebase';
+import { addConversation, openChat } from '../store/slices/chatSlice';
+import { FaMessage } from 'react-icons/fa6';
 
 const HostProfile = () => {
-    const {user_id} = useParams()
-    const [host, setHost] = useState<UserResponse>()
-    const dispatch = useDispatch<AppDispatch>()
+    const {user_id} = useParams();
+    const [host, setHost] = useState<UserResponse>();
+    const dispatch = useDispatch<AppDispatch>();
     const userPosts = useSelector((state: any) => state.post.userPosts ?? []);
+    const currentUser = useSelector((state: RootState) => state.user);
+    const authStatus = useSelector((state: RootState) => state.auth.status);
+    const isAuthenticated = authStatus === 'authenticated';
 
     useEffect(() => {
         const fetchHost = async () => {
@@ -28,6 +34,64 @@ const HostProfile = () => {
         }
         fetchHost()
     }, [user_id])
+
+    const handleStartChat = async () => {
+      if (!currentUser.id || !host) return;
+
+      try {
+        // Check if conversation already exists
+        const userChatsRef = ref(database, `userChats/${currentUser.id}`);
+        const snapshot = await get(userChatsRef);
+        const existingChats = snapshot.val() || {};
+        
+        const existingChat = Object.entries(existingChats).find(([_, chat]: [string, any]) => 
+          chat.participantId === host.id
+        );
+
+        if (existingChat) {
+          // If chat exists, open it
+          dispatch(openChat({ conversationId: existingChat[0] }));
+        } else {
+          // Create new chat
+          const chatId = push(ref(database, 'chats')).key;
+          
+          // Set up chat for current user
+          const currentUserChatData = {
+            participantId: host.id,
+            participantName: host.name,
+            participantPhoto: host.profilepic,
+            lastMessage: '',
+            unreadCount: 0
+          };
+          
+          // Set up chat for host
+          const hostChatData = {
+            participantId: currentUser.id,
+            participantName: currentUser.name,
+            participantPhoto: currentUser.profilepic,
+            lastMessage: '',
+            unreadCount: 0
+          };
+
+          // Update both users' chat lists
+          const updates: { [key: string]: any } = {};
+          updates[`userChats/${currentUser.id}/${chatId}`] = currentUserChatData;
+          updates[`userChats/${host.id}/${chatId}`] = hostChatData;
+          
+          await update(ref(database), updates);
+
+          // Add to local state and open chat
+          dispatch(addConversation({
+            id: chatId,
+            ...currentUserChatData
+          }));
+          dispatch(openChat({ conversationId: chatId }));
+        }
+      } catch (error) {
+        console.error('Error starting chat:', error);
+        toast.error('No se pudo iniciar el chat');
+      }
+    };
 
     useEffect(() => {
         if (user_id) {
@@ -62,6 +126,15 @@ const HostProfile = () => {
                 <div>Reservaciones</div>
               </div>
             </div>
+            {isAuthenticated && currentUser.id !== host.id && (
+              <button
+                onClick={handleStartChat}
+                className="mt-4 flex items-center gap-2 bg-primary-400 text-white px-4 py-2 rounded-full hover:bg-primary-500 transition-colors"
+              >
+                <FaMessage className="w-4 h-4" />
+                Iniciar chat
+              </button>
+            )}
           </div>
 
           {/* Detalles a la derecha */}
