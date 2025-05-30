@@ -4,7 +4,6 @@ WORKDIR /app
 
 # Definimos argumento de build (recibido por docker build --build-arg)
 ARG VITE_BACKEND_URL
-ARG NODE_ENV
 
 # Lo pasamos como variable de entorno para que Vite lo use
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
@@ -14,7 +13,6 @@ COPY package*.json ./
 RUN npm install
 
 # copy source code
-ENV NODE_ENV=$NODE_ENV
 COPY . .
 
 RUN npm run build
