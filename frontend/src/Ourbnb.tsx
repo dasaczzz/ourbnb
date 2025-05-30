@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import { AppDispatch } from './store/store'
 import { useDispatch } from 'react-redux'
 import { checkAuthStatus } from './store/thunks/authThunk'
+import EditPostForm from './components/profile/EditPostForm'
 
 export const Ourbnb = () => {
 
@@ -40,6 +41,7 @@ export const Ourbnb = () => {
             <Route path='/newPost' element={<AnimatedPage><NewPost /></AnimatedPage>}/>
             <Route path="/bookingConfirmation/:post_id" element={<AnimatedPage><BookingConfirmation /></AnimatedPage>} />
             <Route path="/HostProfile/:user_id" element={<AnimatedPage><HostProfile /></AnimatedPage>} />
+            <Route path="/edit-post/:post_id" element={<AnimatedPage><EditPostForm /></AnimatedPage>} />
           </Route>
         </Route>
       </Routes>
