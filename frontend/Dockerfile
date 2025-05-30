@@ -2,6 +2,14 @@ FROM node:23-slim AS builder
 
 WORKDIR /app
 
+# Definimos argumento de build (recibido por docker build --build-arg)
+ARG VITE_BACKEND_URL
+ARG NODE_ENV
+
+# Lo pasamos como variable de entorno para que Vite lo use
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV NODE_ENV=$NODE_ENV
+
 # install dependencies
 COPY package*.json ./
 RUN npm install
