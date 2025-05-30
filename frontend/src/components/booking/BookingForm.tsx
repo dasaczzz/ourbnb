@@ -221,7 +221,7 @@ const BookingForm = () => {
           </div>
           
           {/* Selector de huéspedes */}
-          {user.id?
+          {user.id && user.id !== post.user_id ?
           <div className="shadow-md border border-gray-300 rounded-lg overflow-hidden mb-2">
             <div className="flex flex-col px-3 py-2">
               <label className="text-xs font-semibold text-gray-500 mb-1">Huéspedes</label>
@@ -243,19 +243,24 @@ const BookingForm = () => {
           </div>
           : ""}
           
-          {user.id? 
-          <Button type="submit" intent="fade">
-            Reservar
-          </Button>
-
-          :
-          <div>
-            <h3 className="text-[#2c6d67] text-xs font-bold flex items-center gap-1 mb-2">Deberás iniciar sesión para realizar tu reserva</h3>
-            <Link to={"/login"}>
-              <Button intent="primary">Iniciar Sesión</Button>
-            </Link>
-          </div>
-          }
+          {user.id ? (
+            user.id === post.user_id ? (
+              <Link to={"/profile"}>
+               <Button type="submit" intent="fade">Administrar en Perfil</Button>
+              </Link>
+            ) : (
+              <Button type="submit" intent="fade">
+                Reservar
+              </Button>
+            )
+          ) : (
+            <div>
+              <h3 className="text-[#2c6d67] text-xs font-bold flex items-center gap-1 mb-2">Deberás iniciar sesión para realizar tu reserva</h3>
+              <Link to={"/login"}>
+                <Button intent="primary">Iniciar Sesión</Button>
+              </Link>
+            </div>
+          )}
 
           </form>
 
