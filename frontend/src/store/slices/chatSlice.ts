@@ -60,14 +60,22 @@ export const chatSlice = createSlice({
       if (!state.messages[action.payload.conversationId]) {
         state.messages[action.payload.conversationId] = [];
       }
-      state.messages[action.payload.conversationId].push(action.payload.message);
       
-      // Update conversation's last message
-      const conversation = state.conversations.find(c => c.id === action.payload.conversationId);
-      if (conversation) {
-        conversation.lastMessage = action.payload.message.text;
-        if (state.activeConversation !== action.payload.conversationId) {
-          conversation.unreadCount++;
+      // Check if message already exists
+      const exists = state.messages[action.payload.conversationId].some(
+        m => m.id === action.payload.message.id
+      );
+      
+      if (!exists) {
+        state.messages[action.payload.conversationId].push(action.payload.message);
+        
+        // Update conversation's last message
+        const conversation = state.conversations.find(c => c.id === action.payload.conversationId);
+        if (conversation) {
+          conversation.lastMessage = action.payload.message.text;
+          if (state.activeConversation !== action.payload.conversationId) {
+            conversation.unreadCount++;
+          }
         }
       }
     },

@@ -129,7 +129,7 @@ const HostProfile = () => {
             {isAuthenticated && currentUser.id !== host.id && (
               <button
                 onClick={handleStartChat}
-                className="mt-4 flex items-center gap-2 bg-primary-400 text-white px-4 py-2 rounded-full hover:bg-primary-500 transition-colors"
+                className="mt-4 flex items-center gap-2 bg-primary-400 text-white px-4 py-2 rounded-xl hover:bg-primary-500 transition-colors"
               >
                 <FaMessage className="w-4 h-4" />
                 Iniciar chat

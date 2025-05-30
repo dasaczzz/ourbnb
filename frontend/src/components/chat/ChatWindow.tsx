@@ -44,14 +44,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ conversationId, particip
     const newMessageRef = push(chatRef);
     await set(newMessageRef, messageData);
 
-    // Update local state
-    dispatch(addMessage({
-      conversationId,
-      message: {
-        id: newMessageRef.key!,
-        ...messageData
-      }
-    }));
+    // Firebase will trigger the real-time update, no need to dispatch locally
 
     setNewMessage('');
   };
@@ -59,7 +52,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ conversationId, particip
   return (
     <div className="flex flex-col h-full bg-gray-50">
       <div className="flex-1 overflow-y-auto p-3">
-        {messages.map((message) => (
+        {Array.from(new Map(messages.map(m => [m.id, m])).values()).map((message) => (
           <ChatMessage
             key={message.id}
             text={message.text}
