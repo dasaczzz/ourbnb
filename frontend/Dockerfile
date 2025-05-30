@@ -8,13 +8,13 @@ ARG NODE_ENV
 
 # Lo pasamos como variable de entorno para que Vite lo use
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
-ENV NODE_ENV=$NODE_ENV
 
 # install dependencies
 COPY package*.json ./
 RUN npm install
 
 # copy source code
+ENV NODE_ENV=$NODE_ENV
 COPY . .
 
 RUN npm run build
