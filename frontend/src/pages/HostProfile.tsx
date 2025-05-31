@@ -115,15 +115,11 @@ const HostProfile = () => {
             <h2 className="text-2xl font-bold">{host?.name ?? ''}</h2>
             <p className="text-gray-500">Anfitrión</p>
             <div className="w-full border-t border-gray-200" />
-            <div className="w-full grid grid-cols-2 text-center text-sm text-gray-600">
+            <div className="w-full grid grid-cols-1 text-center text-sm text-gray-600">
               <div>
                 <div className="font-bold text-lg"></div>
                 <div>Publicaciones</div>
                 <div className="font-semibold text-xl">{numberOfUserPosts}</div>
-              </div>
-              <div>
-                <div className="font-bold text-lg"></div>
-                <div>Reservaciones</div>
               </div>
             </div>
             {isAuthenticated && currentUser.id !== host.id && (

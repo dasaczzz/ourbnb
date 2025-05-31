@@ -176,11 +176,7 @@ const PostDetail = () => {
           <p className="font-bold text-xl mt-4 mb-1">Acerca de este lugar</p>
           <p data-testid="post-description" className="text-gray-600 text-sm mb-4">{post.description}</p>
 
-          <hr />
 
-          <p className="font-bold text-xl mt-4 mb-4">Lo que este lugar ofrece</p>
-
-          <hr />
 
         </div>
 
