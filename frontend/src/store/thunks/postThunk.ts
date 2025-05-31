@@ -113,7 +113,7 @@ export const startCreatePost = (post: Partial<PostState>) => {
       dispatch(updateDraftPost({})) // Clear the draft post after successful creation and upload
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(`Error al crear el post: ${error.message}`)
+        toast.error(`Confirma otra vez, por favor.`)
       } else {
         toast.error('Ocurrió un error desconocido al crear el post.')
       }

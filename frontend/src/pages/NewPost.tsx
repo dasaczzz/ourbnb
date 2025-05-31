@@ -124,7 +124,7 @@ export const NewPost = () => {
           intent={currentStep === steps.length - 1 && isConfirmingPublish ? 'cancelFade' : 'primary'}
           onClick={handleNextStep}
         >
-          {currentStep === steps.length - 1 ? (isConfirmingPublish ? 'Confirmar' : 'Publicar') : 'Siguiente'}
+          {currentStep === steps.length - 1 ? (isConfirmingPublish ? 'Confirmar(Confirmar dos veces)' : 'Publicar\n(Confirmar dos veces)') : 'Siguiente'}
         </Button>
       </div>
     </section>
