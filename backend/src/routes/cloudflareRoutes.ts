@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import cloudflareController from "../controllers/cloudflareController.js";
+import cloudflareController from "../controllers/cloudflareController";
 
 const router = Router();
 const upload = multer();

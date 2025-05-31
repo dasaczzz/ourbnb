@@ -46,3 +46,5 @@ const PORT = Number(process.env.PORT) || config.port || 4000
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor corriendo en puerto ${PORT}`)
 })
+
+export default app;
