@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 import BookingForm from '../components/booking/BookingForm'
 import { ReviewCard } from '../components/reviews/ReviewCard'
 import { LoadingSpinner } from '../components/primitives/LoadingSpinner'
+import GoogleMap from '../components/google/GoogleMap'
+import config from '../lib/config'
 
 interface PostLocation {
   city: string
@@ -33,6 +35,7 @@ const PostDetail = () => {
   const post = useSelector((state: RootState) => state.post.post) as Post | null;
   const [host, setHost] = useState<UserResponse | null>(null)
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(post ? new Array(post.images.length).fill(false) : [])
+  const [coordinates, setCoordinates] = useState<{lat: number, lng: number} | null>(null)
 
   useEffect(() => {
     if (post_id) {
@@ -52,6 +55,31 @@ const PostDetail = () => {
       }
     }
     fetchHost()
+  }, [post])
+
+  useEffect(() => {
+    const geocodeAddress = async (address: string) => {
+      try {
+        const apiKey = config.maps_api || ''
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+        )
+        const data = await response.json()
+        if (data.status === 'OK') {
+          const location = data.results[0].geometry.location
+          setCoordinates({ lat: location.lat, lng: location.lng })
+        } else {
+          console.error('Geocoding error:', data.status)
+        }
+      } catch (error) {
+        console.error('Error fetching geocode:', error)
+      }
+    }
+
+    if (post) {
+      const fullAddress = `${post.location.location}, ${post.location.city}, ${post.location.country}`
+      geocodeAddress(fullAddress)
+    }
   }, [post])
 
   if (!post) {
@@ -164,10 +192,20 @@ const PostDetail = () => {
         </div>
         
       </div>
+      {coordinates && (
+        <div className="my-4 rounded-lg overflow-hidden shadow-md h-80">
+          <GoogleMap
+            center={coordinates}
+            zoom={15}
+            markers={[{ position: coordinates, title: post.title }]}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      )}
       <ReviewCard/>
     </div>
   </div>
   );
 }
 
-export default PostDetail;
+export default PostDetail

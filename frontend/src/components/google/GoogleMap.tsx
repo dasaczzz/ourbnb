@@ -38,7 +38,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   useEffect(() => {
     const initMap = async () => {
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
         version: 'weekly',
         libraries: ['places'], // Agregamos la librería de places
       });
