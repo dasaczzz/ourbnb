@@ -81,17 +81,17 @@ export const Index = () => {
 
   return (
     <>
-      <div className=" flex inline-block mx-40">
+      <div className=" flex container">
         <button
           type="button"
-          className='border w-30 rounded-xl shadow-md outline-1 text-primary-400 outline-primary-400 hover:text-primary-500 hover:outline-primary-500 hover:bg-gray-200 transition'
+          className='relative border flex flex-col items-center w-30 rounded-xl shadow-md outline-1 text-primary-400 outline-primary-400 hover:text-primary-500 hover:outline-primary-500 hover:bg-gray-200 transition'
           onClick={() => setFilterOpen(!filterOpen)}
           aria-expanded={filterOpen}
           aria-haspopup="true"
         >
           Filtrar
           <svg
-            className="-mr-1 ml-2 h-5 w-5"
+            className="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -102,7 +102,7 @@ export const Index = () => {
         </button>
 
         {filterOpen && (
-          <div className="transition origin-top-right absolute left-0 mt-2 ml-40 w-35 rounded-xl shadow-md bg-white/80 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none z-10 p-4">
+          <div className="absolute transition origin-top-right  left-0 mt-2 ml-40 w-35 rounded-xl shadow-md bg-white/80 backdrop-blur-sm ring-1 ring-black ring-opacity-5 focus:outline-none z-10 p-4">
             <div className="flex flex-col gap-1">
               <input
                 type="text"
