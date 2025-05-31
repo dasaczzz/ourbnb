@@ -42,10 +42,20 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
     if (!validateForm()) return
 
     const formData = new FormData()
-    if (name) formData.append('name', name)
-    if (email) formData.append('email', email)
-    if (phone) formData.append('phone', phone)
-    if (password) formData.append('password', password)
+    formData.append('name', name || state.name)
+    formData.append('email', email || state.email)
+    formData.append('phone', phone || state.phone)
+    
+    if (password && password.trim() !== '') {
+      if (password.length < 6) {
+        toast.error('La contraseña debe tener al menos 6 caracteres')
+        return
+      }
+      console.log('Nueva contraseña:', password)
+      formData.append('password', password)
+      toast.success('Tu contraseña ha sido actualizada. Por favor, recuerda tu nueva contraseña.')
+    }
+
     if (fileInputRef.current?.files?.[0]) {
       formData.append('profilepic', fileInputRef.current.files[0])
     }
@@ -97,7 +107,16 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
       <Input type='text' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder={state.email} name='email' value={email} data-testid="email-input"/>
       <Input type='number' text='Telefono' onChange={handleInputChange} error={errors.phone} placeholder={state.phone} name='phone' value={phone} data-testid="phone-input"/>
       <div className='flex justify-between gap-3 items-center w-full'>
-        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.password} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password} data-testid="password-input"/>
+        <Input 
+          type={showPassword ? 'text' : 'password'} 
+          text='Nueva contraseña (opcional)' 
+          error={errors.password} 
+          onChange={handleInputChange} 
+          placeholder='Deja en blanco para mantener la actual' 
+          name='password' 
+          value={password} 
+          data-testid="password-input"
+        />
         <button type='button' onClick={handleToggleShow} data-testid="toggle-password-visibility">{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
       <hr />

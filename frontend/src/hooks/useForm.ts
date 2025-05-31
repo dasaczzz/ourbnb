@@ -35,18 +35,15 @@ export function useForm<T extends Record<string, unknown>> (initialForm: T) {
     Object.entries(form).forEach(([name, value]) => {
       const trimmedValue = (value as string).trim()
 
-      // Skip validation if field is empty (allow partial updates)
-      if (!trimmedValue) {
-        newErrors[name] = 'Este campo es obligatorio'
-        return
-      }
-
-      // Apply field-specific validator if available
-      const validator = validators[name]
-      if (validator) {
-        const error = validator(trimmedValue)
-        if (error) {
-          newErrors[name] = error
+      // Solo validamos si el campo tiene un valor (ha sido modificado)
+      if (trimmedValue) {
+        // Apply field-specific validator if available
+        const validator = validators[name]
+        if (validator) {
+          const error = validator(trimmedValue)
+          if (error) {
+            newErrors[name] = error
+          }
         }
       }
     })
