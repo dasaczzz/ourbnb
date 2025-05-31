@@ -190,7 +190,7 @@ export const Index = () => {
         )}
       </div>
 
-      <section className="container flex justify-between items-start content-start flex-wrap py-8 *:rounded-2xl">
+      <section className="container flex justify-start items-start content-start flex-wrap py-8 gap-8 *:rounded-2xl">
         {filteredPosts.map((item: PostState) => (
           <HostCard post={item}/>
         ))

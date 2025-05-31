@@ -13,6 +13,7 @@ export const UserProfilePosts = () => {
     const userPosts = useSelector((state: any) => state.post.userPosts ?? [])
     const dispatch = useDispatch<AppDispatch>()
     const [loading, setLoading] = useState<Record<string, boolean>>({})
+    const [confirming, setConfirming] = useState<Record<string, boolean>>({})
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -21,19 +22,22 @@ export const UserProfilePosts = () => {
         }
     }, [dispatch, user.id])
 
-    const handleDelete = async (postId: string, e: React.MouseEvent) => {
-        e.preventDefault()
-        if (window.confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
-            setLoading(prev => ({ ...prev, [postId]: true }))
-            const success = await fetchDeletePost(postId)
-            if (success) {
-                toast.success('Publicación eliminada con éxito')
-                dispatch(startGetPostsByUser(user.id))
-            } else {
-                toast.error('Error al eliminar la publicación')
-            }
-            setLoading(prev => ({ ...prev, [postId]: false }))
+    const handleDelete = async (postId: string) => {
+        if (!confirming[postId]) {
+            setConfirming(prev => ({ ...prev, [postId]: true }))
+            return
         }
+
+        setLoading(prev => ({ ...prev, [postId]: true }))
+        const success = await fetchDeletePost(postId)
+        if (success) {
+            toast.success('Publicación eliminada con éxito')
+            dispatch(startGetPostsByUser(user.id))
+        } else {
+            toast.error('Error al eliminar la publicación')
+        }
+        setLoading(prev => ({ ...prev, [postId]: false }))
+        setConfirming(prev => ({ ...prev, [postId]: false }))
     }
 
     return (
@@ -61,7 +65,15 @@ export const UserProfilePosts = () => {
                   </Link>
                   <div className="flex gap-2 px-1">
                     <Button intent="primary" onClick={() => navigate(`/edit-post/${post.id}`)} className="text-sm py-2" data-testid={`edit-post-${post.id}`}>Editar</Button>
-                    <Button intent="cancel" onClick={(e) => handleDelete(post.id, e)} className="text-sm py-2" disabled={loading[post.id]} data-testid={`delete-post-${post.id}`}>{loading[post.id] ? <LoadingSpinner /> : 'Eliminar'}</Button>
+                    <Button 
+                      intent={confirming[post.id] ? "cancelFade" : "cancel"}
+                      onClick={() => handleDelete(post.id)}
+                      className="text-sm py-2"
+                      disabled={loading[post.id]}
+                      data-testid={`delete-post-${post.id}`}
+                    >
+                      {loading[post.id] ? <LoadingSpinner /> : confirming[post.id] ? 'Confirmar' : 'Eliminar'}
+                    </Button>
                   </div>
                 </div>
               </div>

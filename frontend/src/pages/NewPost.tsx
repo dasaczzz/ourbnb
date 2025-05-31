@@ -17,6 +17,7 @@ export const NewPost = () => {
 
   const [isCurrentStepValid, setIsCurrentStepValid] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
+  const [isConfirmingPublish, setIsConfirmingPublish] = useState(false)
 
   const describeRef = useRef<DescribeHandle>(null)
   const highlightRef = useRef<HighlightHandle>(null)
@@ -56,11 +57,10 @@ export const NewPost = () => {
       case 1: // Paso de Highlight
         if (highlightRef.current) {
           const highlightData = highlightRef.current.getData()
-          const images = highlightData.images.map(item => item.slice(5))
           dispatch(updateDraftPost({
             title: highlightData.title,
             description: highlightData.description,
-            images,
+            images: highlightData.images,
             user_id: id,
           }))
           toast.success('Información de título, descripción e imágenes guardada.')
@@ -71,15 +71,22 @@ export const NewPost = () => {
         break
       case 2:
         if (currentStep === steps.length - 1 && publishRef.current) {
+          if (!isConfirmingPublish) {
+            setIsConfirmingPublish(true)
+            return
+          }
+
           const publishData = publishRef.current.getData()
           if (draftPost) {
             dispatch(updateDraftPost({
-            night_cost: publishData.night_cost,
-            facilities: ['645a1b2c3d4e5f6789012346']
-          }))
+              night_cost: publishData.night_cost,
+              facilities: ['645a1b2c3d4e5f6789012346']
+            }))
             dispatch(startCreatePost(draftPost))
+            setIsConfirmingPublish(false)
           } else {
             toast.error('No hay datos de post para publicar.')
+            setIsConfirmingPublish(false)
           }
         }
         break
@@ -89,17 +96,19 @@ export const NewPost = () => {
 
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1)
+      setIsConfirmingPublish(false)
     }
   }
 
   const prevStep = () => {
     if (currentStep > 0) {
       setCurrentStep((prev) => prev - 1)
+      setIsConfirmingPublish(false)
     }
   }
 
   return (
-    <section className='container flex flex-col gap-8'>
+    <section className='container flex flex-col gap-8 mb-20'>
       <Stepper currentStep={currentStep} />
       <div className="mb-4 flex flex-col items-center">{steps[currentStep].component}</div>
 
@@ -112,10 +121,10 @@ export const NewPost = () => {
           Atrás
         </Button>
         <Button
-          intent='primary'
+          intent={currentStep === steps.length - 1 && isConfirmingPublish ? 'cancelFade' : 'primary'}
           onClick={handleNextStep}
         >
-          {currentStep === steps.length - 1 ? 'Publicar' : 'Siguiente'}
+          {currentStep === steps.length - 1 ? (isConfirmingPublish ? 'Confirmar' : 'Publicar') : 'Siguiente'}
         </Button>
       </div>
     </section>

@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { FaRegImage } from 'react-icons/fa6'
 
 export interface HighlightHandle {
-  getData: () => { title: string; description: string; images: string[] };
+  getData: () => { title: string; description: string; images: File[] };
   isValid: boolean;
 }
 
@@ -19,7 +19,7 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const currentIsValid = title.trim().length > 0 && description.trim().length > 0 && selectedFiles.length >= 3
+  const currentIsValid = title.trim().length > 0 && description.trim().length > 0 && selectedFiles.length >= 1
 
   useEffect(() => {
     onValidationChange(currentIsValid)
@@ -29,7 +29,7 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
     getData: () => ({
       title,
       description,
-      images: selectedFiles.map(file => file.name)
+      images: selectedFiles
     }),
     isValid: currentIsValid
   }))
@@ -57,10 +57,10 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
     const newFiles = [...selectedFiles, ...imageFiles]
     setSelectedFiles(newFiles)
 
-    if (newFiles.length < 3) {
-      toast(`Necesitas ${3 - newFiles.length} fotos más.`)
+    if (newFiles.length < 1) {
+      toast(`Necesitas ${1 - newFiles.length} foto más.`);
     } else {
-      toast.success(`Tienes ${newFiles.length} fotos. ¡Listo para continuar!`)
+      toast.success(`Tienes ${newFiles.length} foto(s). ¡Listo para continuar!`)
     }
   }, [selectedFiles])
 
@@ -118,7 +118,7 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
       <div className="max-w-xl mx-auto space-y-6">
       <h2 className="text-2xl font-bold">Agrega algunas fotos</h2>
       <p className="text-sm text-muted-foreground">
-        Necesitarás 3 fotos para mostrar tu espacio. Después podrás agregar más o modificarlas.
+        Necesitarás 1 foto para mostrar tu espacio. Después podrás agregar más o modificarlas.
       </p>
 
       <div
@@ -133,7 +133,7 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
         <div className="flex flex-col items-center justify-center space-y-4">
           <FaRegImage size={64} className="text-primary-500" />
           <p className="text-xl font-semibold text-gray-700">Arrastra tus fotos aquí</p>
-          <p className="text-sm text-muted-foreground">Elije por lo menos 3 fotos</p>
+          <p className="text-sm text-muted-foreground">Elije por lo menos 1 foto</p>
 
           <input
             type="file"
@@ -181,9 +181,9 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
         </div>
       )}
 
-      {selectedFiles.length < 3 && selectedFiles.length > 0 && (
+      {selectedFiles.length < 1 && selectedFiles.length > 0 && (
         <p className="text-red-500 text-center font-medium">
-          ¡Atención! Necesitas al menos 3 fotos para continuar. Actualmente tienes {selectedFiles.length}.
+          ¡Atención! Necesitas al menos 1 foto para continuar. Actualmente tienes {selectedFiles.length}.
         </p>
       )}
        {selectedFiles.length === 0 && (

@@ -4,7 +4,7 @@ export interface PostState {
   id: string | null
   title: string | null
   description: string | null
-  images: string[] | null
+  images: (string | File)[] | null
   location: {
     city: string
     country: string
