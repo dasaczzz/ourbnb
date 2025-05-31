@@ -41,33 +41,41 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
     e.preventDefault()
     if (!validateForm()) return
 
-    const formData = new FormData()
-    formData.append('name', name || state.name)
-    formData.append('email', email || state.email)
-    formData.append('phone', phone || state.phone)
+    const updateData: any = {}
     
+    if (name) updateData.name = name
+    if (email) updateData.email = email
+    if (phone) updateData.phone = phone
     if (password && password.trim() !== '') {
       if (password.length < 6) {
         toast.error('La contraseña debe tener al menos 6 caracteres')
         return
       }
-      console.log('Nueva contraseña:', password)
-      formData.append('password', password)
+      updateData.password = password
       toast.success('Tu contraseña ha sido actualizada. Por favor, recuerda tu nueva contraseña.')
     }
 
     if (fileInputRef.current?.files?.[0]) {
-      formData.append('profilepic', fileInputRef.current.files[0])
+      const imageFormData = new FormData()
+      imageFormData.append('profilepic', fileInputRef.current.files[0])
+      try {
+        const updatedUserWithImage = await fetchUpdateUser(state.id, imageFormData)
+        dispatch(setUser(updatedUserWithImage))
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Error al actualizar la imagen')
+        return
+      }
     }
-
-    try {
-      const updatedUser = await fetchUpdateUser(state.id, formData)
-      dispatch(setUser(updatedUser))
-      toast.success('Usuario actualizado correctamente')
-      handleReset()
-      setPreviewImage(null)
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Error al actualizar usuario')
+    if (Object.keys(updateData).length > 0) {
+      try {
+        const updatedUser = await fetchUpdateUser(state.id, updateData)
+        dispatch(setUser(updatedUser))
+        toast.success('Usuario actualizado correctamente')
+        handleReset()
+        setPreviewImage(null)
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Error al actualizar usuario')
+      }
     }
   }
 

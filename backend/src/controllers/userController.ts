@@ -93,12 +93,25 @@ export const updateUserById = async (req: Request, res: Response) => {
     }
 
     if (updateData.password) {
-      updateData.password = await hashPassword(updateData.password)
+      if (typeof updateData.password !== 'string' || updateData.password.trim() === '') {
+        console.error('Contraseña inválida recibida');
+        res.status(400).json({ error: 'Contraseña inválida' });
+        return;
+      }
+
+      try {
+        updateData.password = await hashPassword(updateData.password);
+      } catch (error) {
+        console.error('Error al encriptar la contraseña:', error);
+        res.status(500).json({ error: 'Error al procesar la contraseña' });
+        return;
+      }
     }
 
     const updatedUser = await usuariosService.updateUserById(userIdFromParams, updateData);
     res.json(updatedUser);
   } catch (error) {
+    console.error('Error completo en updateUserById:', error);
     if (error instanceof Error) {
       res.status(500).json({ error: 'error updating user', details: error.message });
     }

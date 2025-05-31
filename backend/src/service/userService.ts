@@ -41,10 +41,6 @@ export const deleteUserById = async (id: string) => {
 export const updateUserById = async (id: string, data: Partial<CreateUserInput>) => {
   try {
     const updateData = { ...data };
-    if (data.password) {
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      updateData.password = hashedPassword;
-    }
     const updatedUser = await prisma.user.update({
       where: { id: id },
       data: updateData,
