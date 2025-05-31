@@ -81,9 +81,9 @@ export const ChatModal = () => {
 
       {/* Chat Modal */}
       <div
-        className={`fixed bottom-20 right-4 w-[350px] bg-white rounded-t-lg shadow-xl transition-all duration-300 ${
-          isOpen ? 'h-[500px]' : 'h-[48px]'
-        } flex flex-col z-50 overflow-hidden`}
+        className={`fixed bottom-20 right-4 w-[350px] h-[500px] bg-white rounded-t-lg shadow-xl transition-all duration-300 ${
+          isOpen ? 'flex' : 'hidden'
+        } flex-col z-50`}
       >
         {/* Header */}
         <div 
@@ -95,7 +95,7 @@ export const ChatModal = () => {
         </div>
 
         {/* Content */}
-        <div className={`flex-1 flex ${!isOpen ? 'hidden' : ''}`}>
+        <div className="flex-1 flex overflow-y-auto">
           <ChatList />
           
           {activeChat ? (
