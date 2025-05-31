@@ -10,9 +10,7 @@ import ReviewGraphVisualization from './ReviewGraphVisualization'
 interface Review {
   id: string;
   comment: string;
-  date_review: {
-    $date: string;
-  };
+  date_review: string;
   qualification: number;
   user_id: {
     $oid: string;
@@ -87,7 +85,7 @@ export const ReviewCard = () => {
     const getReviews = async (post_id: string) => {
       try {
         const reviews = await fetchReviewsByPostId(post_id)
-        console.log('Fetched reviews:', reviews) // Debug log to check user data completeness
+        console.log('Review date structure:', reviews[0]?.date_review) // Debug log
         setReviews(reviews)
         // Build graph data structure from reviews
         const graph = buildReviewGraph(reviews, post_id)
@@ -110,16 +108,20 @@ export const ReviewCard = () => {
         {/* You can use reviewGraph for further processing or visualization */}
 
         {/* pa las reviews */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 rounded-xl">
           {reviews.map((review, index) => (
             <div key={`${review.id}-${index}`} className=" border border-gray-300 bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4">
               <div className="flex flex-col w-full">
-                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100 w-40">
+                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100 w-full">
                   <img src={review.user.profilepic} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
                   <div>
                     <h3 className="font-semibold">{review.user.name}</h3>
-                    <p className="text-sm text-gray-500">
-                      {new Date(review.date_review.$date).toLocaleDateString()}
+                    <p className="text-sm text-gray-500 w-full">
+                      {new Date(review.date_review).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
                     </p>
                   </div>
                 </Link>
