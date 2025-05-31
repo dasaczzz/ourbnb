@@ -1,8 +1,23 @@
 import { Link } from 'react-router-dom'
-import { PostState } from '../../store/slices/postSlice'
+
+interface HostCardPostData {
+  id: string | null;
+  title: string | null;
+  description: string | null;
+  images: string[] | null;
+  location: {
+    city: string;
+    country: string;
+    location: string;
+  };
+  type: string;
+  night_cost: number | null;
+  user_id: string | null;
+  facilites: string[];
+}
 
 interface props {
-  post: PostState
+  post: HostCardPostData;
 }
 
 export const HostCard: React.FC<props> = ({post}) => {

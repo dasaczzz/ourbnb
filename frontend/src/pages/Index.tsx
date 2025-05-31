@@ -191,13 +191,16 @@ export const Index = () => {
       </div>
 
       <section className="container flex justify-start items-start content-start flex-wrap py-8 gap-8 *:rounded-2xl">
-        {filteredPosts.map((item: PostState) => (
-          <HostCard key={item.id} post={{
-            ...item,
-            images: item.images as string[] | null
-          }}/>
-        ))
-        }
+        {filteredPosts.map((item: PostState) => {
+          const imagesForHostCard = item.images ? item.images.filter(image => typeof image === 'string') as string[] : null;
+
+          return (
+            <HostCard key={item.id} post={{
+              ...item,
+              images: imagesForHostCard,
+            }}/>
+          );
+        })}
       </section>
     </>
   )
