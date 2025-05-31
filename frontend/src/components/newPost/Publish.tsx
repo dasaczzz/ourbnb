@@ -1,10 +1,22 @@
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { Input } from '../primitives/Input'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import config from '../../lib/config'
 
-export const Publish = () => {
+export interface PublishHandle {
+  getData: () => {
+    night_cost: number
+  };
+  isValid: boolean;
+}
+
+interface Props {
+  onValidationChange: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Publish = forwardRef<PublishHandle, Props>(({ onValidationChange }, ref)  => {
+  const [night_cost, setNight_cost] = useState(0)
   const draftLocation = useSelector((state: RootState) => state.post.draftPost.location)
   const [mapEmbedUrl, setMapEmbedUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -24,6 +36,18 @@ export const Publish = () => {
       setMapEmbedUrl(null)
     }
   }, [draftLocation])
+  const currentIsValid = night_cost != 0
+
+  useImperativeHandle(ref, () => ({
+      getData: () => ({
+        night_cost
+      }),
+      isValid: currentIsValid
+    }))
+
+  useEffect(() => {
+    onValidationChange(currentIsValid)
+  }, [currentIsValid, onValidationChange])
 
   if (loading) {
     return <div className="text-center p-4">Cargando mapa...</div>
@@ -36,10 +60,14 @@ export const Publish = () => {
   if (!mapEmbedUrl) {
     return <div className="text-center p-4 text-muted-foreground">No hay mapa disponible para mostrar.</div>
   }
+
+  const handleNight_costChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNight_cost(parseInt(event.target.value))
+  }
   return (
     <div className='flex flex-col gap-4 w-1/2 '>
       <h2 className='text-2xl font-bold'>Establece un precio</h2>
-      <input type='number' className='font-bold text-6xl text-center'/>
+      <input type='number' className='font-bold text-6xl text-center' value={night_cost} onChange={handleNight_costChange}/>
       <hr className='py-2'/>
       <h2 className='text-2xl font-bold'>Define unas reglas para el hogar</h2>
       <Input
@@ -66,4 +94,4 @@ export const Publish = () => {
     </div>
     </div>
   )
-}
+})

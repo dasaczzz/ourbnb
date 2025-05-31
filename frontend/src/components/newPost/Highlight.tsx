@@ -29,7 +29,7 @@ export const Highlight = forwardRef<HighlightHandle, Props>(({ onValidationChang
     getData: () => ({
       title,
       description,
-      images: selectedFiles.map(file => URL.createObjectURL(file))
+      images: selectedFiles.map(file => file.name)
     }),
     isValid: currentIsValid
   }))

@@ -13,6 +13,7 @@ export interface PostState {
   type: string
   night_cost: number | null
   user_id: string | null
+  facilites: string[]
 }
 
 interface PostSliceState {

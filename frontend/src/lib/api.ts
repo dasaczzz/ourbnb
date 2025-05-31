@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+import { PostState } from '../store/slices/postSlice'
+
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'
 
 export interface UserResponse {
   id: string
@@ -183,7 +185,7 @@ export const fetchPosts = async (filters?: { city?: string; country?: string; mi
     }
 
     const data = await response.json()
-    
+
     if (!Array.isArray(data)) {
       console.error('La respuesta no es un array:', data)
       throw new Error('Formato de respuesta inválido')
@@ -347,7 +349,7 @@ export const fetchReviewsByPostId = async (post_id: string) => {
   return data
 }
 
-export const fetchCreateReview = async (reviewData: any) => {
+export const fetchCreateReview = async (reviewData: unknown) => {
   const response = await fetch(`${API_BASE_URL}/reviews`, {
     method: 'POST',
     credentials: 'include',
@@ -434,4 +436,37 @@ export const fetchFacilitiesByPostId = async (post_id: string): Promise<Facility
 
   const data = await response.json()
   return data
+}
+
+export const fetchCreatePost = async (post: Partial<PostState>) => {
+  const response = await fetch(`${API_BASE_URL}/posts`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+  })
+  if (!response.ok) {
+    const errorData = await response.json()
+    console.log(errorData)
+    throw new Error(JSON.stringify(errorData))
+  }
+
+  const data = await response.json()
+  return data
+}
+
+
+export const fetchSetPostImages = async (id: string, data: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/cloudflare/posts/${id}/images`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: data
+  })
+  if (!response.ok) {
+    const errorData = await response.json()
+    console.log(errorData)
+    throw new Error(JSON.stringify(errorData))
+  }
 }

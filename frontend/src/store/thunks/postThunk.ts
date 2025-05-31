@@ -1,6 +1,6 @@
 import { AppDispatch } from '../store'
-import { fetchPosts, fetchPost, fetchPostsBySearch, fetchPostsByUser } from '../../lib/api'
-import { setPosts, setPost, setUserPosts } from '../slices/postSlice'
+import { fetchPosts, fetchPost, fetchPostsBySearch, fetchPostsByUser, fetchCreatePost, fetchSetPostImages } from '../../lib/api'
+import { setPosts, setPost, setUserPosts, pending, updateDraftPost, PostState } from '../slices/postSlice'
 import { toast } from 'sonner'
 
 export const startGetPosts = () => {
@@ -71,3 +71,25 @@ export const startSearchPosts = (query: string) => {
   }
 }
 
+export const startCreatePost = (post: Partial<PostState>) => {
+  return async(dispatch: AppDispatch) => {
+    dispatch(pending())
+    try {
+      const data = await fetchCreatePost(post)
+      post.images?.forEach(async item => {
+        const formData = new FormData()
+        formData.append('file', item)
+        console.log(formData)
+        await fetchSetPostImages(data.id, formData)
+      })
+      toast.success('Publicacion subida exitosamente!')
+      dispatch(updateDraftPost({}))
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(`Error al crear el post: ${error.message}`)
+      } else {
+        toast.error('Ocurrió un error desconocido al crear el post.')
+      }
+    }
+  }
+}
