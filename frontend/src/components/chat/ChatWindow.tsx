@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { ChatMessage } from './ChatMessage';
 import { database, ref, push, set } from '../../lib/firebase';
-import { addMessage } from '../../store/slices/chatSlice';
 import { FaPaperPlane } from 'react-icons/fa';
 
 interface ChatWindowProps {
@@ -14,7 +13,6 @@ interface ChatWindowProps {
 export const ChatWindow: React.FC<ChatWindowProps> = ({ conversationId, participantPhoto }) => {
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user);
   const messages = useSelector((state: RootState) => 
     state.chat.messages[conversationId] ?? []

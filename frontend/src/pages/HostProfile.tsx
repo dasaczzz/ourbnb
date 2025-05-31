@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { startGetPostsByUser } from "../store/thunks/postThunk";
 import { motion } from "framer-motion";
-import { database, ref, push, set, get, update } from '../lib/firebase';
+import { database, ref, push, get, update } from '../lib/firebase';
 import { addConversation, openChat } from '../store/slices/chatSlice';
 import { FaMessage } from 'react-icons/fa6';
 
