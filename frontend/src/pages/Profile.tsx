@@ -34,21 +34,19 @@ export const Profile = () => {
   }
 
   return (
-
-    <section className='container flex flex-col items-center gap-6'>
-
+    <section className='container flex flex-col items-center gap-6' data-testid="profile-page">
       <UserProfileBookings />
       <UserProfilePosts />
 
        {/* Perfil*/}
       <UserForm handleOpenModal={handleOpenModal} />
 
-      <Modal title='Se eliminará tu cuenta' isOpen={open} closeModal={handleCloseModal}>
+      <Modal title='Se eliminará tu cuenta' isOpen={open} closeModal={handleCloseModal} data-testid="delete-account-modal">
         <div className='flex flex-col gap-4'>
           <p className='text-lg'>Todos tus datos seran eliminados. Si quieres volver a acceder deberas crear nuevamente una cuenta.</p>
           <div className='w-1/2 flex gap-3 items-end justify-end'>
-            <Button intent='secondary' onClick={handleCloseModal}>Cancelar</Button>
-            <Button onClick={handleDeleteUser} intent='primary'>Aceptar</Button>
+            <Button intent='secondary' onClick={handleCloseModal} data-testid="cancel-delete-button">Cancelar</Button>
+            <Button onClick={handleDeleteUser} intent='primary' data-testid="confirm-delete-button">Aceptar</Button>
           </div>
         </div>
       </Modal>

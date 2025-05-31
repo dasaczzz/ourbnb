@@ -24,17 +24,17 @@ export const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <Input text='Correo electrónico' error={errors.email} onChange={handleInputChange} placeholder='ejemplo@mail.com' name='email' value={email} type='text'/>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4" data-testid="login-form">
+      <Input text='Correo electrónico' error={errors.email} onChange={handleInputChange} placeholder='ejemplo@mail.com' name='email' value={email} type='text' data-testid="email-input"/>
       <div className='flex justify-between items-center gap-3'>
-        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.login_password} onChange={handleInputChange} placeholder='Tu contraseña' name='login_password' value={login_password}/>
-        <button type='button' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
+        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.login_password} onChange={handleInputChange} placeholder='Tu contraseña' name='login_password' value={login_password} data-testid="password-input"/>
+        <button type='button' onClick={handleToggleShow} data-testid="toggle-password-visibility">{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
-      <Button intent='primary' type='submit'>Entrar</Button>
+      <Button intent='primary' type='submit' data-testid="login-button">Entrar</Button>
       <div className='flex items-center'>
         <p className='mr-2'>También puedes:</p>
         <Link to={'/'}>
-        <Button intent='secondary'>Entrar como invitado</Button>
+        <Button intent='secondary' data-testid="guest-login-button">Entrar como invitado</Button>
         </Link>
       </div>
     </form>

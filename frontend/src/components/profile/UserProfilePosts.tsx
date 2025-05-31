@@ -39,12 +39,13 @@ export const UserProfilePosts = () => {
     return (
       <div className="mx-10 flex-[0.6] w-full sm:max-w-[1000px]">
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold">Tus Publicaciones</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 rounded-xl">
+          <h2 className="text-2xl font-bold" data-testid="posts-title">Tus Publicaciones</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 rounded-xl" data-testid="posts-grid">
             {userPosts.map((post: any) => (
               <div
                 key={post.id}
                 className="bg-white rounded-2xl shadow-lg p-3 border border-gray-100 max-w-xs flex flex-row gap-4 transition duration-200 hover:bg-gray-100"
+                data-testid={`post-card-${post.id}`}
               >
                 <div className="flex flex-col w-full">
                   <Link to={`/post/${post.id}`} className="flex flex-col w-full">
@@ -59,8 +60,8 @@ export const UserProfilePosts = () => {
                     </div>
                   </Link>
                   <div className="flex gap-2 px-1">
-                    <Button intent="primary" onClick={() => navigate(`/edit-post/${post.id}`)} className="text-sm py-2">Editar</Button>
-                    <Button intent="cancel" onClick={(e) => handleDelete(post.id, e)} className="text-sm py-2" disabled={loading[post.id]}>{loading[post.id] ? <LoadingSpinner /> : 'Eliminar'}</Button>
+                    <Button intent="primary" onClick={() => navigate(`/edit-post/${post.id}`)} className="text-sm py-2" data-testid={`edit-post-${post.id}`}>Editar</Button>
+                    <Button intent="cancel" onClick={(e) => handleDelete(post.id, e)} className="text-sm py-2" disabled={loading[post.id]} data-testid={`delete-post-${post.id}`}>{loading[post.id] ? <LoadingSpinner /> : 'Eliminar'}</Button>
                   </div>
                 </div>
               </div>

@@ -96,9 +96,9 @@ export const UserProfileBookings = () => {
   return (
     <div className="mx-10 flex-[0.6] w-full sm:max-w-[1000px]">
       <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-bold">Tus Reservaciones</h2>
+        <h2 className="text-2xl font-bold" data-testid="bookings-title">Tus Reservaciones</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 rounded-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 rounded-xl" data-testid="bookings-grid">
           {sortedBookings.map((item, index) => {
             const post = posts[item.post_id]
             if (!post) return null
@@ -107,6 +107,7 @@ export const UserProfileBookings = () => {
               <div
                 key={`${item.post_id}-${index}`}
                 className="bg-white rounded-2xl shadow-lg p-3 border border-gray-100 max-w-xs flex flex-row gap-4 transition duration-200 hover:bg-gray-100"
+                data-testid={`booking-card-${index}`}
               >
                 <div className="flex flex-col w-full">
                   <Link to={`/post/${item.post_id}`} className="flex flex-col w-full">
@@ -136,6 +137,7 @@ export const UserProfileBookings = () => {
                       onClick={() => handleDeleteBooking(item.id)}
                       className="text-sm py-2 w-full transition-all duration-200"
                       disabled={loading[item.id]}
+                      data-testid={`cancel-booking-${item.id}`}
                     >
                       {loading[item.id] ? <LoadingSpinner /> : confirming[item.id] ? 'Confirmar' : 'Cancelar reservación'}
                     </Button>
@@ -148,7 +150,7 @@ export const UserProfileBookings = () => {
 
         {/* si no hay reservas */}
         {!bookings.length && (
-          <div className='flex items-center'>
+          <div className='flex items-center' data-testid="no-bookings-message">
             <p className="text-sm text-gray-500 mr-1.5">Aquí verás tus reservaciones.</p>
             <button className="bg-gradient-to-r from-[#2c6d67] to-blue-500 text-white text-sm px-3 py-1 rounded-lg hover:opacity-80 transition" onClick={() => navigate('/')}>
               ¡Hagamos la primera!

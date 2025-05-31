@@ -66,8 +66,8 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex items-center justify-center h-full py-4 flex-col w-1/3  gap-4'>
-      <h2 className='font-bold text-3xl'>Tu perfil</h2>
+    <form onSubmit={handleSubmit} className='flex items-center justify-center h-full py-4 flex-col w-1/3  gap-4' data-testid="user-form">
+      <h2 className='font-bold text-3xl' data-testid="profile-title">Tu perfil</h2>
 
       <div className="flex items-center relative">
         <img
@@ -75,10 +75,12 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
           alt="Foto de perfil"
           onClick={handleImageClick}
           className="w-24 h-24 object-cover rounded-full outline-2 outline-secondary-400 cursor-pointer hover:bg-secondary-500/25 transition"
+          data-testid="profile-image"
         />
         <div
           className="absolute -bottom-2 -right-2 bg-white rounded-full outline-secondary-400 p-1 shadow-md cursor-pointer hover:bg-gray-100 transition"
           onClick={handleImageClick}
+          data-testid="edit-image-button"
         >
           <FaPen className="w-6 h-6 text-secondary-400" />
         </div>
@@ -88,19 +90,20 @@ export const UserForm: React.FC<props> = ({handleOpenModal}) => {
           ref={fileInputRef}
           className="hidden"
           onChange={handleFileChange}
+          data-testid="file-input"
         />
       </div>
-      <Input type='text' text='Nombre completo' error={errors.name} onChange={handleInputChange} placeholder={state.name} name='name' value={name} />
-      <Input type='text' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder={state.email} name='email' value={email}/>
-      <Input type='number' text='Telefono' onChange={handleInputChange} error={errors.phone} placeholder={state.phone} name='phone' value={phone}/>
+      <Input type='text' text='Nombre completo' error={errors.name} onChange={handleInputChange} placeholder={state.name} name='name' value={name} data-testid="name-input" />
+      <Input type='text' text='Correo electrónico' onChange={handleInputChange} error={errors.email} placeholder={state.email} name='email' value={email} data-testid="email-input"/>
+      <Input type='number' text='Telefono' onChange={handleInputChange} error={errors.phone} placeholder={state.phone} name='phone' value={phone} data-testid="phone-input"/>
       <div className='flex justify-between gap-3 items-center w-full'>
-        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.password} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password}/>
-        <button type='button' onClick={handleToggleShow}>{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
+        <Input type={showPassword ? 'text' : 'password'} text='Contraseña' error={errors.password} onChange={handleInputChange} placeholder='Tu contraseña' name='password' value={password} data-testid="password-input"/>
+        <button type='button' onClick={handleToggleShow} data-testid="toggle-password-visibility">{showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}</button>
       </div>
       <hr />
       <div className='flex justify-between w-full gap-4'>
-        <Button intent='cancel' onClick={handleOpenModal} type='button'>Eliminar cuenta</Button>
-        <Button intent='primary' type='submit'>Actualizar información</Button>
+        <Button intent='cancel' onClick={handleOpenModal} type='button' data-testid="delete-account-button">Eliminar cuenta</Button>
+        <Button intent='primary' type='submit' data-testid="update-profile-button">Actualizar información</Button>
       </div>
     </form>
   )
