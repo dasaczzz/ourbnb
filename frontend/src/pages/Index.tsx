@@ -192,7 +192,10 @@ export const Index = () => {
 
       <section className="container flex justify-start items-start content-start flex-wrap py-8 gap-8 *:rounded-2xl">
         {filteredPosts.map((item: PostState) => (
-          <HostCard post={item}/>
+          <HostCard key={item.id} post={{
+            ...item,
+            images: item.images as string[] | null
+          }}/>
         ))
         }
       </section>
