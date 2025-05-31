@@ -112,7 +112,7 @@ export const ReviewCard = () => {
           {reviews.map((review, index) => (
             <div key={`${review.id}-${index}`} className=" border border-gray-300 bg-white rounded-2xl shadow-md p-3 max-w-xs flex flex-row gap-4">
               <div className="flex flex-col w-full">
-                <Link to={`/HostProfile/${review.user_id.$oid}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100 w-full">
+                <Link to={`/HostProfile/${review.user_id}`} className="flex items-center gap-2 mb-2 rounded-xl transition duration-200 hover:bg-gray-100 w-full">
                   <img src={review.user.profilepic} alt={"nombre"} className="w-10 h-10 rounded-full object-cover"/>
                   <div>
                     <h3 className="font-semibold">{review.user.name}</h3>

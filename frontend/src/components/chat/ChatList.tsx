@@ -36,9 +36,9 @@ export const ChatList = () => {
               )}
             </div>
             <div className="flex-1 text-left">
-              <h3 className="font-medium text-sm">{conversation.participantName}</h3>
+              <h3 className="font-medium text-xs">{conversation.participantName}</h3>
               {conversation.lastMessage && (
-                <p className="text-sm text-gray-500 truncate">
+                <p className="text-xs text-gray-500 truncate">
                   {conversation.lastMessage}
                 </p>
               )}

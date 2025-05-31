@@ -74,14 +74,14 @@ export const ChatModal = () => {
       {/* Chat Toggle Button */}
       <button
         onClick={() => dispatch(toggleChatModal())}
-        className="fixed bottom-4 right-4 bg-primary-400 text-white rounded-full p-3 shadow-lg hover:bg-primary-500 transition-colors z-50"
+        className="fixed bottom-4 right-4 bg-primary-400 text-white rounded-full p-4 shadow-lg hover:bg-primary-500 transition-colors z-50"
       >
-        <FaComments className="w-6 h-6" />
+        <FaComments className="w-8 h-8" />
       </button>
 
       {/* Chat Modal */}
       <div
-        className={`fixed bottom-20 right-4 w-[350px] h-[500px] bg-white rounded-t-lg shadow-xl transition-all duration-300 ${
+        className={`fixed bottom-20 right-4 w-[450px] h-[500px] bg-white rounded-t-lg shadow-xl transition-all duration-300 ${
           isOpen ? 'flex' : 'hidden'
         } flex-col z-50`}
       >
@@ -96,10 +96,12 @@ export const ChatModal = () => {
 
         {/* Content */}
         <div className="flex-1 flex overflow-y-auto">
-          <ChatList />
+          <div className={`${activeChat ? 'w-1/2' : 'w-1/2'} border-r border-gray-200`}>
+            <ChatList />
+          </div>
           
           {activeChat ? (
-            <div className="flex-1">
+            <div className="w-1/2">
               <div className="h-full">
                 <ChatWindow
                   conversationId={activeChat.id}
@@ -108,8 +110,11 @@ export const ChatModal = () => {
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
-              Selecciona una conversación para comenzar
+            <div className="w-1/2 flex items-center justify-center text-gray-500">
+              <div className="text-center">
+                <p className="mb-2">Puedes empezar una conversación desde el perfil de un Host</p>
+                <p>Selecciona una conversación para comenzar</p>
+              </div>
             </div>
           )}
         </div>
