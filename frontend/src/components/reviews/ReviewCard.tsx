@@ -4,6 +4,8 @@ import { fetchCreateReview, fetchDeleteReviewById, fetchReviewsByPostId } from '
 import { toast } from 'sonner'
 import { Link, useParams } from 'react-router-dom'
 import { Button } from '../primitives/Button'
+import { buildReviewGraph } from '../../lib/reviewGraph'
+import ReviewGraphVisualization from './ReviewGraphVisualization'
 
 interface Review {
   id: string;
@@ -29,6 +31,7 @@ export const ReviewCard = () => {
   const [refresh, setRefresh] = useState(0)
   const [ comment, setComment] = useState('')
   const [qualification, setQualification] = useState(0)
+  const [reviewGraph, setReviewGraph] = useState<any>(null)
 
   const handleDeleteReview = async(id: string) => {
     const response = await fetchDeleteReviewById(id)
@@ -65,7 +68,10 @@ export const ReviewCard = () => {
     try {
         await fetchCreateReview(reviewData)
         toast.success('Review creada con éxito!')
-        setRefresh(prev => prev + 1)
+        // Add a short delay before refreshing to ensure backend data consistency
+        setTimeout(() => {
+          setRefresh(prev => prev + 1)
+        }, 500)
     } catch (error: any) {
         if (error.response?.data?.details) {
             toast.error(error.response.data.details)
@@ -77,11 +83,15 @@ export const ReviewCard = () => {
     }
   }
 
-  useEffect(() => {
+    useEffect(() => {
     const getReviews = async (post_id: string) => {
       try {
         const reviews = await fetchReviewsByPostId(post_id)
+        console.log('Fetched reviews:', reviews) // Debug log to check user data completeness
         setReviews(reviews)
+        // Build graph data structure from reviews
+        const graph = buildReviewGraph(reviews, post_id)
+        setReviewGraph(graph)
       } catch (error) {
         console.error('Error fetching reviews:', error)
       }
@@ -95,6 +105,9 @@ export const ReviewCard = () => {
     <div className="flex-[0.6] w-auto">
       <div className="flex flex-col gap-2">
         <h2 className="text-3xl font-bold mt-4">Reseñas</h2>
+
+        {/* The graph data structure is built and stored in reviewGraph state */}
+        {/* You can use reviewGraph for further processing or visualization */}
 
         {/* pa las reviews */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-xl">
@@ -129,6 +142,9 @@ export const ReviewCard = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="relative z-0 pointer-events-none">
+          <ReviewGraphVisualization graph={reviewGraph} />
         </div>
 
         {/* si no hay reviews */}
