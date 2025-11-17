@@ -39,6 +39,7 @@ export const Navbar = () => {
 
       <div className='flex items-center gap-2'>
         <Link to='/newPost' className='text-lg'>Tu espacio en Ourbnb</Link>
+        <Link to='/dashboard' className='text-lg'>Dashboard</Link>
         {/* division line */}
         <div className="border-l-2 h-9 border-secondary-400"></div>
 

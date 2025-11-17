@@ -8,6 +8,7 @@ import { Layout } from './pages/Layout'
 import { NewPost } from './pages/NewPost'
 import PostDetail from './pages/PostDetail'
 import BookingConfirmation from './pages/BookingConfirmation'
+import { Dashboard } from './pages/Dashboard'
 import { AnimatePresence } from 'framer-motion'
 import { AnimatedPage } from './components/animation/AnimatedPage'
 import { useEffect } from 'react'
@@ -42,6 +43,7 @@ export const Ourbnb = () => {
             <Route path="/bookingConfirmation/:post_id" element={<AnimatedPage><BookingConfirmation /></AnimatedPage>} />
             <Route path="/HostProfile/:user_id" element={<AnimatedPage><HostProfile /></AnimatedPage>} />
             <Route path="/edit-post/:post_id" element={<AnimatedPage><EditPostForm /></AnimatedPage>} />
+            <Route path="/dashboard" element={<AnimatedPage><Dashboard /></AnimatedPage>} />
           </Route>
         </Route>
       </Routes>
